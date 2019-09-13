@@ -1,0 +1,63 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 140px;
+
+  &.disabled {
+    opacity: 0.5;
+
+    & button {
+      cursor: default;
+    }
+  }
+
+  & .title {
+    font-size: 14px;
+    line-height: 14px;
+    color: var(--title);
+    opacity: 0.5;
+    margin: 0 0 5px;
+  }
+
+  & .countWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    border-radius: var(--borderRadius);
+    border: 2px solid var(--inputBorderColor);
+    color: var(--textColor);
+
+    & span {
+      white-space: nowrap;
+    }
+
+    & button {
+      &:hover {
+        color: var(--accent);
+      }
+    }
+  }
+
+  & button {
+    background: transparent;
+    width: 30px;
+    flex-shrink: 0;
+    cursor: pointer;
+    font-size: 20px;
+    height: 100%;
+    border: none;
+    color: inherit;
+    transition: all .1s ease;
+  }
+}
+
+.deadlineTitle {
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--primary);
+  margin: 0 0 5px;
+}

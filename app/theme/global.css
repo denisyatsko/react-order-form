@@ -1,0 +1,348 @@
+@import './breakpoint.css';
+
+:global(.section) {
+  color: var(--textColor);
+  width: 100%;
+  flex: 1 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+:global(.preloaderWrapper) {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+:global(.col50) {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+:global(.flexBetween) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+:global(.title) {
+  text-align: center;
+  margin: 0 0 20px 0;
+  color: var(--title);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 36px;
+}
+
+:global(.subTitle) {
+  margin: 0 0 20px 0;
+  color: var(--title);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: normal;
+}
+
+:global(.btn) {
+  color: #fff;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  text-align: center;
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  background-color: transparent;
+  transition: 0.15s ease-in-out;
+  z-index: 1;
+  height: 40px;
+  line-height: 40px;
+  width: 120px;
+  border-radius: var(--borderRadius);
+}
+
+:global(.btn--accent) {
+  background-color: var(--accent);
+  color: #fff;
+  border: 2px solid transparent;
+
+  &:hover {
+    background-color: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+}
+
+:global(.btn--primary) {
+  background-color: var(--primary);
+  color: #fff;
+  border: 2px solid transparent;
+  border-radius: var(--borderRadius);
+
+  &:hover {
+    background-color: transparent;
+    color: var(--primary);
+    border-color: var(--primary);
+  }
+}
+
+:global(.scrollbar) {
+  &::-webkit-scrollbar {
+    width: 10px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    border-right: 3px solid transparent;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 10px;
+    box-shadow: inset 5px 0 0 var(--accent);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: transparent;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+}
+
+:global(.react-tel-input) {
+  &:hover > * {
+    border-color: var(--accent) !important;
+  }
+}
+
+:global(.react-tel-input .flag-dropdown) {
+  border-top-left-radius: var(--borderRadius) !important;
+  border-bottom-left-radius: var(--borderRadius) !important;
+  border: 2px solid var(--inputBorderColor) !important;
+  border-right: none !important;
+  transition: all .25s ease-in-out;
+}
+
+:global(.react-tel-input .selected-flag) {
+  border-top-left-radius: var(--borderRadius) !important;
+  border-bottom-left-radius: var(--borderRadius) !important;
+  transition: all .25s ease-in-out;
+}
+
+:global(.react-tel-input .country-list) {
+  border-radius: var(--borderRadius);
+  &::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    box-shadow: inset 5px 0 0 #f44a65;
+    border-width: 2px;
+    border-top-left-radius: 0;
+    border-color: #b6b6b6;
+    border-bottom-left-radius: 0;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-track {
+    box-shadow: inset 5px 0 0 #b6b6b6;
+    background-color: transparent;
+    border-top: 2px solid transparent;
+    border-bottom: 2px solid transparent;
+    margin: 10px 0;
+  }
+}
+
+:global(.resetPassword-content) {
+  border-radius: 8px;
+  width: 90% !important;
+  max-width: 350px;
+  @media (--desktop) {
+    width: 35% !important;
+    max-width: none;
+  }
+  @media (--large) {
+    width: 25% !important;
+  }
+}
+
+:global(.infoPopup-content) {
+  width: auto !important;
+}
+
+:global(.payCardPopup-content) {
+  width: 400px !important;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+
+
+ul, li {
+  list-style-type: none;
+}
+
+img {
+  max-width: 100%;
+}
+
+p {
+  font-size: 18px;
+  line-height: 24px;
+  margin-bottom: 20px;
+  color: var(--textColor);
+}
+
+p::selection,
+h1::selection,
+h2::selection,
+h3::selection,
+h4::selection,
+span::selection,
+label::selection,
+li::selection {
+  background: var(--accent);
+}
+
+a,
+a:hover,
+a:focus {
+  text-decoration: none;
+  outline-offset: 0;
+  outline: none;
+}
+
+button,
+button:hover,
+button:focus {
+  outline: none;
+  outline-offset: 0;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  outline-offset: 0;
+}
+
+textarea {
+  overflow: hidden;
+  resize: none;
+}
+
+body {
+  min-width: 320px;
+  position: relative;
+  line-height: 1.75;
+  font-size: 18px;
+  overflow-x: hidden;
+  opacity: 1;
+  display: flex;
+  flex-direction: column;
+  flex: auto;
+  font-family: var(--default);
+  min-height: 100vh;
+  text-size-adjust: 100%;
+  font-variant-ligatures: none;
+
+  @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    height: 100vh;
+  }
+}
+
+/*--------------- Safari, Chrome, Edge, Opera --------------------*/
+
+/*scrollbar start*/
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: #b6b6b6;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-width: 1px 1px 1px 2px;
+  border-color: #b6b6b6;
+  background-color: var(--accent);
+}
+
+::-webkit-scrollbar-track {
+  border-width: 0;
+}
+
+/*scrollbar end*/
+
+/*placeholder start*/
+::-webkit-input-placeholder {
+  font-family: var(--default);
+  color: var(--textColor);
+  font-size: 14px;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+:focus::-webkit-input-placeholder {
+  opacity: 0;
+}
+
+/*placeholder end*/
+
+/*--------------- Mozilla --------------------*/
+
+/*Firefox 50+*/
+::-moz-placeholder {
+  font-family: var(--default);
+  color: var(--textColor);
+  font-size: 14px;
+  opacity: 1;
+}
+
+:focus::-moz-placeholder {
+  opacity: 0;
+}
+
+/*Firefox 50-*/
+:-moz-placeholder {
+  font-family: var(--default);
+  color: var(--textColor);
+  font-size: 14px;
+  opacity: 1;
+}
+
+:focus:-moz-placeholder {
+  opacity: 0;
+}
+
+/*--------------- IE 11 --------------------*/
+
+:-ms-input-placeholder {
+  font-family: var(--default);
+  color: var(--textColor);
+  font-size: 14px;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+:focus:-ms-input-placeholder {
+  opacity: 0;
+}

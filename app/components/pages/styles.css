@@ -1,0 +1,333 @@
+@import '../../theme/breakpoint.css';
+
+.authTab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+
+  @media (--desktop) {
+    margin-bottom: 20px;
+  }
+
+  & .btn {
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--textColor);
+    background-color: transparent;
+    font-size: 14px;
+    margin: 0 10px;
+    cursor: pointer;
+    white-space: nowrap;
+    width: auto;
+    transition: all ease-in-out 0.15s;
+
+    @media (--desktop) {
+      font-size: 18px;
+      padding-bottom: 5px;
+    }
+
+    &.active {
+      border-bottom: 2px solid var(--accent);
+      font-weight: bold;
+    }
+
+    &:matches(:hover, :focus) {
+      color: var(--accent);
+    }
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  @media (--desktop) {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  & .child140 {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+    & > * {
+      max-width: 140px;
+    }
+  }
+}
+
+.col50 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+
+  @media (--desktop) {
+    width: 50%;
+  }
+}
+
+.flexBetween {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.loginLink {
+  border: none;
+  background-color: transparent;
+  color: #6ea19d;
+  font-size: 14px;
+  cursor: pointer;
+
+  &:matches(:hover, :focus) {
+    text-decoration: underline;
+  }
+}
+
+.signUpBtn,
+.nextBtn,
+.payBtn {
+  align-self: center;
+  margin-top: 20px;
+  min-width: 150px;
+}
+
+.socialBtn {
+  width: auto !important;
+  align-items: center;
+  margin-top: 20px;
+
+  &.facebook {
+    background-color: #3b5998;
+
+    @media (--desktop) {
+      margin-top: 30px;
+    }
+
+    &:matches(:hover, :focus) {
+      background-color: #4c70ba;
+    }
+  }
+
+  &.google {
+    background-color: #dc4e41;
+
+    @media (--desktop) {
+      margin-top: 30px;
+    }
+
+    &:matches(:hover, :focus) {
+      background-color: #f33b2b;
+    }
+  }
+
+  & svg {
+    margin-right: 10px;
+  }
+}
+
+.authContent {
+  text-align: center;
+
+  & button {
+    margin: 20px auto 0 auto;
+    width: 150px;
+  }
+}
+
+.popupContent {
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+
+  & * {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  & p {
+    font-size: 26px;
+    color: var(--title);
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+}
+
+.toolTip {
+  display: none;
+  @media (--desktop) {
+    display: block;
+    color: var(--accent);
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+  }
+}
+
+.toolTipContent {
+  font-size: 13px;
+  line-height: 15px;
+  color: var(--textColor);
+}
+
+.mb {
+  margin-bottom: 10px;
+}
+
+.totalWrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.totalText {
+  color: var(--primary);
+  font-size: 24px;
+  line-height: 24px;
+  font-weight: bold;
+  margin: 15px 0;
+}
+
+.serverError {
+  color: var(--accent);
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
+}
+
+.payBtn {
+  margin: 0 0 5px 0;
+  width: 100%;
+  background-color: #7FA3E8;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 20px;
+  border: none;
+  cursor: pointer;
+  background-image: url('../../images/solid-btn.png');
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  transition: all ease 0.15s;
+
+  &:hover {
+    background-color: #597CC0;
+  }
+}
+
+.link {
+  border: none;
+  background-color: transparent;
+  color: #6ea19d;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
+
+  &[type="submit"] {
+    margin-top: 15px;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.popupText {
+  max-width: 400px;
+  text-align: center;
+  padding: 20px;
+  margin: 0;
+}
+
+.payWrapper {
+  width: 300px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.paymentIframe {
+  width: 100%;
+  height: 440px;
+  border: 0;
+  margin: 0 auto;
+}
+
+.payCardPopup {
+  & .info {
+    max-width: 288px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+    border-bottom: 2px solid #ddd;
+    padding: 20px 0 10px 0;
+
+    & .orderText {
+      font-size: 20px;
+      color: var(--textColor);
+    }
+
+    & .priceText {
+      color: #57cc69;
+      font-size: 24px;
+    }
+  }
+  & .iframeButton {
+    margin: 0 auto 15px auto;
+  }
+}
+
+.solidIcon1,
+.solidIcon2,
+.solidIcon3,
+.solidIcon4 {
+  display: block;
+  width: 53px;
+  height: 32px;
+  margin: 0 3px;
+  cursor: pointer;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  &:hover {
+    filter: brightness(1.2)
+  }
+}
+
+.solidIcon1 {
+  background-image: url('../../images/visa.svg');
+}
+
+.solidIcon2 {
+  background-image: url('../../images/master-card.svg');
+}
+
+.solidIcon3 {
+  background-image: url('../../images/amex.svg');
+}
+
+.solidIcon4 {
+  background-image: url('../../images/discover.svg');
+}
+
+.greyText {
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--inputBorderColor);
+  margin: 0 0 5px 0;
+}

@@ -1,0 +1,44 @@
+.item {
+  display: flex;
+  width: 140px;
+}
+
+.title {
+  composes: title from '../dropdown/styles.css';
+  white-space: nowrap;
+}
+
+.radioLeft,
+.radioRight {
+  width: 70px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--inputBorderColor);
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--textColor);
+  transition: all .2s ease;
+
+  &.active {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+.radioLeft {
+  border-bottom-left-radius: var(--borderRadius);
+  border-top-left-radius: var(--borderRadius);
+  border-right: 2px solid var(--primary);
+}
+
+.radioRight {
+  border-top-right-radius: var(--borderRadius);
+  border-bottom-right-radius: var(--borderRadius);
+  border-left: none;
+}

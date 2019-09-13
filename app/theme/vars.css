@@ -1,0 +1,15 @@
+:root {
+  --default: "ChivoRegular", sans-serif;
+  --inputBorderColor: #dfe0e3;
+  --color: #9c4c99;
+  --primary: #59c59f;
+  --accent: #f44a65;
+  --textColor: #898a95;
+  --title: #616372;
+  --headerBg: #fef3f5;
+  --lightBg: #f3faf9;
+  --borderRadius: 20px;
+  --shadow: 0 5px 20px 1px rgba(0, 0, 0, 0.1);
+  --cubic1: cubic-bezier(0.15, 0.045, .48, 0.38);
+  --cubic2: cubic-bezier(.02, .095, .735, .065);
+}

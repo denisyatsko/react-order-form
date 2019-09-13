@@ -1,0 +1,63 @@
+@import '../../../theme/breakpoint.css';
+
+.header {
+  background-color: var(--headerBg);
+  padding: 5px 0;
+
+  & .logo {
+    width: 88px;
+    height: 34px;
+    display: block;
+
+    @media (--phone) {
+      width: 117px;
+      height: 45px;
+    }
+  }
+
+  & .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  & .btnWrapper {
+    display: flex;
+  }
+
+  & .userLink {
+    color: var(--accent);
+    font-weight: bold;
+
+    &:matches(:hover, :focus) {
+      text-decoration: underline;
+    }
+  }
+
+  & .logOut {
+    width: 30px;
+    height: 28px;
+    margin-left: 5px;
+    background: transparent;
+    cursor: pointer;
+    border: none;
+
+    &:hover {
+      & svg > g:first-child {
+        transform: translateX(75px);
+        fill: var(--primary);
+      }
+    }
+
+    & svg {
+      flex-shrink: 0;
+      fill: var(--accent);
+      overflow: visible;
+
+      & g:first-child {
+        transition: all ease 0.25s;
+      }
+    }
+  }
+}
+

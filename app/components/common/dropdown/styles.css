@@ -1,0 +1,18 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.title {
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--title);
+  opacity: 0.5;
+  margin: 0 0 5px;
+}
+
+

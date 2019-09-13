@@ -1,0 +1,73 @@
+.item {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 300px;
+  position: relative;
+
+  & label {
+    &[for="password"],
+    &[for="email"] {
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 24px;
+      opacity: 1;
+    }
+  }
+
+  & input,
+  & textarea {
+    border: 2px solid var(--inputBorderColor);
+    border-radius: var(--borderRadius);
+    height: 40px;
+    font-size: 14px;
+    line-height: 14px;
+    color: var(--textColor);
+    padding: 0 20px;
+    transition: all .25s ease-in-out;
+
+    &:matches(:hover, :focus) {
+      border-color: var(--accent);
+    }
+
+    &.error {
+      border-color: var(--accent);
+    }
+  }
+
+  & input[type="tel"] {
+    border: 2px solid var(--inputBorderColor) !important;
+    border-radius: var(--borderRadius) !important;
+    height: 40px !important;
+
+    &:matches(:hover, :focus),
+    &.error {
+      border-color: var(--accent) !important;
+
+      & + div {
+        border-color: var(--accent) !important;
+      }
+    }
+  }
+
+  & textarea {
+    height: 85px;
+    padding: 15px;
+  }
+
+  & .errorMessage {
+    color: var(--accent);
+    font-size: 13px;
+    position: absolute;
+    top: 102%;
+    left: 20px;
+    transform: translate(0, 0);
+    white-space: nowrap;
+  }
+}
+
+.title {
+  composes: title from '../dropdown/styles.css';
+}

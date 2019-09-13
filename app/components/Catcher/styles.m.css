@@ -1,0 +1,10 @@
+.catcher {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 3px;
+    text-align: center;
+
+    & span {
+        font-size: 34px;
+    }
+}

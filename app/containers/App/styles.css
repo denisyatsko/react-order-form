@@ -1,0 +1,5 @@
+.mainContent {
+  min-width: 320px;
+  flex: 1 0 auto;
+  min-height: 100vh;
+}

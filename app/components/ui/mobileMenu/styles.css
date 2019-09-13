@@ -1,0 +1,59 @@
+@import '../../../theme/breakpoint.css';
+
+.burger {
+	position: relative;
+	width: 30px;
+	height: 21px;
+	cursor: pointer;
+	flex-shrink: 0;
+	transform: rotate(0deg);
+	transition: 0.5s ease-in-out;
+
+	@media (--desktop) {
+		display: none;
+	}
+
+	&.on {
+		& span:nth-child(1) {
+			top: 12px;
+			transform: rotate(135deg);
+		}
+
+		& span:nth-child(2) {
+			opacity: 0;
+			left: -60px;
+		}
+
+		& span:nth-child(3) {
+			top: 12px;
+			transform: rotate(-135deg);
+		}
+	}
+
+	& span {
+		background: var(--accent);
+		display: block;
+		position: absolute;
+		height: 3px;
+		width: 100%;
+		border-radius: 3px;
+		opacity: 1;
+		margin: auto;
+		transform: rotate(0deg);
+		transition: all .35s ease-in-out;
+
+		&:nth-child(1) {
+			top: 0px;
+		}
+
+		&:nth-child(2) {
+			top: 9px;
+			left: 0;
+		}
+
+		&:nth-child(3) {
+			top: 18px;
+		}
+	}
+}
+

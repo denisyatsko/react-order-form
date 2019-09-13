@@ -1,0 +1,62 @@
+@import "breakpoint.css";
+
+.container {
+	width: 100%;
+	padding: 0 15px;
+	margin: 0 auto;
+}
+
+.col {
+	display: flex;
+	flex-direction: column;
+}
+
+.col50 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.selfCenter {
+  align-self: center;
+}
+
+.justifyContentCenter {
+  display: flex;
+  justify-content: center;
+}
+
+.mAuto {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (--phone) {
+	.container {
+		max-width: none;
+	}
+}
+
+@media (--tablet) {
+	.container {
+		max-width: 720px;
+		padding: 0;
+	}
+}
+
+@media (--desktop) {
+	.container {
+		max-width: 960px
+	}
+  .col50 {
+    width: 50%;
+  }
+}
+
+@media (--large) {
+	.container {
+		max-width: 1200px;
+	}
+}
