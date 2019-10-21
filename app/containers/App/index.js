@@ -1,20 +1,26 @@
 // Core
 import React, { Component } from 'react';
+import { withRouter, Route, Redirect, Switch } from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 
 // Components
+import Cabinet from 'containers/Cabinet';
 import Catcher from 'components/Catcher';
-import Form from 'components/layout/form';
-import Header from 'components/layout/header';
-import { withRouter } from 'react-router-dom';
-import Preloader from 'components/ui/preloader';
+import OrderForm from 'containers/OrderForm';
+import { Header } from 'components/layout/export';
+import { Preloader, CustomPopup } from 'components/ui/export';
 import { Provider } from 'components/HOC/withProfile';
+import { Login } from 'components/pages/export';
 
 // Instruments
-import MainAPI from 'api/main';
-import AuthAPI from 'api/auth';
-import { RetrieveRequest } from 'api/auth/request';
-import { calculatePrice, cookies } from 'instruments';
+import MainAPI from 'api/main/MainAPI';
+import AuthAPI from 'api/auth/AuthAPI';
+import { RetrieveRequest } from 'api/auth/requests';
+import { calculatePrice, cookies, orderFormRoutes, routes, DefaultOrderValues } from 'instruments';
+
+// Styles
 import styles from './styles.css';
+import grid from 'theme/grid.css';
 
 @withRouter
 export default class App extends Component {
@@ -24,68 +30,33 @@ export default class App extends Component {
     },
     formValues: {},
     pricingValues: {},
-    order: {
-      type_of_paper: '',
-      academic_level: '',
-      paper_format: '',
-      deadline: '',
-      subject_or_discipline: '',
-      spacing: 1,
-      number_of_pages: 1,
-      number_of_sources: 0,
-      number_of_slides: 0,
-      number_of_charts: 0,
-      paper_details: '',
-      customer_name: '',
-      customer_phone: '',
-      preferred_writer: '',
-      discount_code: '',
-      topic: '',
-      advanced_writer_required: '',
-      digital_copies_required: '',
-      additional_editing_required: '',
-      plagiarism_report_required: '',
-      initial_draft_required: '',
-      one_page_summary_required: '',
-      extended_revision_period_required: '',
-      vip_support_required: '',
-      price: '',
-      files: [],
-    },
-    step: !sessionStorage.step ? 1 : parseInt(sessionStorage.step),
+    order: {},
     auth: !sessionStorage.auth ? false : JSON.parse(sessionStorage.auth),
     rememberMe: true,
     isLoading: true,
+    userOrders: null,
+    customPopup: {
+      isVisible: false,
+      message: null,
+    },
   };
 
   componentDidMount() {
     new MainAPI().getOrderFormSetup().then(data => {
-      const {
-        type_of_paper,
-        academic_level,
-        subject_or_discipline,
-        paper_format,
-        deadline,
-      } = data.ui;
-
-      this.setState(
-        prevState => ({
+      this.setState({
           formValues: data.ui,
           pricingValues: data.pricing,
-          order: {
-            ...prevState.order,
-            ...{ type_of_paper: type_of_paper[18] },
-            ...{ academic_level: academic_level[1] },
-            ...{ subject_or_discipline: subject_or_discipline[0] },
-            ...{ paper_format: paper_format[0] },
-            ...{ deadline: deadline[0] },
-          },
+          order: new DefaultOrderValues(data.ui),
           isLoading: false,
-        }),
-        () => this._setPrice(),
+        },() => {
+          this._setPrice();
+          this._setCustomerData();
+        },
       );
     });
+  }
 
+  _setCustomerData = () => {
     if (!!sessionStorage.auth && JSON.parse(sessionStorage.auth) === true) {
       const TOKEN = cookies.get('TOKEN');
 
@@ -104,11 +75,21 @@ export default class App extends Component {
     } else if (cookies.get('email')) {
       this.setState({ user: { email: cookies.get('email') } });
     }
-  }
+  };
 
-  _mergeState = (name, selectValues) =>
-    this.setState(
-      prevState => ({
+  _setDefaultOrderValues = () => {
+    const { formValues } = this.state;
+
+    this.setState({
+      order: new DefaultOrderValues(formValues),
+    }, () => {
+      this._setPrice();
+      this._setCustomerData();
+    });
+  };
+
+  _mergeState = (name, selectValues) => {
+    this.setState(prevState => ({
         [name]: {
           ...prevState[name],
           ...selectValues,
@@ -116,6 +97,19 @@ export default class App extends Component {
       }),
       () => this._setPrice(),
     );
+  };
+
+  _mergeOrderOptions = (name, selectValues) => {
+    this.setState(prevState => ({
+      order: {
+        ...prevState.order,
+        options: {
+          ...prevState.order.options,
+          ...{ [name]: selectValues },
+        },
+      },
+    }), () => this._setPrice());
+  };
 
   _setPrice = () => {
     this.setState(prevState => ({
@@ -132,18 +126,18 @@ export default class App extends Component {
   };
 
   _setStep = value => {
-    sessionStorage.setItem('step', value);
-    this.setState({ step: value });
+    const { STEP_1, STEP_2, STEP_3 } = orderFormRoutes;
+    const { history } = this.props;
 
     switch (value) {
       case 1:
-        this.props.history.push('/step_1');
+        history.push(STEP_1);
         break;
       case 2:
-        this.props.history.push('/step_2');
+        history.push(STEP_2);
         break;
       case 3:
-        this.props.history.push('/step_3');
+        history.push(STEP_3);
         break;
     }
   };
@@ -157,8 +151,22 @@ export default class App extends Component {
     this.setState({ [name]: value });
   };
 
+  _showCustomPopup = (content) => {
+    this.setState({
+      customPopup: {
+        isVisible: true,
+        message: content,
+      }
+    })
+  };
+
   _logOut = () => {
+    const { history } = this.props;
+
+    history.push('/');
+
     sessionStorage.clear();
+
     this.setState({
       step: 1,
       auth: false,
@@ -170,6 +178,11 @@ export default class App extends Component {
   };
 
   render() {
+    const { location } = this.props;
+    const { auth, isLoading } = this.state;
+
+    const isLoggedIn = JSON.parse(auth);
+
     return (
       <Catcher>
         <Provider
@@ -179,17 +192,33 @@ export default class App extends Component {
             _setStep: value => this._setStep(value),
             _setAuth: value => this._setAuth(value),
             _setState: (name, value) => this._setState(name, value),
+            _setDefaultOrderValues: () => this._setDefaultOrderValues(),
+            _showCustomPopup: content => this._showCustomPopup(content),
             _mergeState: (name, value) => this._mergeState(name, value),
-          }}
-        >
-          {this.state.isLoading ? (
-            <div className="preloaderWrapper">
-              <Preloader />
+            _mergeOrderOptions: (name, value) => this._mergeOrderOptions(name, value),
+          }}>
+          {isLoading ? (
+            <div className='preloaderWrapper'>
+              <Preloader/>
             </div>
           ) : (
             <div className={styles.mainContent}>
-              <Header />
-              <Form />
+              <Header/>
+              <div className={grid.container}>
+                <TransitionGroup className={styles.mainSection}>
+                  <CSSTransition key={location} classNames='fade' timeout={300} appear>
+                    <div className={styles.pageWrapper}>
+                      <Switch location={location}>
+                        <Route path={routes.ORDER_FORM} component={OrderForm}/>
+                        <Route path={routes.CABINET} component={Cabinet}/>
+                        <Route path={routes.LOGIN} exact component={Login}/>
+                        {!isLoggedIn ? <Redirect to={routes.LOGIN}/> : null}
+                      </Switch>
+                    </div>
+                  </CSSTransition>
+                </TransitionGroup>
+              </div>
+              <CustomPopup/>
             </div>
           )}
         </Provider>

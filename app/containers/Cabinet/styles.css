@@ -1,0 +1,23 @@
+@import '../../theme/breakpoint.css';
+
+.container {
+  display: flex;
+  flex-direction: column;
+
+  @media (--desktop) {
+    flex-direction: row;
+  }
+
+  & .mainContent {
+    width: 100%;
+    position: relative;
+  }
+
+  & .page {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    margin-bottom: 50px;
+  }
+}

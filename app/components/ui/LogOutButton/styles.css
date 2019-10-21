@@ -1,0 +1,25 @@
+.logOut {
+  width: 30px;
+  height: 28px;
+  margin-left: 5px;
+  background: transparent;
+  cursor: pointer;
+  border: none;
+
+  &:hover {
+    & svg > g:first-child {
+      transform: translateX(75px);
+      fill: var(--primary);
+    }
+  }
+
+  & svg {
+    flex-shrink: 0;
+    fill: var(--accent);
+    overflow: visible;
+
+    & g:first-child {
+      transition: all ease 0.25s;
+    }
+  }
+}

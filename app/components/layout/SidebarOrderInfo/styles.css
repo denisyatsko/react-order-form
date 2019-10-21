@@ -1,0 +1,70 @@
+@import '../../../theme/breakpoint.css';
+
+.wrapper {
+  display: none;
+
+  @media (--desktop) {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    flex: 0 0 auto;
+    overflow: hidden;
+    align-self: stretch;
+    margin-left: 15px;
+    border: 1px solid #000;
+    padding: 20px 0;
+  }
+}
+
+.caption {
+  text-align: center;
+}
+
+.content {
+  margin: 0 15px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  padding: 5px 0;
+
+  &:last-child {
+    padding-top: 20px;
+    border-top: 1px solid var(--textColor);
+  }
+
+  & span {
+    color: var(--color);
+    font-size: 16px;
+    line-height: 18px;
+    white-space: nowrap;
+
+    &:last-child {
+      text-align: right;
+      white-space: pre-wrap;
+    }
+
+    &.title {
+      color: var(--textColor);
+      font-weight: bold;
+    }
+  }
+
+  & .totalText {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--textColor);
+  }
+
+  & .totalValue {
+    font-size: 30px;
+    font-weight: bold;
+    color: var(--primary);
+  }
+}
+
+
+

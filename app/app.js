@@ -20,14 +20,13 @@ import App from 'containers/App';
 
 // Theme
 import './theme/init.css';
-// import "../public/css/style.css";
 
 const MOUNT_NODE = document.getElementById('app');
 
 const render = () => {
   ReactDOM.render(
     <HashRouter>
-      <App />
+      <App/>
     </HashRouter>,
     MOUNT_NODE,
   );

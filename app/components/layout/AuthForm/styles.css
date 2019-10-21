@@ -1,0 +1,83 @@
+.title {
+  font-weight: bold;
+  color: var(--accent);
+  font-size: 34px;
+  margin: 0 0 10px 0;
+}
+
+.socialBtn {
+  width: 50px !important;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: none;
+  color: #fff;
+  font-size: 20px;
+  margin: 0 5px 20px 5px;
+  cursor: pointer;
+
+  &.facebook {
+    background-color: #3b5998;
+
+    &:matches(:hover, :focus) {
+      background-color: #4c70ba;
+    }
+  }
+
+  &.google {
+    background-color: #dc4e41;
+
+    &:matches(:hover, :focus) {
+      background-color: #f33b2b;
+    }
+  }
+}
+
+.loginLink {
+  border: none;
+  background-color: transparent;
+  color: #6ea19d;
+  font-size: 14px;
+  cursor: pointer;
+
+  &:matches(:hover, :focus) {
+    text-decoration: underline;
+  }
+}
+
+.content {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.popupContent {
+  text-align: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+
+  & * {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  & p {
+    font-size: 26px;
+    color: var(--title);
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+}
+
+.serverError {
+  color: var(--accent);
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
+}
+
+.signUpBtn {
+  margin: 20px auto 0 auto;
+}

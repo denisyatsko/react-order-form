@@ -3,3 +3,45 @@
   flex: 1 0 auto;
   min-height: 100vh;
 }
+
+.mainSection {
+  width: 100%;
+  padding: 30px 0;
+  position: relative;
+}
+
+.pageWrapper {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+}
+
+.pageAnimateInStart {
+  opacity: .01;
+  transition: opacity 500ms var(--cubic1);
+}
+
+.pageAnimateInEnd {
+  transition: opacity 500ms var(--cubic1);
+  opacity: 1;
+}
+
+.pageAnimateOutStart {
+  opacity: 1;
+}
+
+.pageAnimateOutEnd {
+  transition: opacity 200ms var(--cubic2);
+  opacity: 0;
+}
+
+.pageAnimateAppear {
+  opacity: 0;
+}
+
+.pageAnimateOutDone,
+.pageAnimateAppearDone {
+  opacity: 1;
+  transition: opacity 500ms var(--cubic1);
+}

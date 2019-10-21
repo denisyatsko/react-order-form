@@ -4,7 +4,7 @@
   align-self: center;
   margin-bottom: 20px;
   width: 100%;
-  max-width: 300px;
+  //max-width: 300px;
   position: relative;
 
   & label {
@@ -41,6 +41,7 @@
     border: 2px solid var(--inputBorderColor) !important;
     border-radius: var(--borderRadius) !important;
     height: 40px !important;
+    width: 100% !important;
 
     &:matches(:hover, :focus),
     &.error {
@@ -69,5 +70,5 @@
 }
 
 .title {
-  composes: title from '../dropdown/styles.css';
+  composes: title from '../Dropdown/styles.css';
 }

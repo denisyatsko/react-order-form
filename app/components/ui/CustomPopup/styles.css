@@ -1,0 +1,9 @@
+.customPopup {
+  padding: 20px;
+  text-align: center;
+
+  & .text {
+    font-size: 18px;
+    line-height: 24px;
+  }
+}

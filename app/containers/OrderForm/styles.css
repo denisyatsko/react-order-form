@@ -1,0 +1,77 @@
+@import '../../theme/breakpoint.css';
+
+.mainSection {
+  width: 100%;
+  padding: 30px 0;
+}
+
+.container {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  width: 100%;
+  max-width: 820px;
+
+  &.overflowHidden {
+    overflow: hidden;
+  }
+
+  & > * {
+    width: 100%;
+
+    @media (--desktop) {
+      //min-width: 800px;
+    }
+  }
+}
+
+
+
+.flexRow {
+  display: flex;
+  flex-wrap: nowrap;
+  @media (--desktop) {
+    justify-content: space-around;
+    //justify-content: flex-end;
+  }
+}
+
+.stepInStart {
+  transform: translate(-100%, 0);
+  opacity: .01;
+}
+
+.stepInEnd {
+  transform: translate(0,0);
+  transition: opacity 500ms var(--cubic1),
+  transform 500ms var(--cubic1);
+  opacity: 1;
+}
+
+.stepOutStart {
+  transform: translate(0,0);
+  opacity: 1;
+}
+
+.stepOutEnd {
+  transform: translate(100%, 0);
+  transition: opacity 200ms var(--cubic2),
+  transform 400ms var(--cubic2);
+  opacity: 0;
+}
+
+.stepAppear {
+  transform: translate(-50%, 0);
+  opacity: 0;
+}
+
+.stepAppearDone {
+  transform: none;
+  opacity: 1;
+  transition: opacity 500ms var(--cubic1),
+  transform 500ms var(--cubic1);
+}
+

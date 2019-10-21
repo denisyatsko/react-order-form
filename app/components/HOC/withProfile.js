@@ -1,4 +1,4 @@
-// Core 
+// Core
 import React, { Component, createContext } from 'react';
 
 const { Provider, Consumer } = createContext();
@@ -13,6 +13,6 @@ const withProfile = (Enhanceable) => {
             )
         }
     }
-}
+};
 
 export { Provider, Consumer, withProfile };
