@@ -1,0 +1,5 @@
+.title {
+  font-weight: bold;
+  color: var(--title);
+  margin-bottom: 10px;
+}

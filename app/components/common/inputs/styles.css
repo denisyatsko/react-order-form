@@ -4,18 +4,7 @@
   align-self: center;
   margin-bottom: 20px;
   width: 100%;
-  //max-width: 300px;
   position: relative;
-
-  & label {
-    &[for="password"],
-    &[for="email"] {
-      font-weight: bold;
-      font-size: 18px;
-      line-height: 24px;
-      opacity: 1;
-    }
-  }
 
   & input,
   & textarea {

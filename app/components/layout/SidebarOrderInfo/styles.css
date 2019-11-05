@@ -11,8 +11,9 @@
     overflow: hidden;
     align-self: stretch;
     margin-left: 15px;
-    border: 1px solid #000;
     padding: 20px 0;
+    border: 1px solid var(--textColor);
+    border-radius: var(--borderRadius);
   }
 }
 
@@ -37,7 +38,7 @@
   }
 
   & span {
-    color: var(--color);
+    color: var(--title);
     font-size: 16px;
     line-height: 18px;
     white-space: nowrap;

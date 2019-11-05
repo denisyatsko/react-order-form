@@ -5,6 +5,8 @@
  * code.
  */
 
+// import { NativeEventSource, EventSourcePolyfill } from 'event-source-polyfill';
+
 // Needed for redux-saga es6 generator support
 import '@babel/polyfill';
 

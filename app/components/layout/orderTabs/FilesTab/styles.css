@@ -1,0 +1,64 @@
+@import '../../../../theme/breakpoint.css';
+
+.filesContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  @media (--desktop) {
+    flex-direction: row;
+  }
+
+  & .col {
+    width: 100%;
+    @media (--desktop) {
+      width: 50%;
+
+      &:nth-child(1) {
+        padding-right: 15px;
+      }
+
+      &:nth-child(2) {
+        padding-left: 15px;
+      }
+    }
+  }
+
+  & .title {
+    font-size: 14px;
+    color: var(--lightBg);
+    font-weight: bold;
+  }
+}
+
+.fileItem {
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--inputBorderColor);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  padding: 0 10px;
+  color: var(--lightBg);
+
+  &.preloader {
+    justify-content: center;
+
+    & img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  & .text {
+    color: var(--textColor);
+    line-height: 14px;
+    font-size: 12px;
+    margin-left: 5px;
+  }
+}
+
+.reverseCol {
+  display: flex;
+  flex-direction: column-reverse;
+}

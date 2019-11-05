@@ -11,6 +11,7 @@
   --title: #616372;
   --headerBg: #fef3f5;
   --lightBg: #2099e7;
+  --buttonHeight: 40px;
   --borderRadius: 20px;
   --shadow: 0 5px 20px 1px rgba(0, 0, 0, 0.1);
   --cubic1: cubic-bezier(0.15, 0.045, .48, 0.38);

@@ -35,7 +35,7 @@ export class LogOutButton extends Component {
         title='logout'
         className={styles.logOut}
         onClick={handlerOnClick}>
-        <InlineSVG src={svgSource} className={styles.logOut} />
+        <InlineSVG src={svgSource}/>
       </button>
     );
   }

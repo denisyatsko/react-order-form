@@ -1,0 +1,53 @@
+.wrapper {
+  box-shadow: var(--shadow);
+  border-radius: var(--borderRadius);
+  padding: 20px;
+}
+
+.caption {
+  font-size: 30px;
+  color: var(--lightBg);
+  margin: 0 0 10px 0;
+  font-weight: bold;
+}
+
+.text {
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.codeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px dashed var(--textColor);
+  padding: 15px 0 0 0;
+}
+
+.code {
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: bold;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.copyCodeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--textColor);
+  font-size: 12px;
+  &:hover {
+    text-decoration: underline;
+  }
+  & svg {
+    margin-right: 3px;
+  }
+}
+
+.toolTipContent {
+  font-size: 12px;
+  text-align: center;
+}

@@ -1,0 +1,39 @@
+.wrapper {
+  box-shadow: var(--shadow);
+  border-radius: var(--borderRadius);
+  padding: 20px;
+}
+
+.caption {
+  font-size: 30px;
+  color: var(--lightBg);
+  margin: 0 0 10px 0;
+  font-weight: bold;
+}
+
+.text {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.discountContainer {
+  border-top: 1px dashed var(--textColor);
+  padding: 15px 0 0 0;
+}
+
+.discount {
+  color: var(--accent);
+  display: flex;
+  flex-wrap: nowrap;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 0 15px 0;
+}
+
+.discountText {
+  opacity: 0.6;
+  display: block;
+  margin-right: 10px;
+  font-size: 20px;
+  font-weight: bold;
+}

@@ -16,35 +16,28 @@ export class UserPhoneInput extends React.Component {
     // Important: Don't skip this step. This pattern is required
     // for Formsy to work.
     setValue(event);
-    _mergeState('order', { [name]: event });
+    _mergeState && _mergeState('order', { [name]: event });
   };
 
   render() {
-    const { name, labeltext, placeholder } = this.props;
-
-    // An error message is returned only if the component is invalid
-    const errorMessage = this.props.getErrorMessage();
-
-    const className = this.props.getErrorMessage() ? `${styles.error}` : '';
+    const { name, labeltext, getErrorMessage, getValue } = this.props;
 
     const excludeCountries = [];
 
     return (
       <div className={styles.item}>
-        <label
-          htmlFor={name}
-          className={styles.title}>
-          {labeltext}
-        </label>
+        { labeltext && <label className={styles.title} htmlFor={name}>{labeltext}</label> }
         <ReactPhoneInput
+          inputExtraProps={{
+            autoComplete: 'off',
+            placeholder: 'Enter phone number'
+          }}
           excludeCountries={excludeCountries}
-          inputClass={className}
-          id={name}
-          placeholder={placeholder}
+          value={getValue() || ''}
           onChange={this._changeValue}
-          value={this.props.getValue() || ''}
+          inputClass={getErrorMessage() ? `${styles.error}` : ''}
         />
-        <span className={styles.errorMessage}>{errorMessage}</span>
+        <span className={styles.errorMessage}>{getErrorMessage()}</span>
       </div>
     );
   }

@@ -5,7 +5,7 @@ import { Route, Redirect, withRouter } from 'react-router-dom';
 import { Transition, CSSTransition } from 'react-transition-group';
 
 // Components
-import { orderFormRoutes } from 'instruments';
+import { orderFormRoutes } from 'instruments/export';
 import { withProfile } from 'components/HOC/withProfile';
 import { LoggedUser, Step_1, Step_2, Step_3 } from 'components/pages/export';
 import { OrderFormNav, SidebarOrderInfo } from 'components/layout/export';

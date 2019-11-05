@@ -1,0 +1,9 @@
+{
+  "_time": 0.10777497291564941,
+  "version": null,
+  "_data": [],
+  "result_code": "ERROR",
+  "errors": "app\\libraries\\api\\OperationResultRequestValidation: The Email field is required.",
+  "message": "",
+  "user": null
+}

@@ -7,11 +7,11 @@ export default class AuthAPI extends BaseAPI {
   }
 
   login(data) {
-    return super.postRequest(config.apiURL.login, data, 'DUPLICATE');
+    return super.postRequest(config.apiURL.login, data);
   }
 
   register(data) {
-    return super.postRequest(config.apiURL.register, data, 'DUPLICATE');
+    return super.postRequest(config.apiURL.register, data, ['OK', 'DUPLICATE']);
   }
 
   retrieve(data) {

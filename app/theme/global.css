@@ -63,10 +63,10 @@
   background-color: transparent;
   transition: 0.15s ease-in-out;
   z-index: 1;
-  height: 40px;
-  line-height: 40px;
   min-width: 120px;
   width: auto;
+  height: var(--buttonHeight);
+  line-height: var(--buttonHeight);
   border-radius: var(--borderRadius);
 }
 
@@ -247,7 +247,10 @@ h3::selection,
 h4::selection,
 span::selection,
 label::selection,
-li::selection {
+li::selection,
+b::selection,
+i::selection,
+strong::selection {
   background: var(--accent);
 }
 

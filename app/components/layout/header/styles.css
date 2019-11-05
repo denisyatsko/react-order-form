@@ -3,34 +3,78 @@
 .header {
   background-color: var(--headerBg);
   padding: 5px 0;
+  border-bottom: 1px solid var(--accent);
+
+  @media (--desktop) {
+    border: none;
+  }
 
   & .logo {
     width: 88px;
     height: 34px;
     display: block;
+    margin-right: 5px;
+    flex-shrink: 0;
 
     @media (--phone) {
       width: 117px;
       height: 45px;
+    }
+
+    @media (--desktop) {
+      margin-right: 0;
     }
   }
 
   & .content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    @media (--desktop) {
+      justify-content: space-between;
+    }
   }
 
   & .btnWrapper {
+    width: 100%;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    @media (--desktop) {
+      width: auto;
+    }
   }
 
   & .userLink {
     color: var(--accent);
     font-weight: bold;
+    font-size: 16px;
+    line-height: 18px;
 
     &:matches(:hover, :focus) {
       text-decoration: underline;
+    }
+  }
+
+  & .logOutBtn {
+    display: none;
+    @media (--desktop) {
+      display: block;
+    }
+  }
+
+  & .mobMenu {
+    margin-left: auto;
+    order: 1;
+    @media (--desktop) {
+      display: none;
+    }
+  }
+
+  & .logInBtn {
+    margin-left: auto;
+    @media (--desktop) {
+      margin-left: 0;
     }
   }
 }

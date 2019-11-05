@@ -1,0 +1,573 @@
+{
+  "_time": 0.19838500022888184,
+  "version": null,
+  "_data": [],
+  "result_code": "OK",
+  "errors": "",
+  "errorsList": [],
+  "message": "",
+  "ui": {
+    "type_of_paper": [
+      {
+        "label": "Admission essay",
+        "value": "1"
+      },
+      {
+        "label": "Annotated bibliography",
+        "value": "2"
+      },
+      {
+        "label": "Argumentative essay",
+        "value": "3"
+      },
+      {
+        "label": "Article review",
+        "value": "4"
+      },
+      {
+        "label": "Biographies",
+        "value": "5"
+      },
+      {
+        "label": "Book\/movie review",
+        "value": "6"
+      },
+      {
+        "label": "Business plan",
+        "value": "7"
+      },
+      {
+        "label": "Capstone project",
+        "value": "8"
+      },
+      {
+        "label": "Case study",
+        "value": "9"
+      },
+      {
+        "label": "Coursework",
+        "value": "10"
+      },
+      {
+        "label": "Creative writing",
+        "value": "11"
+      },
+      {
+        "label": "Critical thinking",
+        "value": "12"
+      },
+      {
+        "label": "Dissertation",
+        "value": "13"
+      },
+      {
+        "label": "Dissertation chapter - Conclusion",
+        "value": "14"
+      },
+      {
+        "label": "Dissertation chapter - Discussion",
+        "value": "15"
+      },
+      {
+        "label": "Dissertation chapter - Introduction",
+        "value": "16"
+      },
+      {
+        "label": "Dissertation chapter - Literature review",
+        "value": "17"
+      },
+      {
+        "label": "Dissertation chapter - Methodology",
+        "value": "18"
+      },
+      {
+        "label": "Essay (any type)",
+        "value": "19"
+      },
+      {
+        "label": "Presentation or speech",
+        "value": "20"
+      },
+      {
+        "label": "Research paper",
+        "value": "21"
+      },
+      {
+        "label": "Research proposal",
+        "value": "22"
+      },
+      {
+        "label": "Term paper",
+        "value": "23"
+      },
+      {
+        "label": "Thesis",
+        "value": "24"
+      },
+      {
+        "label": "Thesis\/Dissertation abstract",
+        "value": "25"
+      },
+      {
+        "label": "Thesis\/Dissertation chapter",
+        "value": "26"
+      },
+      {
+        "label": "Thesis\/Dissertation proposal",
+        "value": "27"
+      },
+      {
+        "label": "Other (enter below)",
+        "value": "28"
+      },
+      {
+        "label": "Web-design",
+        "value": "29"
+      },
+      {
+        "label": "Java programming",
+        "value": "30"
+      },
+      {
+        "label": "Wedding\/Graduation Speech",
+        "value": "32"
+      },
+      {
+        "label": "Resume\/CV",
+        "value": "34"
+      },
+      {
+        "label": "Personal statement",
+        "value": "35"
+      },
+      {
+        "label": "Lab report",
+        "value": "36"
+      }
+    ],
+    "academic_level": [
+      {
+        "label": "High School",
+        "value": "1"
+      },
+      {
+        "label": "College",
+        "value": "2"
+      },
+      {
+        "label": "Undergraduate",
+        "value": "3"
+      },
+      {
+        "label": "Master's",
+        "value": "4"
+      },
+      {
+        "label": "PhD",
+        "value": "5"
+      }
+    ],
+    "subject_or_discipline": [
+      {
+        "label": "International relations",
+        "value": "1"
+      },
+      {
+        "label": "Accounting",
+        "value": "2"
+      },
+      {
+        "label": "Anthropology",
+        "value": "3"
+      },
+      {
+        "label": "Application Letters",
+        "value": "4"
+      },
+      {
+        "label": "Architecture, building and planing",
+        "value": "5"
+      },
+      {
+        "label": "Arts (Fine arts, Performing arts)",
+        "value": "6"
+      },
+      {
+        "label": "Astronomy (and other Space sciences)",
+        "value": "7"
+      },
+      {
+        "label": "Biology (and other Life sciences)",
+        "value": "8"
+      },
+      {
+        "label": "Business studies",
+        "value": "9"
+      },
+      {
+        "label": "Chemistry",
+        "value": "10"
+      },
+      {
+        "label": "Classic English literature",
+        "value": "11"
+      },
+      {
+        "label": "Communications",
+        "value": "12"
+      },
+      {
+        "label": "Composition",
+        "value": "13"
+      },
+      {
+        "label": "Computer science",
+        "value": "14"
+      },
+      {
+        "label": "Criminal Justice",
+        "value": "15"
+      },
+      {
+        "label": "Criminal Law",
+        "value": "16"
+      },
+      {
+        "label": "Cultural and Ethnic Studies",
+        "value": "17"
+      },
+      {
+        "label": "Ecology",
+        "value": "18"
+      },
+      {
+        "label": "Economics",
+        "value": "19"
+      },
+      {
+        "label": "Education",
+        "value": "20"
+      },
+      {
+        "label": "English 101",
+        "value": "21"
+      },
+      {
+        "label": "Environmental studies and forestry",
+        "value": "22"
+      },
+      {
+        "label": "Ethics",
+        "value": "23"
+      },
+      {
+        "label": "Family and consumer science",
+        "value": "24"
+      },
+      {
+        "label": "Film and Theater Studies",
+        "value": "25"
+      },
+      {
+        "label": "Finance",
+        "value": "26"
+      },
+      {
+        "label": "Geography",
+        "value": "27"
+      },
+      {
+        "label": "Geology (and other Earth sciences)",
+        "value": "28"
+      },
+      {
+        "label": "Health care",
+        "value": "29"
+      },
+      {
+        "label": "History",
+        "value": "30"
+      },
+      {
+        "label": "Human Resources Management(HRM)",
+        "value": "31"
+      },
+      {
+        "label": "IT, WEB",
+        "value": "32"
+      },
+      {
+        "label": "Agriculture",
+        "value": "33"
+      },
+      {
+        "label": "International Trade",
+        "value": "34"
+      },
+      {
+        "label": "Law",
+        "value": "35"
+      },
+      {
+        "label": "Leadership Studies",
+        "value": "36"
+      },
+      {
+        "label": "Linguistics",
+        "value": "37"
+      },
+      {
+        "label": "Literature",
+        "value": "38"
+      },
+      {
+        "label": "Logistics",
+        "value": "39"
+      },
+      {
+        "label": "Management",
+        "value": "40"
+      },
+      {
+        "label": "Marketing",
+        "value": "41"
+      },
+      {
+        "label": "Mathematics",
+        "value": "42"
+      },
+      {
+        "label": "Medical science(Anatomy, Physiology, Pharmacology etc.)",
+        "value": "43"
+      },
+      {
+        "label": "Medicine",
+        "value": "44"
+      },
+      {
+        "label": "Music",
+        "value": "45"
+      },
+      {
+        "label": "Nursing",
+        "value": "46"
+      },
+      {
+        "label": "Nutrition\/Dietary",
+        "value": "47"
+      },
+      {
+        "label": "Women's and gender studies",
+        "value": "48"
+      },
+      {
+        "label": "Philosophy",
+        "value": "49"
+      },
+      {
+        "label": "Physics",
+        "value": "50"
+      },
+      {
+        "label": "Poetry",
+        "value": "51"
+      },
+      {
+        "label": "Political science",
+        "value": "52"
+      },
+      {
+        "label": "Psychology",
+        "value": "53"
+      },
+      {
+        "label": "Public administration",
+        "value": "54"
+      },
+      {
+        "label": "Public Relations (PR)",
+        "value": "55"
+      },
+      {
+        "label": "Religious studies",
+        "value": "56"
+      },
+      {
+        "label": "Shakespeare",
+        "value": "57"
+      },
+      {
+        "label": "Social work and human services",
+        "value": "58"
+      },
+      {
+        "label": "Sociology",
+        "value": "59"
+      },
+      {
+        "label": "Sports",
+        "value": "60"
+      },
+      {
+        "label": "Statistics",
+        "value": "61"
+      },
+      {
+        "label": "Technology",
+        "value": "62"
+      },
+      {
+        "label": "Tourism",
+        "value": "63"
+      },
+      {
+        "label": "Urban studies",
+        "value": "64"
+      },
+      {
+        "label": "Zoology",
+        "value": "65"
+      },
+      {
+        "label": "Other (enter below)",
+        "value": "66"
+      }
+    ],
+    "paper_format": [
+      {
+        "label": "APA",
+        "value": "1"
+      },
+      {
+        "label": "MLA",
+        "value": "2"
+      },
+      {
+        "label": "Chicago\/Turabian",
+        "value": "3"
+      },
+      {
+        "label": "Harvard",
+        "value": "4"
+      },
+      {
+        "label": "Not applicable",
+        "value": "5"
+      },
+      {
+        "label": "Other",
+        "value": "6"
+      }
+    ],
+    "deadline": [
+      {
+        "label": "0 days",
+        "value": 18000
+      },
+      {
+        "label": "1 day",
+        "value": 86400
+      },
+      {
+        "label": "2 day",
+        "value": 172800
+      },
+      {
+        "label": "3 day",
+        "value": 259200
+      },
+      {
+        "label": "5 day",
+        "value": 432000
+      },
+      {
+        "label": "7 day",
+        "value": 604800
+      },
+      {
+        "label": "10 day",
+        "value": 864000
+      }
+    ]
+  },
+  "pricing": {
+    "deadline_based_page_prices": {
+      "10800": {
+        "1": 38,
+        "2": 43,
+        "3": 46,
+        "4": 57,
+        "5": 68
+      },
+      "28800": {
+        "1": 29,
+        "2": 34,
+        "3": 37,
+        "4": 48,
+        "5": 61
+      },
+      "86400": {
+        "1": 22,
+        "2": 25,
+        "3": 28,
+        "4": 37,
+        "5": 48
+      },
+      "172800": {
+        "1": 19,
+        "2": 22,
+        "3": 25,
+        "4": 32,
+        "5": 42
+      },
+      "259200": {
+        "1": 16,
+        "2": 18,
+        "3": 21,
+        "4": 30,
+        "5": 35
+      },
+      "432000": {
+        "1": 15,
+        "2": 17,
+        "3": 19,
+        "4": 26,
+        "5": 32
+      },
+      "604800": {
+        "1": 12,
+        "2": 15,
+        "3": 18,
+        "4": 23,
+        "5": 28
+      },
+      "864000": {
+        "1": 11,
+        "2": 14,
+        "3": 17,
+        "4": 20,
+        "5": 26
+      },
+      "1209600": {
+        "1": 10,
+        "2": 13,
+        "3": 16,
+        "4": 19,
+        "5": 25
+      }
+    },
+    "urgent_page_price_multipliers": {
+      "1": 0.65,
+      "2": 0.7,
+      "3": 0.75,
+      "4": 0.8,
+      "5": 0.85
+    },
+    "options": {
+      "editing_price": 1.15,
+      "source_copy_price": 9.99,
+      "advanced_writer_price": 1.25,
+      "plagiarism_report_price": 7.99
+    }
+  }
+}

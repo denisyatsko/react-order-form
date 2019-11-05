@@ -12,39 +12,85 @@
 .filterWrapper {
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid var(--blue);
 
   & .item {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    background-color: var(--blue);
-    color: #fff;
-    font-size: 16px;
-    line-height: 18px;
-    padding: 10px 10px 10px 15px;
-    width: 22%;
+    background-color: transparent;
+    font-size: 14px;
+    line-height: 14px;
+    padding: 10px 7px 10px 7px;
+    width: auto;
     border-top-left-radius: var(--borderRadius);
     border-top-right-radius: var(--borderRadius);
     cursor: pointer;
-    box-shadow: var(--shadow);
+    color: var(--blue);
+    letter-spacing: -0.8px;
+    border: 1px solid transparent;
+    border-bottom: none;
+    transition: all ease-in-out 0.15s;
+
+    &:hover {
+      border-color: var(--blue);
+    }
+
+    &.on {
+      background-color: var(--blue);
+      color: #fff;
+    }
+
+    @media (--phone) {
+      padding: 10px 25px;
+    }
+
+    @media (--desktop) {
+      width: 22%;
+      font-size: 16px;
+      line-height: 18px;
+      padding: 10px 10px 10px 15px;
+      box-shadow: var(--shadow);
+      letter-spacing: 1px;
+    }
 
     & .small {
       opacity: 0.5;
-      font-size: 14px;
+      font-size: 10px;
+
+      @media (--desktop) {
+        font-size: 14px;
+      }
     }
   }
 }
 
+.topContainer {
+  padding: 20px;
+  align-self: center;
+}
+
 .ordersList {
-  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   padding: 30px 0;
   border-bottom-left-radius: var(--borderRadius);
   border-bottom-right-radius: var(--borderRadius);
+  min-height: 250px;
+  @media (--desktop) {
+    box-shadow: var(--shadow);
+  }
+
+  & .showMoreBtn {
+    margin: auto auto 0;
+  }
 }
 
 .order {
   display: flex;
   flex-direction: column;
+  align-items: center;
   border-radius: var(--borderRadius);
   border: 1px solid var(--inputBorderColor);
   margin: 0 auto 20px auto;
@@ -62,7 +108,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px;
+    padding: 5px 10px;
     width: 100%;
     border-top: 1px dashed var(--inputBorderColor);
     border-bottom: 1px dashed var(--inputBorderColor);
@@ -76,6 +122,10 @@
       color: #fff;
       background-color: var(--lightBg);
       border-color: transparent;
+    }
+
+    @media (--desktop) {
+      padding: 10px;
     }
 
     & i {

@@ -1,0 +1,121 @@
+.messagesNav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & > * {
+    font-size: 12px;
+    line-height: 14px;
+    text-align: center;
+    padding: 5px 20px;
+    cursor: pointer;
+    margin: 0;
+    color: var(--lightBg);
+    opacity: 0.5;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border: 1px solid transparent;
+    border-bottom: none;
+
+    @media (--desktop) {
+      padding: 0 20px;
+      line-height: 30px;
+    }
+
+    &.active {
+      opacity: 1;
+      background-color: var(--grey);
+      border-color: transparent !important;
+    }
+
+    &:hover {
+      opacity: 1;
+      border-color: var(--grey);
+      color: var(--lightBg);
+    }
+  }
+}
+
+.messagesContainer {
+  background-color: var(--grey);
+  border-radius: 4px 4px var(--borderRadius) var(--borderRadius);
+  overflow: hidden;
+  border: 2px solid var(--grey);
+
+  & .messagesViewContainer {
+    width: 100%;
+    height: 300px;
+    padding: 15px 5px;
+
+    @media (--desktop) {
+      padding: 15px 10px;
+    }
+
+    & .noMessageText {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 16px;
+      color: var(--textColor);
+      white-space: nowrap;
+    }
+
+    & .scrollZone {
+      overflow-y: auto;
+      overflow-x: hidden;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column-reverse;
+      padding: 0 5px;
+      position: relative;
+      @media (--desktop) {
+        padding: 0 10px;
+      }
+    }
+  }
+
+  & .footer {
+    background-color: #fff;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 5px 5px 10px;
+    @media (--desktop) {
+      padding: 10px 20px;
+    }
+
+    & .sendMessagesBtn {
+      line-height: 30px;
+      width: 50px;
+      min-width: 0;
+      font-size: 12px;
+      flex-shrink: 0;
+      margin-left: 5px;
+      align-self: flex-end;
+
+      @media (--desktop) {
+        width: 100px;
+        font-size: 16px;
+        margin-left: 10px;
+      }
+    }
+
+    & .typeMessageArea {
+      width: 100%;
+      flex: 1 1 auto;
+      border: none;
+      padding-right: 10px;
+      min-height: 20px;
+      max-height: 150px;
+      overflow: auto;
+    }
+  }
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+}

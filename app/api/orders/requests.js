@@ -1,7 +1,7 @@
 class UploadFilesRequest {
   constructor(data) {
-    this.document = data.order.document;
-    this.order_id = data.order.id;
+    this.document = data.document;
+    this.order_id = data.id;
     //this.sub_order_id = data.sub_order_id; // option
   }
 }

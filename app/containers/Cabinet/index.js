@@ -9,25 +9,14 @@ import { withProfile } from 'components/HOC/withProfile';
 import { Discounts, EarnCash, Profile, OrdersList, Order } from 'components/pages/export';
 
 // Instruments
+import { cabinetRoutes } from 'instruments/export';
+
+// Styles
 import styles from './styles.css';
-import OrderAPI from 'api/orders/OrderAPI';
-import { cabinetRoutes, cookies } from 'instruments';
-import { GetOrdersRequest } from 'api/orders/requests';
 
 @withRouter
 @withProfile
 class Cabinet extends Component {
-  // componentDidMount() {
-  //   const TOKEN = cookies.get('TOKEN');
-  //
-  //   new OrderAPI().getOrders(new GetOrdersRequest(TOKEN)).then(data => {
-  //     const { results } = data;
-  //     const { _setState } = this.props;
-  //
-  //     _setState('userOrders', results);
-  //   });
-  // }
-
   render() {
     const { ORDERS, ORDER, DISCOUNTS, PROFILE, EARN_CASH } = cabinetRoutes;
     const routes = [

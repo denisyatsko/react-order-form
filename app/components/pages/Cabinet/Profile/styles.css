@@ -1,0 +1,56 @@
+@import '../../../../theme/breakpoint.css';
+
+.twoColContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @media (--desktop) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: normal;
+  }
+
+  &.border {
+    @media (--desktop) {
+      border-top: 1px dashed var(--inputBorderColor);
+      padding: 35px 0 0 0;
+      margin: 15px 0 0 0;
+    }
+  }
+  & > div {
+    width: 100%;
+    @media (--desktop) {
+      width: 45%;
+    }
+  }
+
+  & input[type='email'],
+  & label[for='email'] {
+    opacity: 0.4;
+    cursor: default;
+    &:hover {
+      border-color: var(--inputBorderColor);
+    }
+  }
+}
+
+.itemTitle {
+  composes: title from '../../../common/Dropdown/styles.css';
+}
+
+.pseudoInput {
+  border: 2px solid var(--grey);
+  border-radius: var(--borderRadius);
+  height: 40px;
+  font-size: 14px;
+  line-height: 40px;
+  color: var(--textColor);
+  padding: 0 20px;
+  margin: 0;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}

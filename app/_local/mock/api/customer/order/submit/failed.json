@@ -1,0 +1,11 @@
+{
+  "_time": 0.0741119384765625,
+  "version": null,
+  "_data": [],
+  "result_code": "ERROR",
+  "errors": "app\\libraries\\api\\OperationResultRequestValidation: The Name field is required.\napp\\libraries\\api\\OperationResultRequestValidation: The Phone field is required.\napp\\libraries\\api\\OperationResultRequestValidation: The Type of Paper field is required.",
+  "message": "",
+  "order": null,
+  "user": null,
+  "isFirstOrder": null
+}

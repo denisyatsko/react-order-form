@@ -1,10 +1,10 @@
-import { cookies } from 'instruments';
+import { AuthController } from 'instruments/export';
 
 class BaseAPI {
-  async postRequest(URL, data) {
+  async postRequest(URL, data, acceptableResultCodes = ['OK']) {
     try {
       const formData = new FormData();
-      const TOKEN = cookies.get('TOKEN');
+      const TOKEN = new AuthController().getToken();
 
       Object.entries(data).forEach(([key, value]) =>
         formData.append(key, value),
@@ -20,14 +20,11 @@ class BaseAPI {
 
       const result = await response.json();
 
-      switch (result.result_code) {
-        case 'OK':
-          return result;
-          break;
-
-        default:
-          console.log(`result_code: ${result.result_code}`);
-          throw result.errors;
+      if (acceptableResultCodes.indexOf(result.result_code) !== -1) {
+        return result;
+      } else {
+        console.log(`result_code: ${result.result_code}`);
+        throw result.errors;
       }
 
     } catch (e) {

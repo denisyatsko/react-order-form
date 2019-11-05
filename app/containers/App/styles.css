@@ -1,3 +1,5 @@
+@import '../../theme/breakpoint.css';
+
 .mainContent {
   min-width: 320px;
   flex: 1 0 auto;
@@ -12,9 +14,12 @@
 
 .pageWrapper {
   position: absolute;
-  top: 50px;
+  top: 20px;
   left: 0;
   width: 100%;
+  @media (--desktop) {
+    top: 50px;
+  }
 }
 
 .pageAnimateInStart {

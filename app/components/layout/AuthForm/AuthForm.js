@@ -1,18 +1,25 @@
 // Core
 import React, { Component } from 'react';
 import Formsy from 'formsy-react';
-import Popup from 'reactjs-popup';
 import { withRouter } from 'react-router-dom';
 
 // Components
-import { Checkbox, FormsyInput } from 'components/common/export';
 import { FaGoogle, FaFacebookF } from 'react-icons/fa';
+import { ForgotPassword } from 'components/ui/export';
 import { withProfile } from 'components/HOC/withProfile';
+import { Checkbox, FormsyInput, Preloader } from 'components/common/export';
 
 // Instruments
 import AuthAPI from 'api/auth/AuthAPI';
-import { cookies, routes, LoginState, AuthState, orderFormRoutes } from 'instruments';
-import { RegisterRequest, ForgotPasswordRequest } from 'api/auth/requests';
+import { RegisterRequest } from 'api/auth/requests';
+import {
+  routes,
+  AuthState,
+  LoginState,
+  AuthController,
+  orderFormRoutes,
+  formsyInputsRules,
+} from 'instruments/export';
 
 // Styles
 import styles from './styles.css';
@@ -23,6 +30,7 @@ import grid from 'theme/grid.css';
 export class AuthForm extends Component {
   state = {
     serverError: '',
+    isLoading: false,
   };
 
   _showErrorMessage = data => {
@@ -31,31 +39,44 @@ export class AuthForm extends Component {
     });
   };
 
-  _authSwitch = promise => {
+  _submit = model => {
+    const { authState } = this.props;
+
+    this.setState({ isLoading: true });
+
+    const promise = authState === AuthState
+      ? new AuthAPI().register(new RegisterRequest(model))
+      : authState === LoginState && new AuthAPI().login(new RegisterRequest(model));
+
     promise.then(data => {
       const { result_code } = data;
-      const { CABINET, LOGIN } = routes;
-      const { STEP_2 } = orderFormRoutes;
-      const { history, _mergeState, _setAuth, state, _setTypeAuth } = this.props;
+      const { history, _mergeState, _setState, state, _setTypeAuth } = this.props;
 
       switch (result_code) {
         case 'OK':
-          const { auth_token, customer_name, phone, email } = data.user;
+          const { auth_token, customer_name, phone } = data.user;
 
-          _setAuth(true);
+          _setState('auth', true);
           _mergeState('user', data.user);
           _mergeState('order', {
             customer_name: customer_name,
             customer_phone: phone,
           });
 
-          if (state.rememberMe === true)
-            cookies.set('email', email, { path: '/' });
+          // _mergeState({
+          //   auth: true,
+          //   user: data.user,
+          //   order: {
+          //     customer_name: customer_name,
+          //     customer_phone: phone,
+          //   }
+          // });
 
-          cookies.set('TOKEN', auth_token, { path: '/' });
+          new AuthController().setToken(auth_token, state.rememberMe);
 
-          history.location.pathname === LOGIN
-            ? history.push(CABINET) : history.push(STEP_2);
+          history.location.pathname === routes.LOGIN
+            ? history.push(routes.CABINET)
+            : history.push(orderFormRoutes.STEP_2);
 
           break;
 
@@ -66,56 +87,27 @@ export class AuthForm extends Component {
           break;
 
         default:
-          console.log(`result_code: ${result_code}`);
-
-          this._showErrorMessage(data.errors);
+          throw data.errors;
       }
-    }).catch(error => this._showErrorMessage(error));
+    }).catch(error => this._showErrorMessage(error))
+      .then(() => this.setState({ isLoading: false }));
   };
 
-  _logInHandler = data => {
-    const promise = new AuthAPI().login(new RegisterRequest(data));
+  _onInvalidSubmit = (model) => {
+    const { form } = this.refs;
 
-    this._authSwitch(promise);
-  };
-
-  _signUpHandler = data => {
-    const promise = new AuthAPI().register(new RegisterRequest(data));
-
-    this._authSwitch(promise);
-  };
-
-  _submit = model => {
-    const { authState } = this.props;
-
-    authState === AuthState
-      ? this._signUpHandler(model)
-      : this._logInHandler(model);
-  };
-
-  _onInvalidSubmit = () => {
-    this.refs.form.updateInputsWithError(
+    form.updateInputsWithError(
       {
-        password:
-          (!this.refs.passwordInput.getValue() && 'This field is required') ||
-          null,
-        email:
-          (!this.refs.emailInput.getValue() && 'This field is required') ||
-          null,
+        email: (!model.email && formsyInputsRules.defaultError) || null,
+        password: (!model.password && formsyInputsRules.defaultError) || null,
       },
       true,
     );
   };
 
-  _resetPassword = () => {
-    const value = this.refs.resetPasswordInput.getValue();
-
-    if (this.refs.resetPasswordInput.isValid())
-      new AuthAPI().forgot(new ForgotPasswordRequest(value));
-  };
-
   render() {
-    const { _setState, state, authState, _setTypeAuth } = this.props;
+    const { isLoading, serverError } = this.state;
+    const { _setState, state, _setTypeAuth, authState = AuthState } = this.props;
 
     const handlerOnChangeCheckbox = () => _setState('rememberMe', !state.rememberMe);
     const setLoginState = event => _setTypeAuth(LoginState, event);
@@ -126,9 +118,9 @@ export class AuthForm extends Component {
         onValidSubmit={this._submit}
         onInvalidSubmit={this._onInvalidSubmit}
         noValidate
-        className={styles.firstStepForm}>
+      >
         <div className={styles.content}>
-          <div className={`${grid.centerCol}`}>
+          <div className={grid.centerCol}>
             <h1 className={styles.title}>{authState.title}</h1>
             <div className={grid.justifyContentCenter}>
               <button className={`${styles.socialBtn} ${styles.facebook}`}>
@@ -139,56 +131,11 @@ export class AuthForm extends Component {
               </button>
             </div>
           </div>
-          <FormsyInput
-            ref='emailInput'
-            name='email'
-            type='email'
-            placeholder='E-mail'
-            validations='isEmail'
-            labeltext='Your e-mail'
-            validationError='This is not a valid email'
-            onFocus={this._onFocus}
-            value={state.user.email}
-            required/>
-          <FormsyInput
-            ref='passwordInput'
-            name='password'
-            type='password'
-            placeholder='Password'
-            labeltext='Password'
-            validations={{ minLength: 5 }}
-            validationError='This is not a valid password'
-            onFocus={this._onFocus}
-            required/>
+          <FormsyInput {...formsyInputsRules.email} value={state.user.email}/>
+          <FormsyInput {...formsyInputsRules.password}/>
           <div className={grid.flexBetween}>
             {authState === LoginState ? (
-              <Popup
-                trigger={
-                  <button type='button' className={styles.loginLink}>
-                    Forgot Password?
-                  </button>
-                }
-                modal
-                className='resetPassword'
-                closeOnDocumentClick>
-                <div className={styles.popupContent}>
-                  <p>Request reset password</p>
-                  <FormsyInput
-                    ref='resetPasswordInput'
-                    name='email'
-                    type='email'
-                    placeholder='E-mail'
-                    validations='isEmail'
-                    validationError='This is not a valid email'
-                    required/>
-                  <button
-                    type='button'
-                    onClick={this._resetPassword}
-                    className='btn btn--primary'>
-                    Submit
-                  </button>
-                </div>
-              </Popup>
+              <ForgotPassword/>
             ) : (
               <button
                 type='button'
@@ -202,13 +149,21 @@ export class AuthForm extends Component {
               text='Remember me'
               onChange={handlerOnChangeCheckbox}/>
           </div>
-          <p className={styles.serverError}>{this.state.serverError}</p>
-          <button
-            className={`btn btn--primary ${styles.signUpBtn} ${grid.mAuto}`}
-            type='submit'
-            formNoValidate>
-            {authState.btnText}
-          </button>
+          <div className={styles.serverErrorContainer}>
+            <p className={styles.serverError}>{serverError}</p>
+          </div>
+          <div className={styles.loginBtnContainer}>
+            {!isLoading ? (
+              <button
+                className={`btn btn--primary ${grid.mAuto}`}
+                type='submit'
+                formNoValidate>
+                {authState.btnText}
+              </button>
+            ) : (
+              <Preloader/>
+            )}
+          </div>
         </div>
       </Formsy>
     );

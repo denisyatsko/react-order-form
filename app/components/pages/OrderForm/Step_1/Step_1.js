@@ -7,7 +7,7 @@ import { AuthForm } from 'components/layout/export';
 import { withProfile } from 'components/HOC/withProfile';
 
 // Instruments
-import { cookies, LoginState, AuthState } from 'instruments';
+import { LoginState, AuthState } from 'instruments/export';
 
 // Styles
 import styles from '../styles.css';
@@ -17,7 +17,7 @@ export class Step_1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      authState: {},
+      authState: AuthState,
     };
     this.formWrapper = null;
     this.infoColumn = null;
@@ -33,14 +33,6 @@ export class Step_1 extends Component {
   };
 
   componentDidMount() {
-    this.setState({
-      authState: !(
-        cookies.get('email') === null || cookies.get('email') === undefined
-      )
-        ? LoginState
-        : AuthState,
-    });
-
     this.infoColumnAnimateToLogin = new TimelineLite({ paused: true })
       .to(this.infoColumn, 0.3, { right: 0, left: 'auto', width: '100%' })
       .to(this.infoColumn, 0.75, { width: '300px' })
@@ -96,7 +88,8 @@ export class Step_1 extends Component {
               className={styles.authFormWrapper}>
               <AuthForm
                 _setTypeAuth={this._setTypeAuth}
-                authState={authState}/>
+                authState={authState}
+              />
             </div>
           </div>
         </div>

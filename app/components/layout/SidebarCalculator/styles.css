@@ -1,0 +1,36 @@
+.wrapper {
+  box-shadow: var(--shadow);
+  border-radius: var(--borderRadius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.caption {
+  text-align: center;
+  font-size: 18px;
+  text-transform: uppercase;
+  color: var(--lightBg);
+  font-weight: bold;
+}
+
+.totalBg {
+  background-color: var(--grey);
+  border-radius: var(--borderRadius);
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.totalValue {
+  font-weight: bold;
+  font-size: 24px;
+}
+
+.totalText {
+  font-size: 14px;
+}

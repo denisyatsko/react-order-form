@@ -7,16 +7,28 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import Cabinet from 'containers/Cabinet';
 import Catcher from 'components/Catcher';
 import OrderForm from 'containers/OrderForm';
-import { Header } from 'components/layout/export';
-import { Preloader, CustomPopup } from 'components/ui/export';
-import { Provider } from 'components/HOC/withProfile';
 import { Login } from 'components/pages/export';
+import { Header } from 'components/layout/export';
+import { Preloader } from 'components/common/export';
+import { Provider } from 'components/HOC/withProfile';
+import { CustomPopup, PayCardPopup } from 'components/ui/export';
 
 // Instruments
 import MainAPI from 'api/main/MainAPI';
 import AuthAPI from 'api/auth/AuthAPI';
+import PaymentAPI from 'api/payment/PaymentAPI';
+import { cabinetRoutes } from 'instruments/export';
 import { RetrieveRequest } from 'api/auth/requests';
-import { calculatePrice, cookies, orderFormRoutes, routes, DefaultOrderValues } from 'instruments';
+import { PaySolidGateRequest } from 'api/payment/requests';
+import {
+  routes,
+  calculatePrice,
+  AuthController,
+  orderFormRoutes,
+  redirectPayError,
+  DefaultOrderValues,
+  isAvailablePayButton,
+} from 'instruments/export';
 
 // Styles
 import styles from './styles.css';
@@ -25,20 +37,21 @@ import grid from 'theme/grid.css';
 @withRouter
 export default class App extends Component {
   state = {
-    user: {
-      email: '',
-    },
+    user: {},
     formValues: {},
     pricingValues: {},
     order: {},
-    auth: !sessionStorage.auth ? false : JSON.parse(sessionStorage.auth),
+    uploadRequirements: {},
+    auth: false,
     rememberMe: true,
     isLoading: true,
     userOrders: null,
+    visibleMobileMenu: false,
     customPopup: {
       isVisible: false,
       message: null,
     },
+    payCardPopup: false,
   };
 
   componentDidMount() {
@@ -47,8 +60,9 @@ export default class App extends Component {
           formValues: data.ui,
           pricingValues: data.pricing,
           order: new DefaultOrderValues(data.ui),
+          uploadRequirements: data.order.uploadRequirements,
           isLoading: false,
-        },() => {
+        }, () => {
           this._setPrice();
           this._setCustomerData();
         },
@@ -57,34 +71,42 @@ export default class App extends Component {
   }
 
   _setCustomerData = () => {
-    if (!!sessionStorage.auth && JSON.parse(sessionStorage.auth) === true) {
-      const TOKEN = cookies.get('TOKEN');
+    const { history } = this.props;
+    const TOKEN = new AuthController().getToken();
 
-      new AuthAPI().retrieve(new RetrieveRequest(TOKEN)).then(data => {
-        const { user } = data;
+    if (TOKEN) {
+      new AuthAPI().retrieve(new RetrieveRequest(TOKEN))
+        .then(data => {
+          const { user } = data;
 
-        this.setState(prevState => ({
-          user,
-          order: {
-            ...prevState.order,
-            ...{ customer_name: user.customer_name },
-            ...{ customer_phone: user.phone },
-          },
-        }));
-      });
-    } else if (cookies.get('email')) {
-      this.setState({ user: { email: cookies.get('email') } });
+          this.setState(prevState => ({
+            user,
+            auth: true,
+            order: {
+              ...prevState.order,
+              ...{
+                customer_name: user.customer_name,
+                customer_phone: user.phone,
+              },
+            },
+          }));
+        });
+    } else {
+      history.push(routes.LOGIN);
     }
   };
 
   _setDefaultOrderValues = () => {
-    const { formValues } = this.state;
+    const { formValues, user } = this.state;
 
     this.setState({
-      order: new DefaultOrderValues(formValues),
+      order: {
+        ...new DefaultOrderValues(formValues),
+        customer_name: user.customer_name || null,
+        customer_phone: user.phone || null,
+      },
     }, () => {
       this._setPrice();
-      this._setCustomerData();
     });
   };
 
@@ -94,8 +116,7 @@ export default class App extends Component {
           ...prevState[name],
           ...selectValues,
         },
-      }),
-      () => this._setPrice(),
+      }), () => this._setPrice(),
     );
   };
 
@@ -112,7 +133,10 @@ export default class App extends Component {
   };
 
   _setPrice = () => {
+    const { subject_or_discipline, deadline, number_of_pages, spacing } = this.state.order;
+
     this.setState(prevState => ({
+      isVisiblePayButton: isAvailablePayButton(+subject_or_discipline.value, deadline.value, number_of_pages * spacing),
       order: {
         ...prevState.order,
         ...{
@@ -125,7 +149,7 @@ export default class App extends Component {
     }));
   };
 
-  _setStep = value => {
+  _setOrderFormStep = value => {
     const { STEP_1, STEP_2, STEP_3 } = orderFormRoutes;
     const { history } = this.props;
 
@@ -142,11 +166,6 @@ export default class App extends Component {
     }
   };
 
-  _setAuth = value => {
-    sessionStorage.setItem('auth', value);
-    this.setState({ auth: value });
-  };
-
   _setState = (name, value) => {
     this.setState({ [name]: value });
   };
@@ -156,8 +175,74 @@ export default class App extends Component {
       customPopup: {
         isVisible: true,
         message: content,
+      },
+    });
+  };
+
+  _message = (msg) => {
+    let order = this.state.payCardPopup.id;
+
+    if (order) {
+      if (order.indexOf('/') !== -1) {
+        let arr_order = order.split('/');
+        order = arr_order[0];
       }
-    })
+
+      if (msg.data.type === 'orderStatus') {
+        switch (msg.data.response.order.status) {
+          case 'declined':
+            this.setState(prevState => ({
+              payCardPopup: {
+                ...prevState.payCardPopup,
+                ...{
+                  declinedButton: true,
+                  approvedButton: false,
+                  redirect: redirectPayError.declined,
+                },
+              },
+            }));
+            break;
+
+          case 'approved':
+            this.setState(prevState => ({
+              payCardPopup: {
+                ...prevState.payCardPopup,
+                ...{
+                  declinedButton: false,
+                  approvedButton: true,
+                  redirect: redirectPayError.approved,
+                },
+              },
+            }));
+            break;
+        }
+      }
+    }
+  };
+
+  _payHandler = (data = null, isFreeInquiry = false) => {
+    const { history } = this.props;
+
+    if (isFreeInquiry) {
+      return history.push(cabinetRoutes.ORDERS);
+    } else {
+      this.setState({
+        payCardPopup: {
+          price: data.price,
+          id: data.id,
+          isVisible: true,
+        },
+      });
+
+      return (new PaymentAPI).solidGate(new PaySolidGateRequest(data)).then(data => {
+        this.setState(prevState => ({
+          payCardPopup: {
+            ...prevState.payCardPopup,
+            ...{ iframeURL: data.paymentResult.pay_form.form_url },
+          },
+        }));
+      });
+    }
   };
 
   _logOut = () => {
@@ -165,15 +250,14 @@ export default class App extends Component {
 
     history.push('/');
 
-    sessionStorage.clear();
+    new AuthController().removeToken();
+
+    this._setDefaultOrderValues();
 
     this.setState({
-      step: 1,
       auth: false,
-      rememberMe: false,
-      user: {
-        email: cookies.get('email') ? cookies.get('email') : '',
-      },
+      visibleMobileMenu: false,
+      user: {},
     });
   };
 
@@ -189,9 +273,10 @@ export default class App extends Component {
           value={{
             state: this.state,
             _logOut: () => this._logOut(),
-            _setStep: value => this._setStep(value),
-            _setAuth: value => this._setAuth(value),
+            _message: (value) => this._message(value),
+            _payHandler: (data, isFreeInquiry) => this._payHandler(data, isFreeInquiry),
             _setState: (name, value) => this._setState(name, value),
+            _setOrderFormStep: value => this._setOrderFormStep(value),
             _setDefaultOrderValues: () => this._setDefaultOrderValues(),
             _showCustomPopup: content => this._showCustomPopup(content),
             _mergeState: (name, value) => this._mergeState(name, value),
@@ -219,6 +304,7 @@ export default class App extends Component {
                 </TransitionGroup>
               </div>
               <CustomPopup/>
+              <PayCardPopup/>
             </div>
           )}
         </Provider>

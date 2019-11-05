@@ -16,7 +16,7 @@ export const Tabs = forwardRef((props, ref) => {
     <div>
       <div className={classNames}>
         {children.map(child => {
-          const { label } = child.props;
+          const { label, jsx } = child.props;
 
           return (
             <div
@@ -24,7 +24,8 @@ export const Tabs = forwardRef((props, ref) => {
               active={activeTab === label ? 'active' : null}
               onClick={() => setActiveTab(label)}
             >
-              {label}
+              <span>{label}</span>
+              {jsx}
             </div>
           );
         })}

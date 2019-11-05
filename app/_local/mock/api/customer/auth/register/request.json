@@ -1,0 +1,74 @@
+{
+  "customer_name": [
+    "trim",
+    "First Name"
+  ],
+  "email": [
+    "trim|required",
+    "Email"
+  ],
+  "phone": [
+    "trim|required",
+    "Phone"
+  ],
+  "password": [
+    "trim|required",
+    "Password"
+  ],
+  "reg_social": [
+    "trim|boolean",
+    ""
+  ],
+  "id_social": [
+    "trim",
+    "Social Id"
+  ],
+  "gender_social": [
+    "trim",
+    "Social Gender"
+  ],
+  "name_social": [
+    "trim",
+    "Social Name"
+  ],
+  "birthday_social": [
+    "trim",
+    "Birthday Social"
+  ],
+  "picture_social": [
+    "trim",
+    "Picture Social"
+  ],
+  "page_social": [
+    "trim",
+    "Page Social"
+  ],
+  "key_wpg": [
+    "trim",
+    "Key WPG"
+  ],
+  "sub_id": [
+    "trim",
+    "Sub Id"
+  ],
+  "key_cpl": [
+    "trim",
+    "Key CPL"
+  ],
+  "partner_code": [
+    "trim",
+    "Partner Code"
+  ],
+  "new_user_only": [
+    "trim",
+    "New User Only"
+  ],
+  "country": [
+    "trim",
+    "Country"
+  ],
+  "time_zone": [
+    "trim",
+    "Time Zone"
+  ]
+}

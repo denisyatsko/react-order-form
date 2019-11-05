@@ -1,47 +1,84 @@
 // Core
-import React from 'react';
+import React, { Component } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+
+// Components
+import { withProfile } from 'components/HOC/withProfile';
+import { LogOutIcon } from 'components/icons/export';
 
 // Instruments
 import styles from './styles.css';
-import { cabinetRoutes, routes } from 'instruments';
+import { cabinetRoutes, routes } from 'instruments/export';
 
-export const CabinetNav = () => {
-  const { ORDERS, DISCOUNTS, PROFILE, EARN_CASH } = cabinetRoutes;
-  const { ORDER_FORM } = routes;
+@withProfile
+export class CabinetNav extends Component {
+  _orderNowHandler = () => {
+    const { _setDefaultOrderValues } = this.props;
 
-  const NavLinks = [
-    {
-      to: ORDERS,
-      name: 'My orders',
-    },
-    {
-      to: PROFILE,
-      name: 'Profile',
-    },
-    {
-      to: DISCOUNTS,
-      name: 'Discount',
-    },
-    {
-      to: EARN_CASH,
-      name: 'Earn Cash',
-    },
-  ];
+    _setDefaultOrderValues();
+    this._toggleMenu();
+  };
 
-  return (
-    <div className={`${styles.menu}`}>
-      {NavLinks.map(({ to, name }, index) =>
-        <NavLink
-          activeClassName={styles.active}
-          className={styles.navItem}
-          key={index}
-          id={name}
-          to={to}>
-          {name}
-        </NavLink>,
-      )}
-      <Link to={ORDER_FORM} className={styles.navItem}>New Order + </Link>
-    </div>
-  );
-};
+  _toggleMenu = () => {
+    const { _setState } = this.props;
+
+    _setState('visibleMobileMenu', false);
+  };
+
+  render() {
+    const { _logOut, state: { visibleMobileMenu } } = this.props;
+    const { ORDERS, DISCOUNTS, PROFILE, EARN_CASH } = cabinetRoutes;
+
+    const handlerOnClick = () => _logOut();
+
+    const NavLinks = [
+      {
+        to: ORDERS,
+        name: 'My orders',
+      },
+      {
+        to: PROFILE,
+        name: 'Profile',
+      },
+      {
+        to: DISCOUNTS,
+        name: 'Discount',
+      },
+      {
+        to: EARN_CASH,
+        name: 'Earn Cash',
+      },
+    ];
+
+    return (
+      <div className={`${styles.menu} ${visibleMobileMenu && styles.on}`}>
+        {NavLinks.map(({ to, name }, index) =>
+          <NavLink
+            onClick={this._toggleMenu}
+            activeClassName={styles.active}
+            className={styles.navItem}
+            key={index}
+            id={name}
+            to={to}>
+            {name}
+          </NavLink>,
+        )}
+        <button
+          type='button'
+          onClick={handlerOnClick}
+          className={styles.logOut}
+        >
+          <LogOutIcon/>
+          log out
+        </button>
+        <Link
+          onClick={this._orderNowHandler}
+          to={routes.ORDER_FORM}
+          className={`btn btn--accent ${styles.orderBtn}`}
+        >
+          Order Now
+        </Link>
+      </div>
+    );
+  }
+}

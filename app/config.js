@@ -17,11 +17,7 @@ export const config = {
     sendMessageToWriter: `${END_POINT}/orders/sendMessageToWriter/`,
     sendMessageToSupport: `${END_POINT}/orders/sendMessageToSupport/`,
   },
-  dropZoneConfig: {
-    maxNumberFiles: 10,
-    maxSize: 104857600
-  },
-  month: ["Jan","Feb","March","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],
+  month: ['Jan', 'Feb', 'March', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   tootTipText: {
     advanced_writer_required: 'By enabling this feature your order will be completed by an Advanced and/or Native English writer.',
     additional_editing_required: 'By enabling this option your text will receive a professional proofreading and be edited by our U.S. editorial staff. This feature signifies your desire to receive a flawless paper, eliminating the slightest chance of mistakes.',
@@ -32,5 +28,13 @@ export const config = {
     extended_revision_period_required: 'Extra 20 days of free alterations period.',
     vip_support_required: 'Get calls and follow-ups from our support regarding the status of your order.',
   },
+  complicatedDisciplines: [
+    2, 5, 7, 8, 10, 14, 15, 16, 29, 32, 35, 42, 43, 44, 46, 50, 61, 62, 65,
+  ],
+  defaultDeadline: 5, // in hours
+  resetPasswordText: {
+    success: 'We send you notification, please check your email.',
+    error: 'Sorry, but email not found.'
+  }
 };
 

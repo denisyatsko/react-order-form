@@ -10,7 +10,7 @@ import styles from '../styles.css';
 @withProfile
 export class LoggedUser extends Component {
   render() {
-    const { _setStep } = this.props;
+    const { _setOrderFormStep } = this.props;
 
     return (
       <div className={styles.loggedContent}>
@@ -20,7 +20,7 @@ export class LoggedUser extends Component {
         <button
           type='button'
           className='btn btn--primary'
-          onClick={() => _setStep(2)}>
+          onClick={() => _setOrderFormStep(2)}>
           Continue
         </button>
       </div>

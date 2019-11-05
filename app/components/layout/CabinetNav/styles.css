@@ -1,13 +1,82 @@
+@import '../../../theme/breakpoint.css';
+
 .menu {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  width: 190px;
+  font-size: 16px;
+  width: 240px;
   flex-shrink: 0;
+  position: fixed;
+  top: 45px;
+  right: 0;
+  z-index: 999;
+  padding: 15px 0;
+  background-color: var(--headerBg);
+  transform: translateX(100%);
+  transition: transform 0.2s var(--cubic2);
+
+  &.on {
+    transform: translateX(0);
+  }
+
+  @media (--phone) {
+    top: 56px;
+  }
+
+  @media (--desktop) {
+    width: 190px;
+    padding: 0;
+    position: static;
+    z-index: 1;
+    display: flex;
+    background-color: transparent;
+    transform: none;
+    align-items: flex-start;
+  }
+
+  & .orderBtn {
+    width: 150px;
+    align-self: center;
+
+    @media (--desktop) {
+      align-self: flex-start;
+    }
+  }
 }
 
 .navItem {
   color: var(--textColor);
+  font-size: inherit;
+  line-height: inherit;
+  padding: 0 15px;
+
+  &:hover,
+  &.active {
+    color: var(--accent);
+  }
+}
+
+.logOut {
+  display: flex;
+  background: transparent;
+  color: var(--textColor);
+  border: none;
+  font-size: inherit;
+  line-height: inherit;
+  border-top: 1px solid var(--textColor);
+  border-bottom: 1px solid var(--textColor);
+  margin: 10px 0 15px 0;
+  padding: 5px 15px;
+  cursor: pointer;
+
+  @media (--desktop) {
+    border-bottom: none;
+  }
+
+  & i {
+    margin-right: 5px;
+  }
+
   &:hover,
   &.active {
     color: var(--accent);

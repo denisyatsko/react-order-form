@@ -1,0 +1,33 @@
+{
+  "_time": 0.17161297798156738,
+  "version": null,
+  "_data": [],
+  "result_code": "OK",
+  "errors": "",
+  "message": "",
+  "user": {
+    "id": "20052",
+    "auth_token": "f5131e4d7bd60f4ad805951ffe99edec",
+    "discount": "0.00",
+    "firstname": "",
+    "lastname": "",
+    "email": "test223@rrr.com",
+    "phone": "123",
+    "country": "MX",
+    "timezone": "America\/Mexico_City",
+    "state": "0",
+    "reg_date": "2019-07-24 09:13:39",
+    "lang_site": "en",
+    "bio": "",
+    "location": "America\/Mexico_City",
+    "id_social": "",
+    "partner_code": "X8XE3",
+    "partner_balance": "",
+    "partner_ref_id": "0",
+    "used_balance": "",
+    "academic_level": "",
+    "grades": "",
+    "social_media": "",
+    "other_info": ""
+  }
+}

@@ -1,0 +1,172 @@
+@import '../../../../theme/breakpoint.css';
+
+.orderInfo {
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+  width: 100%;
+
+  & .item {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 15px;
+    font-size: 12px;
+    line-height: 16px;
+
+    @media (--desktop) {
+      flex-direction: column;
+    }
+
+    &.mobItem {
+      @media (--desktop) {
+        display: none;
+      }
+    }
+
+    &.col {
+      flex-direction: column;
+    }
+
+    & .optionsContainer {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: row;
+
+      & span {
+        color: var(--lightBg);
+        border: 1px solid var(--lightBg);
+        font-size: 10px;
+        line-height: 14px;
+        border-radius: 4px;
+        padding: 0 5px;
+        margin: 0 5px 2px 0;
+
+        &:empty {
+          display: none;
+        }
+      }
+    }
+
+    & .title {
+      color: var(--textColor);
+      font-size: inherit;
+      line-height: inherit;
+      margin-right: 10px;
+      width: 90px;
+      flex-shrink: 0;
+      @media (--desktop) {
+        margin-right: 0;
+        width: auto;
+      }
+    }
+
+    & .text {
+      font-size: inherit;
+      line-height: inherit;
+      color: #121212;
+    }
+  }
+
+  & .col1 {
+    width: 100%;
+    @media (--desktop) {
+      width: 30%;
+    }
+  }
+
+  & .col2 {
+    width: 100%;
+    @media (--desktop) {
+      width: 30%;
+    }
+  }
+
+  & .col3 {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 auto;
+    width: 100%;
+
+    @media (--desktop) {
+      width: 330px;
+    }
+
+    & .row {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      @media (--desktop) {
+        flex-direction: row;
+      }
+    }
+  }
+
+  & .paperDetails {
+    background-color: var(--grey);
+    padding: 5px 5px 5px 10px;
+    border: 1px solid var(--inputBorderColor);
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--textColor);
+    min-height: 110px;
+    height: 110px;
+    width: 100%;
+
+    & .scroll {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      padding-right: 10px;
+    }
+
+    & p,
+    & li {
+      font-size: inherit;
+      line-height: inherit;
+      color: inherit;
+      margin: 0 0 5px 0;
+    }
+
+    & ul,
+    & ol {
+      margin-left: 10px;
+    }
+
+    & li {
+      list-style-type: decimal;
+    }
+
+    & a {
+      color: var(--lightBg);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  & .colContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    @media (--desktop) {
+      flex-direction: row;
+      border-bottom: 1px dashed var(--inputBorderColor);
+      padding-bottom: 20px;
+    }
+  }
+
+  & .flexAuto {
+    flex: 1 0 auto;
+  }
+
+  & .bottomContainer {
+    padding: 0;
+    align-self: center;
+    @media (--desktop) {
+      padding: 20px 0 0 0;
+    }
+  }
+}

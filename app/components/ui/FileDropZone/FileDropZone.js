@@ -3,92 +3,111 @@ import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 
 // Components
-import { IoIosCloseCircle } from 'react-icons/io';
-
-// Instruments
-import { config } from 'config';
+import { withProfile } from 'components/HOC/withProfile';
+import { IoIosCloseCircle, IoMdCloudUpload } from 'react-icons/io';
 
 // Styles
 import styles from './styles.css';
 
+@withProfile
 export class FileDropZone extends Component {
   state = {
-    maxNumberFiles: config.dropZoneConfig.maxNumberFiles,
-    maxSize: config.dropZoneConfig.maxSize,
-    files: this.props.files || [],
     maxNumberFilesError: false,
+    emptyFileError: false,
   };
 
   _handleDrop = dropFiles => {
-    const { maxNumberFiles, files } = this.state;
+    const {
+      _mergeState,
+      state: {
+        order: { files },
+        uploadRequirements: { max_number_files: maxNumberFiles },
+      },
+    } = this.props;
 
     const filenames = [];
-    const stateFiles = this.state.files;
+    const isContainEmptyFile = dropFiles.some(file => file.size !== 0);
+    let filesArr = [...files];
 
-    if (files.length < maxNumberFiles && dropFiles.length <= maxNumberFiles) {
-      stateFiles.forEach(file => {
+    if (filesArr.length < maxNumberFiles && dropFiles.length <= maxNumberFiles) {
+      filesArr.forEach(file => {
         filenames.push(file.name);
       });
 
       dropFiles.forEach(item => {
-        if (filenames.indexOf(item.name) + 1) {
-          stateFiles.splice(filenames.indexOf(item.name), 1);
+        if (filenames.indexOf(item.name) !== -1) {
+          filesArr = filesArr.filter(file => file.name !== filenames[filenames.indexOf(item.name)]);
         }
-
-        stateFiles.push(item);
       });
 
-      this.setState(
-        () => ({
-          files: stateFiles,
-          maxNumberFilesError: false,
-        }),
-        () => {
-          this.props._mergeState('order', { files: this.state.files });
-        },
-      );
+      _mergeState('order', { files: [...dropFiles.filter(file => file.size !== 0), ...filesArr] });
+
+      this.setState({
+        maxNumberFilesError: false,
+        emptyFileError: !!!isContainEmptyFile,
+      });
     } else {
       this.setState({ maxNumberFilesError: true });
     }
   };
 
-  _handleRemoveFile = index => {
-    const { files, maxNumberFilesError } = this.state;
+  _handleRemoveFile = removingIndex => {
+    const { maxNumberFilesError } = this.state;
+    const { state, _mergeState } = this.props;
 
-    files.splice(index, 1);
-
-    this.setState({ files });
+    _mergeState('order', { files: state.order.files.filter((file, index) => removingIndex !== index) });
 
     if (maxNumberFilesError) this.setState({ maxNumberFilesError: false });
   };
 
   render() {
-    const { maxNumberFilesError, maxNumberFiles, files, maxSize } = this.state;
+    const { maxNumberFilesError, emptyFileError } = this.state;
+    const {
+      cabinetDropZoneClass,
+      state: {
+        order: { files },
+        uploadRequirements: {
+          max_number_files: maxNumberFiles,
+          max_file_size_kb,
+          allowed_file_types,
+        },
+      },
+    } = this.props;
+
+    // convert kb to bytes
+    const maxSize = +max_file_size_kb * 1024;
 
     return (
-      <Dropzone multiple maxSize={maxSize} onDrop={this._handleDrop}>
-        {({ getRootProps, getInputProps, isDragActive, rejectedFiles }) => (
-          <section className={styles.container}>
+      <Dropzone
+        multiple
+        accept={allowed_file_types}
+        maxSize={maxSize} // bytes
+        onDrop={this._handleDrop}
+      >
+        {({ getRootProps, getInputProps, isDragActive, rejectedFiles, isDragReject }) => (
+          <section className={`${styles.container} ${cabinetDropZoneClass ? styles.cabinetDropZoneClass : ''}`}>
             <span className={styles.title}>Attach files</span>
             <div
               className={`${styles.dropzone} ${
                 isDragActive ? styles.active : ''
-              }`}
+                }`}
               {...getRootProps()}
             >
               <input {...getInputProps()} />
-              {!isDragActive && 'Click here or drop a file to upload'}
-              {isDragActive && "Drop it like it's hot!"}
+              {!isDragActive && <span><IoMdCloudUpload className={styles.cloudIcon}/>Drop files here or click</span>}
+              {isDragActive && !isDragReject && 'Drop it like it\'s hot!'}
               {rejectedFiles.length > 0 && rejectedFiles[0].size > maxSize && (
                 <span className={styles.errorMessage}>File is too large</span>
               )}
+              {isDragReject && 'File type not allowed, sorry!'}
               {maxNumberFilesError && (
                 <span className={styles.errorMessage}>
                   {`only ${maxNumberFiles} files allowed`}!
                 </span>
               )}
+              {emptyFileError && <span className={styles.errorMessage}>file is empty!</span>}
             </div>
-            {files.length > 0 ? (
+            {files.length > 0 && (
               <aside>
                 <ul className={styles.downloadedFiles}>
                   {files.map((file, index) => (
@@ -102,8 +121,6 @@ export class FileDropZone extends Component {
                   ))}
                 </ul>
               </aside>
-            ) : (
-              ''
             )}
           </section>
         )}

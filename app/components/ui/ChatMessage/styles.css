@@ -1,0 +1,77 @@
+.messageContainer {
+  align-self: flex-start;
+  background-color: #fff;
+  max-width: 460px;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  line-height: 16px;
+  color: #121212;
+
+  &.customerMessage {
+    background-color: #e1ffc7;
+    align-self: flex-end;
+
+    & .sender {
+      display: none;
+    }
+
+    & .iconContainer {
+      left: auto;
+      right: -16px;
+      transform: rotateY(180deg);
+      color: #e1ffc7;
+    }
+  }
+}
+
+.messageText {
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  & .iconContainer {
+    display: flex;
+    position: absolute;
+    bottom: -16px;
+    left: -16px;
+    color: #fff;
+  }
+
+  & p,
+  & li {
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+    margin: 0 0 5px 0;
+  }
+
+  & ul,
+  & ol {
+    margin-left: 10px;
+  }
+
+  & li {
+    list-style-type: decimal;
+  }
+
+  & a {
+    color: var(--lightBg);
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.sender {
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  font-weight: bold;
+  margin: 0 0 5px 0;
+  display: block;
+}

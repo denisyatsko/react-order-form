@@ -8,7 +8,6 @@
 
   @media (--desktop) {
     flex-direction: row;
-    //align-items: flex-start;
   }
 
   & .child140 {
@@ -17,7 +16,10 @@
     justify-content: space-between;
 
     & > * {
-      max-width: 160px;
+      max-width: 140px;
+      @media (--desktop) {
+        max-width: 170px;
+      }
     }
   }
 }
@@ -43,8 +45,7 @@
 }
 
 .signUpBtn,
-.nextBtn,
-.payBtn {
+.nextBtn {
   align-self: center;
   margin-top: 20px;
   min-width: 150px;
@@ -59,6 +60,45 @@
     cursor: pointer;
     border: none;
     background: transparent;
+  }
+}
+
+.payWrapper {
+  width: 100%;
+  text-align: center;
+  @media (--desktop) {
+    max-width: 300px;
+  }
+
+  &.complicatedDisciplines {
+    @media (--desktop) {
+      max-width: 700px;
+    }
+
+    & .boxShadow {
+      box-shadow: var(--shadow);
+      border-radius: var(--borderRadius);
+      padding: 20px 30px;
+      margin-bottom: 20px;
+    }
+
+    & .link {
+      height: var(--buttonHeight);
+      background-color: var(--lightBg);
+      line-height: var(--buttonHeight);
+      border-radius: var(--borderRadius);
+      color: #fff;
+      text-decoration: none;
+      text-transform: uppercase;
+      padding: 0 25px;
+      font-weight: bold;
+      transition: all 0.15s ease-in-out;
+      &:hover {
+        text-decoration: none;
+        background-color: #84D0FF;
+        color: var(--lightBg);
+      }
+    }
   }
 }
 
@@ -87,29 +127,6 @@
   margin: 15px 0;
 }
 
-.payBtn {
-  margin: 0 0 5px 0;
-  width: 100%;
-  background-color: #7FA3E8;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  border-radius: 5px;
-  font-size: 20px;
-  border: none;
-  cursor: pointer;
-  background-image: url('../../../images/solid-btn.png');
-  background-repeat: no-repeat;
-  background-position: 50% 50%;
-  transition: all ease 0.15s;
-
-  &:hover {
-    background-color: #597CC0;
-  }
-}
-
 .link {
   border: none;
   background-color: transparent;
@@ -134,81 +151,6 @@
   margin: 0;
 }
 
-.payWrapper {
-  width: 300px;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-.paymentIframe {
-  width: 100%;
-  height: 440px;
-  border: 0;
-  margin: 0 auto;
-}
-
-.payCardPopup {
-  & .info {
-    max-width: 288px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 0 auto;
-    border-bottom: 2px solid #ddd;
-    padding: 20px 0 10px 0;
-
-    & .orderText {
-      font-size: 20px;
-      color: var(--textColor);
-    }
-
-    & .priceText {
-      color: #57cc69;
-      font-size: 24px;
-    }
-  }
-  & .iframeButton {
-    margin: 0 auto 15px auto;
-  }
-}
-
-.solidIcon1,
-.solidIcon2,
-.solidIcon3,
-.solidIcon4 {
-  display: block;
-  width: 53px;
-  height: 32px;
-  margin: 0 3px;
-  cursor: pointer;
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  &:hover {
-    filter: brightness(1.2)
-  }
-}
-
-.solidIcon1 {
-  background-image: url('../../../images/visa.svg');
-}
-
-.solidIcon2 {
-  background-image: url('../../../images/master-card.svg');
-}
-
-.solidIcon3 {
-  background-image: url('../../../images/amex.svg');
-}
-
-.solidIcon4 {
-  background-image: url('../../../images/discover.svg');
-}
-
 .firstStepForm {
   max-width: 700px;
   margin: 0 auto;
@@ -225,12 +167,15 @@
   font-weight: bold;
   text-align: center;
   font-size: 20px;
+  margin: 20px 0;
+  @media (--desktop) {
+    margin: 0 0 20px;
+  }
 }
 
 .firstStepContent {
   border-radius: var(--borderRadius);
   box-shadow: 0 0 12px 2px rgba(0,0,0,0.2);
-  //width: 93%;
   width: 100%;
   margin: 0 auto;
   display: flex;
@@ -280,5 +225,3 @@
   flex-direction: column;
   align-items: center;
 }
-
-

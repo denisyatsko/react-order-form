@@ -35,6 +35,49 @@
   }
 }
 
+
+
+.content {
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+
+  & label {
+    &[for="password"],
+    &[for="email"] {
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 24px;
+      opacity: 1;
+    }
+  }
+}
+
+.serverErrorContainer {
+  height: 0;
+  position: relative;
+}
+
+.serverError {
+  color: var(--accent);
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
+  position: absolute;
+  top: -3px;
+  left: 0;
+  white-space: nowrap;
+}
+
+.loginBtnContainer {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto 0 auto;
+  & img {
+    height: 40px;
+  }
+}
+
 .loginLink {
   border: none;
   background-color: transparent;
@@ -45,39 +88,4 @@
   &:matches(:hover, :focus) {
     text-decoration: underline;
   }
-}
-
-.content {
-  width: 100%;
-  max-width: 300px;
-  margin: 0 auto;
-}
-
-.popupContent {
-  text-align: center;
-  padding-top: 30px;
-  padding-bottom: 30px;
-
-  & * {
-    margin-right: auto;
-    margin-left: auto;
-  }
-
-  & p {
-    font-size: 26px;
-    color: var(--title);
-    font-weight: bold;
-    margin-bottom: 15px;
-  }
-}
-
-.serverError {
-  color: var(--accent);
-  font-size: 13px;
-  margin: 0;
-  text-align: center;
-}
-
-.signUpBtn {
-  margin: 20px auto 0 auto;
 }

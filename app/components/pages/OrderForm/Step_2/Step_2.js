@@ -13,7 +13,7 @@ import grid from 'theme/grid.css';
 @withProfile
 export class Step_2 extends Component {
   render() {
-    const { state, _setStep, _mergeState } = this.props;
+    const { state, _setOrderFormStep, _mergeState } = this.props;
 
     return (
       <div className={grid.col}>
@@ -72,7 +72,7 @@ export class Step_2 extends Component {
           </div>
         </div>
         <button
-          onClick={() => _setStep(3)}
+          onClick={() => _setOrderFormStep(3)}
           className={`btn btn--primary ${styles.nextBtn}`}>Continue
         </button>
       </div>

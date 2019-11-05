@@ -2,14 +2,15 @@
 import React, { Component } from 'react';
 
 // Instruments
-import { userTimeView } from 'instruments';
+import { config } from 'config';
+import { userTimeView } from 'instruments/export';
 
 // Styles
 import styles from 'components/common/Counter/styles.css';
 
 export class DeadlineCounter extends Component {
   state = {
-    count: 5
+    count: config.defaultDeadline
   };
 
   _setDeadline = () => {

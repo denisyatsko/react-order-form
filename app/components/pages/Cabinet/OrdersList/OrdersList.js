@@ -3,14 +3,13 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 // Components
-import { Preloader } from 'components/ui/export';
+import { Preloader } from 'components/common/export';
 import { withProfile } from 'components/HOC/withProfile';
 import { EyeIcon, FolderIcon, MessageIcon } from 'components/icons/export';
+import { SidebarStatistics, SidebarCalculator } from 'components/layout/export';
 
 // Instruments
-import OrderAPI from 'api/orders/OrderAPI';
-import { GetOrdersRequest } from 'api/orders/requests';
-import { cabinetRoutes, delay, cookies } from 'instruments';
+import { delay, cabinetRoutes, getOrders } from 'instruments/export';
 
 // Styles
 import styles from './styles.css';
@@ -25,6 +24,13 @@ export class OrdersList extends Component {
     isHideShowMoreBtn: false,
   };
 
+  _scrollTo = ref => {
+    ref.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    });
+  };
+
   _showMoreHandler = (e) => {
     const { state } = this.props;
     const { itemsToShow } = this.state;
@@ -33,37 +39,38 @@ export class OrdersList extends Component {
 
     this.setState({ isLoading: true });
 
+    let callback = () => {
+      let id = state.userOrders[this.state.itemsToShow - 3].id;
+      this._scrollTo(this.refs[id]);
+    };
+
     delay(300).then(() => {
       if (state.userOrders.length - itemsToShow > 3) {
         this.setState(prevState => ({
           itemsToShow: prevState.itemsToShow + 3,
           isLoading: false,
-        }));
+        }), callback);
       } else {
-        this.setState({
+        this.setState(() => ({
           itemsToShow: state.userOrders.length,
           isHideShowMoreBtn: true,
           isLoading: false,
-        });
+        }), callback);
       }
     });
   };
 
   componentDidMount() {
-    const TOKEN = cookies.get('TOKEN');
-
-    new OrderAPI().getOrders(new GetOrdersRequest(TOKEN)).then(data => {
-      const { results } = data;
+    getOrders().then(data => {
       const { _setState } = this.props;
 
-      _setState('userOrders', results);
+      _setState('userOrders', data.results);
     });
   }
 
   render() {
-    const { itemsToShow, isLoading, isHideShowMoreBtn } = this.state;
     const { state } = this.props;
-    const { ORDER } = cabinetRoutes;
+    const { itemsToShow, isLoading, isHideShowMoreBtn } = this.state;
 
     const orders = state.userOrders || [];
     const handlerShowMore = (e) => this._showMoreHandler(e);
@@ -72,7 +79,7 @@ export class OrdersList extends Component {
       <div className={main.contentWrapper}>
         <div className={main.mainContent}>
           <div className={styles.filterWrapper}>
-            <div className={styles.item}>
+            <div className={`${styles.item} ${styles.on}`}>
               <span className={styles.small}>01 Step</span>
               <span>Unpaid</span>
             </div>
@@ -90,7 +97,7 @@ export class OrdersList extends Component {
             </div>
           </div>
           <ul className={styles.ordersList}>
-            {orders ? orders
+            {orders.length !== 0 ? orders
               .slice(0, itemsToShow)
               .map(({
                       id,
@@ -98,16 +105,16 @@ export class OrdersList extends Component {
                       status_title,
                       topic,
                       num_pages,
-                      type_of_paper,
+                      type_of_paper_title,
                       price,
                       info_new_files_amount,
                       info_new_messages_amount,
                       subject_or_discipline_title,
                     }) => {
-                  const orderLink = `${ORDER}/${id}`;
+                  const orderLink = `${cabinetRoutes.ORDER}/${id}`;
 
-                  return <li key={id} className={`${styles.order} ${main.order}`}>
-                    <div className={main.topContainer}>
+                  return <li key={id} ref={id} className={`${styles.order}`}>
+                    <div className={`${main.topContainer} ${styles.topContainer}`}>
                       <div className={main.col1}>
                         <p className={main.colorGrey}>
                           <span className={main.desktopHidden}>Deadline:</span>
@@ -126,7 +133,7 @@ export class OrdersList extends Component {
                       <div className={main.col4}>
                         <span>{`${num_pages} ${num_pages > 1 ? 'pages' : 'page'}`}</span>
                         <span>{subject_or_discipline_title}</span>
-                        <span>{type_of_paper}</span>
+                        <span>{type_of_paper_title}</span>
                       </div>
                     </div>
                     <Link to={orderLink} className={styles.showMoreCol}>
@@ -161,7 +168,11 @@ export class OrdersList extends Component {
                     </div>
                   </li>;
                 },
-              ) : <p>not item</p>}
+              ) : (
+              <div className={styles.preloaderWrapper}>
+                <Preloader/>
+              </div>
+            )}
             {isLoading ? (
               <div className={styles.preloaderWrapper}>
                 <Preloader/>
@@ -170,16 +181,16 @@ export class OrdersList extends Component {
               <button
                 onClick={handlerShowMore}
                 style={{ display: isHideShowMoreBtn && 'none' }}
-                className={`btn btn--primary ${grid.mAuto}`}
+                className={`btn btn--primary ${styles.showMoreBtn}`}
               >
                 Show more
               </button>
             )}
-
           </ul>
         </div>
-        <div className={main.sidebar}>
-          <p>sidebar</p>
+        <div className={`${main.hideMobile} ${main.sidebar}`}>
+          <SidebarCalculator/>
+          <SidebarStatistics/>
         </div>
       </div>
     );

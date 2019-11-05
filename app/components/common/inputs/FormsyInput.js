@@ -15,39 +15,22 @@ export class FormsyInput extends React.Component {
     // for Formsy to work.
     setValue(event.currentTarget.value);
 
-    if (this.props.state === true) _mergeState('order', { [name]: event.currentTarget.value });
+    _mergeState && _mergeState('order', { [name]: event.currentTarget.value });
   };
 
   render() {
-    const { name, type, labeltext, placeholder, onFocus } = this.props;
-
-    // An error message is returned only if the component is invalid
-    const errorMessage = this.props.getErrorMessage();
-
-    const className = this.props.getErrorMessage() ? `${styles.error}` : '';
+    const { name, labeltext, input, getErrorMessage, getValue } = this.props;
 
     return (
       <div className={styles.item}>
-        {(!!labeltext) ? (
-          <label
-            className={styles.title}
-            htmlFor={name}>
-            {labeltext}
-          </label>
-        ) : (
-          ''
-        )}
+        { labeltext && <label className={styles.title} htmlFor={name}>{labeltext}</label> }
         <input
-          id={name}
-          name={name}
-          type={type}
-          placeholder={placeholder}
-          onFocus={onFocus}
+          {...input}
           onChange={this._changeValue}
-          value={this.props.getValue() || ''}
-          className={className}
+          value={getValue() || ''}
+          className={getErrorMessage() ? `${styles.error}` : ''}
         />
-        <span className={styles.errorMessage}>{errorMessage}</span>
+        <span className={styles.errorMessage}>{getErrorMessage()}</span>
       </div>
     );
   }

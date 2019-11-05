@@ -1,0 +1,16 @@
+{
+  "_time": 0.05176210403442383,
+  "version": null,
+  "_data": [],
+  "result_code": "ERROR",
+  "errors": "app\\libraries\\api\\OperationResultRequestValidation: The Token field is required.",
+  "errorsList": [
+    "app\\libraries\\api\\OperationResultRequestValidation: The Token field is required."
+  ],
+  "message": "",
+  "type_of_paper": [],
+  "academic_level": [],
+  "subject_or_discipline": [],
+  "paper_format": [],
+  "deadline": []
+}

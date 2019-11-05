@@ -11,8 +11,9 @@
   transition: all 0.2s ease-in-out;
   font-weight: 700;
   text-align: center;
-  height: 70px;
   font-size: 14px;
+  height: 70px;
+  width: 100%;
 
   &:hover {
     border-color: var(--accent);
@@ -60,4 +61,31 @@
 
 .title {
   composes: title from '../../common/Dropdown/styles.css';
+}
+
+.cloudIcon {
+  font-size: 20px;
+  margin-right: 5px;
+}
+
+.cabinetDropZoneClass {
+  & .dropzone {
+    background-color: var(--grey);
+    border-radius: 8px;
+    height: 40px;
+    line-height: 10px;
+  }
+
+  & .cloudIcon {
+    font-size: 16px;
+  }
+
+  & .errorMessage {
+    font-size: 12px;
+  }
+
+  & .title,
+  & .downloadedFiles {
+    display: none;
+  }
 }
