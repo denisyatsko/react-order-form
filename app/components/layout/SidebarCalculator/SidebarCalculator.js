@@ -18,13 +18,24 @@ export class SidebarCalculator extends Component {
   render() {
     const { state, _mergeState } = this.props;
 
+    const deadlineOnChangeHandler = (value) => (value.label === '0 days')
+      ? _mergeState({
+        order: {
+          deadline: {
+            label: '0 days',
+            value: config.defaultDeadline * 3600,
+          },
+        },
+      })
+      : _mergeState({ order: { deadline: value } });
+
     return (
       <div className={styles.wrapper}>
         <p className={styles.caption}>Place your order</p>
         <Dropdown
           options={state.formValues.type_of_paper}
           labeltext='Type of paper'
-          onChange={(value) => _mergeState('order', { type_of_paper: value })}
+          onChange={(value) => _mergeState({ order: { type_of_paper: value } })}
           value={state.order.type_of_paper}
           searchable={false}
           placeholder='Select essay type'
@@ -35,21 +46,14 @@ export class SidebarCalculator extends Component {
           placeholder='Select academic level'
           labeltext='Academic level'
           searchable={false}
-          onChange={(value) => _mergeState('order', { academic_level: value })}
+          onChange={(value) => _mergeState({ order: { academic_level: value } })}
         />
         <Dropdown
           options={state.formValues.deadline}
           labeltext='Deadline'
           searchable={false}
           value={state.order.deadline}
-          onChange={(value) => (value.label === '0 days')
-            ? _mergeState('order', {
-              deadline: {
-                label: '0 days',
-                value: config.defaultDeadline * 3600,
-              },
-            })
-            : _mergeState('order', { deadline: value })}
+          onChange={deadlineOnChangeHandler}
         />
         <Counter
           id='number_of_pages'

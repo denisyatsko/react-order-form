@@ -17,13 +17,11 @@ import { CustomPopup, PayCardPopup } from 'components/ui/export';
 import MainAPI from 'api/main/MainAPI';
 import AuthAPI from 'api/auth/AuthAPI';
 import PaymentAPI from 'api/payment/PaymentAPI';
-import { cabinetRoutes } from 'instruments/export';
-import { RetrieveRequest } from 'api/auth/requests';
 import { PaySolidGateRequest } from 'api/payment/requests';
+import { AuthController } from 'core/export';
 import {
   routes,
   calculatePrice,
-  AuthController,
   orderFormRoutes,
   redirectPayError,
   DefaultOrderValues,
@@ -71,29 +69,23 @@ export default class App extends Component {
   }
 
   _setCustomerData = () => {
-    const { history } = this.props;
-    const TOKEN = new AuthController().getToken();
+    new AuthAPI().retrieve().then(data => {
+      this.setState(prevState => ({
+        user: data.user,
+        auth: true,
+        order: {
+          ...prevState.order,
+          ...{
+            customer_name: data.user.customer_name,
+            customer_phone: data.user.phone,
+          },
+        },
+      }));
+    }).catch(() => {
+      const { history } = this.props;
 
-    if (TOKEN) {
-      new AuthAPI().retrieve(new RetrieveRequest(TOKEN))
-        .then(data => {
-          const { user } = data;
-
-          this.setState(prevState => ({
-            user,
-            auth: true,
-            order: {
-              ...prevState.order,
-              ...{
-                customer_name: user.customer_name,
-                customer_phone: user.phone,
-              },
-            },
-          }));
-        });
-    } else {
       history.push(routes.LOGIN);
-    }
+    });
   };
 
   _setDefaultOrderValues = () => {
@@ -110,14 +102,22 @@ export default class App extends Component {
     });
   };
 
-  _mergeState = (name, selectValues) => {
-    this.setState(prevState => ({
-        [name]: {
-          ...prevState[name],
-          ...selectValues,
-        },
-      }), () => this._setPrice(),
-    );
+  _mergeState = (object) => {
+    Object.entries(object).forEach(([key, value]) => {
+      this.setState(prevState => ({
+          [key]: {
+            ...prevState[key],
+            ...value,
+          },
+        }), () => this._setPrice(),
+      );
+    });
+  };
+
+  _setState = (object) => {
+    Object.entries(object).forEach(([key, value]) => {
+      this.setState({ [key]: value });
+    });
   };
 
   _mergeOrderOptions = (name, selectValues) => {
@@ -164,10 +164,6 @@ export default class App extends Component {
         history.push(STEP_3);
         break;
     }
-  };
-
-  _setState = (name, value) => {
-    this.setState({ [name]: value });
   };
 
   _showCustomPopup = (content) => {
@@ -220,29 +216,23 @@ export default class App extends Component {
     }
   };
 
-  _payHandler = (data = null, isFreeInquiry = false) => {
-    const { history } = this.props;
+  _payHandler = (data) => {
+    this.setState({
+      payCardPopup: {
+        price: data.price,
+        id: data.id,
+        isVisible: true,
+      },
+    });
 
-    if (isFreeInquiry) {
-      return history.push(cabinetRoutes.ORDERS);
-    } else {
-      this.setState({
+    return (new PaymentAPI).solidGate(new PaySolidGateRequest(data)).then(data => {
+      this.setState(prevState => ({
         payCardPopup: {
-          price: data.price,
-          id: data.id,
-          isVisible: true,
+          ...prevState.payCardPopup,
+          ...{ iframeURL: data.paymentResult.pay_form.form_url },
         },
-      });
-
-      return (new PaymentAPI).solidGate(new PaySolidGateRequest(data)).then(data => {
-        this.setState(prevState => ({
-          payCardPopup: {
-            ...prevState.payCardPopup,
-            ...{ iframeURL: data.paymentResult.pay_form.form_url },
-          },
-        }));
-      });
-    }
+      }));
+    });
   };
 
   _logOut = () => {
@@ -258,6 +248,7 @@ export default class App extends Component {
       auth: false,
       visibleMobileMenu: false,
       user: {},
+      userOrders: null,
     });
   };
 
@@ -274,13 +265,13 @@ export default class App extends Component {
             state: this.state,
             _logOut: () => this._logOut(),
             _message: (value) => this._message(value),
-            _payHandler: (data, isFreeInquiry) => this._payHandler(data, isFreeInquiry),
-            _setState: (name, value) => this._setState(name, value),
+            _setState: (object) => this._setState(object),
+            _mergeState: (object) => this._mergeState(object),
             _setOrderFormStep: value => this._setOrderFormStep(value),
             _setDefaultOrderValues: () => this._setDefaultOrderValues(),
             _showCustomPopup: content => this._showCustomPopup(content),
-            _mergeState: (name, value) => this._mergeState(name, value),
             _mergeOrderOptions: (name, value) => this._mergeOrderOptions(name, value),
+            _payHandler: (data, isFreeInquiry) => this._payHandler(data, isFreeInquiry),
           }}>
           {isLoading ? (
             <div className='preloaderWrapper'>

@@ -22,7 +22,7 @@ export class Step_2 extends Component {
             <Dropdown
               options={state.formValues.type_of_paper}
               labeltext='Type of paper'
-              onChange={(value) => _mergeState('order', { type_of_paper: value })}
+              onChange={(value) => _mergeState({ order: { type_of_paper: value } })}
               value={state.order.type_of_paper}
               searchable={false}
               placeholder='Select essay type'/>
@@ -32,19 +32,19 @@ export class Step_2 extends Component {
               placeholder='Select academic level'
               labeltext='Academic level'
               searchable={false}
-              onChange={(value) => _mergeState('order', { academic_level: value })}/>
+              onChange={(value) => _mergeState({ order: { academic_level: value } })}/>
             <Dropdown
               options={state.formValues.subject_or_discipline}
               value={state.order.subject_or_discipline}
               placeholder='Subject, discipline'
               labeltext='Subject, discipline'
               searchable={false}
-              onChange={(value) => _mergeState('order', { subject_or_discipline: value })}/>
+              onChange={(value) => _mergeState({ order: { subject_or_discipline: value } })}/>
             <Input
               name='topic'
               type='text'
               placeholder="Writer's choice"
-              onChange={(event) => _mergeState('order', { topic: event.target.value })}
+              onChange={(event) => _mergeState({ order: { topic: event.target.value } })}
               labeltext='Topic'/>
           </div>
           <div className={grid.col50}>
@@ -52,7 +52,7 @@ export class Step_2 extends Component {
               name='paper_details'
               placeholder='Add details'
               labeltext='Paper details'
-              onChange={(event) => _mergeState('order', { paper_details: event.target.value })}/>
+              onChange={(event) => _mergeState({ order: { paper_details: event.target.value } })}/>
             <div className={styles.child140}>
               <Counter
                 id='number_of_sources'
@@ -64,7 +64,7 @@ export class Step_2 extends Component {
                 value={state.order.paper_format}
                 labeltext='Paper format'
                 searchable={false}
-                onChange={(value) => _mergeState('order', { paper_format: value })}/>
+                onChange={(value) => _mergeState({ order: { paper_format: value } })}/>
             </div>
             <FileDropZone
               files={state.order.files}

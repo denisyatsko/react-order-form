@@ -1,6 +1,6 @@
 // Core
 import React, { Component } from 'react';
-import ReactHtmlParser from 'react-html-parser';
+import ReactHtmlParser from 'html-react-parser';
 
 // Components
 import { withProfile } from 'components/HOC/withProfile';
@@ -96,7 +96,7 @@ export class InfoTab extends Component {
                 <span className={styles.title}>Paper details:</span>
                 <div className={`${styles.paperDetails} ${styles.flexAuto}`}>
                   <div className={styles.scroll}>
-                    {ReactHtmlParser(order.paper_details)}
+                    {typeof order.paper_details === 'string' && ReactHtmlParser(order.paper_details)}
                   </div>
                 </div>
               </div>

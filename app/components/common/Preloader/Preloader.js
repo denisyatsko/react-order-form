@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Instruments
-import spinner from 'images/spinner.svg';
+import spinner from 'assets/images/spinner.svg';
 
 // Styles
 import styles from './styles.css';

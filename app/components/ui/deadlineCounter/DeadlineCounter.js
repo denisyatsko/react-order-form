@@ -23,7 +23,7 @@ export class DeadlineCounter extends Component {
   };
 
   _onClickHandler = (value) => {
-    const { id, _mergeState } = this.props;
+    const { _mergeState } = this.props;
 
     this.setState((prevState) => ({
       count: (prevState.count + value > 0 && prevState.count + value <= 23)
@@ -34,7 +34,7 @@ export class DeadlineCounter extends Component {
         label: '0 days',
         value: this.state.count * 3600
       };
-      _mergeState('order', {[id]: state});
+      _mergeState({ order: { deadline: state }});
       this._setDeadline();
     });
   };

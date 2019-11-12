@@ -6,8 +6,8 @@ import { withProfile } from 'components/HOC/withProfile';
 import { SidebarDiscount, SidebarStatistics } from 'components/layout/export';
 
 // Instruments
-import src from 'images/discount-img.png';
-import { getOrders } from 'instruments/export';
+import src from 'assets/images/discount-img.png';
+import OrderAPI from 'api/orders/OrderAPI';
 
 // Styles
 import styles from './styles.css';
@@ -19,8 +19,8 @@ export class Discounts extends Component {
     const { state, _setState } = this.props;
 
     if (!state.userOrders) {
-      getOrders().then(data => {
-        _setState('userOrders', data.results);
+      new OrderAPI().getOrders().then(data => {
+        _setState({ userOrders: data.results });
       });
     }
   }
@@ -30,7 +30,7 @@ export class Discounts extends Component {
 
     let finishedOrdersAmount = 5;
     let discount = state.user.discount;
-    let discountGraduateWidth = finishedOrdersAmount*4;
+    let discountGraduateWidth = finishedOrdersAmount * 4;
 
     return (
       <div className={main.contentWrapper}>
@@ -51,13 +51,26 @@ export class Discounts extends Component {
                 <span>Orders:</span>
               </div>
               <div className={styles.graduateContainer}>
-                <div className={styles.percents}>
-                  <span>0%</span>
-                  <span>5%</span>
-                  <span>10%</span>
-                  <span>15%</span>
+                <div className={`${styles.between} ${styles.percents}`}>
+                  <div className={styles.col}>
+                    <span>0%</span>
+                  </div>
+                  <div className={styles.col}>
+                    <span>5%</span>
+                    <span className={styles.order}>5 orders</span>
+                  </div>
+                  <div className={styles.col}>
+                    <span>10%</span>
+                    <span className={styles.order}>15 orders</span>
+                  </div>
+                  <div className={styles.col}>
+                    <span>15%</span>
+                    <span className={styles.order}>25+ orders</span>
+                  </div>
                 </div>
-                <div style={{ width: `${discountGraduateWidth}%` }} className={styles.graduate}/>
+                <div className={styles.graduate}>
+                  <div style={{ width: `${discountGraduateWidth}%` }} className={styles.bg}/>
+                </div>
               </div>
             </div>
           </div>

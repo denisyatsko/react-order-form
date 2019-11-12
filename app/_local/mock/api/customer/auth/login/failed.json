@@ -1,9 +1,0 @@
-{
-  "_time": 0.5316340923309326,
-  "version": null,
-  "_data": [],
-  "result_code": "NOT_FOUND",
-  "errors": "app\\models\\base\\DBRecordState: Not found.",
-  "message": "State is uninitialized.",
-  "user": null
-}

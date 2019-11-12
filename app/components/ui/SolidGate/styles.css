@@ -22,7 +22,7 @@
   font-size: 20px;
   border: none;
   cursor: pointer;
-  background-image: url('../../../images/solid-btn.png');
+  background-image: url('../../../assets/images/solid-btn.png');
   background-repeat: no-repeat;
   background-position: 50% 50%;
   transition: all ease 0.15s;
@@ -51,17 +51,17 @@
 }
 
 .solidIcon1 {
-  background-image: url('../../../images/visa.svg');
+  background-image: url('../../../assets/images/visa.svg');
 }
 
 .solidIcon2 {
-  background-image: url('../../../images/master-card.svg');
+  background-image: url('../../../assets/images/master-card.svg');
 }
 
 .solidIcon3 {
-  background-image: url('../../../images/amex.svg');
+  background-image: url('../../../assets/images/amex.svg');
 }
 
 .solidIcon4 {
-  background-image: url('../../../images/discover.svg');
+  background-image: url('../../../assets/images/discover.svg');
 }

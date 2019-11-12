@@ -15,7 +15,7 @@ export class FormsyInput extends React.Component {
     // for Formsy to work.
     setValue(event.currentTarget.value);
 
-    _mergeState && _mergeState('order', { [name]: event.currentTarget.value });
+    _mergeState && _mergeState({ order: {[name]: event.currentTarget.value }});
   };
 
   render() {

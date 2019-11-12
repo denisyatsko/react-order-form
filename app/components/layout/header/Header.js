@@ -7,7 +7,7 @@ import { LogOutButton, MobileMenu } from 'components/ui/export';
 import { withProfile } from 'components/HOC/withProfile';
 
 // Instruments
-import logo from 'images/logo-Header.png';
+import logo from 'assets/images/logo-Header.png';
 import { routes, cabinetRoutes } from 'instruments/export';
 
 // Styles

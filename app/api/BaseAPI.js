@@ -1,14 +1,23 @@
-import { AuthController } from 'instruments/export';
+import { AuthController } from 'core/export';
 
-class BaseAPI {
+export default class BaseAPI {
+  getHeader() {
+    // console.log(this);
+    // return {
+    //   'User-Token': this.TOKEN,
+    // }
+  }
+
   async postRequest(URL, data, acceptableResultCodes = ['OK']) {
     try {
       const formData = new FormData();
       const TOKEN = new AuthController().getToken();
-
-      Object.entries(data).forEach(([key, value]) =>
-        formData.append(key, value),
-      );
+      // console.log(this);
+      // console.log(this.getHeader());
+      if (data)
+        Object.entries(data).forEach(([key, value]) =>
+          formData.append(key, value)
+        );
 
       const response = await fetch(URL, {
         method: 'POST',
@@ -37,11 +46,17 @@ class BaseAPI {
     try {
       const response = await fetch(URL);
 
-      return await response.json();
+      const result = await response.json();
+
+      switch (result.result_code) {
+        case 'OK':
+          return result;
+        default:
+          console.log(`result_code: ${result.result_code}`);
+          throw result.errors;
+      }
     } catch (e) {
       console.log(`${e.name}: ${e.message}`);
     }
   }
 }
-
-export default BaseAPI;

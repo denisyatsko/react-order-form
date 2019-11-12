@@ -58,14 +58,14 @@ class OrderSubmitRequest {
     this.spinner_hours = ''; // this data is not in the order
     this.key_wpg = ''; // this data is not in the order
     this.sub_id = ''; // this data is not in the order
-    this.advanced_writer_required = data.options.advanced_writer_required ? 1 : 0;
-    this.digital_copies_required = data.options.digital_copies_required ? 1 : 0;
-    this.additional_editing_required = data.options.additional_editing_required ? 1 : 0;
-    this.plagiarism_report_required = data.options.plagiarism_report_required ? 1 : 0;
-    this.initial_draft_required = data.options.initial_draft_required ? 1 : 0;
-    this.one_page_summary_required = data.options.one_page_summary_required ? 1 : 0;
-    this.extended_revision_period_required = data.options.extended_revision_period_required ? 1 : 0;
-    this.vip_support_required = data.options.vip_support_required ? 1 : 0;
+    this.advanced_writer_required = data.options.advanced_writer_price ? 1 : 0;
+    this.additional_editing_required = data.options.editing_price ? 1 : 0;
+    this.extended_revision_period_required = data.options.extended_revision_period_price ? 1 : 0;
+    this.initial_draft_required = data.options.initial_draft_price ? 1 : 0;
+    this.one_page_summary_required = data.options.one_page_summary_price ? 1 : 0;
+    this.plagiarism_report_required = data.options.plagiarism_report_price ? 1 : 0;
+    this.digital_copies_required = data.options.source_copy_price ? 1 : 0;
+    this.vip_support_required = data.options.vip_support_price ? 1 : 0;
     this.deadline = data.deadline.value;
     this.timezone = ''; // this data is not in the order
     this.price = data.price;
@@ -73,12 +73,6 @@ class OrderSubmitRequest {
     this.currency = ''; // this data is not in the order
     this.partner_code = ''; // this data is not in the order
     this.partner_ref_id = ''; // this data is not in the order
-  }
-}
-
-class GetOrdersRequest {
-  constructor(customer_token) {
-    this.customer_token = customer_token;
   }
 }
 
@@ -90,7 +84,6 @@ class GetOrderRequest {
 
 export {
   GetOrderRequest,
-  GetOrdersRequest,
   SendMessageRequest,
   UploadFilesRequest,
   OrderSubmitRequest,

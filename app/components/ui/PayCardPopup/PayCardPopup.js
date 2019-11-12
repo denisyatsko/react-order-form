@@ -14,26 +14,26 @@ import styles from './styles.css';
 @withProfile
 export class PayCardPopup extends Component {
   state = {
-    isLoading: true
+    isLoading: true,
   };
 
   _closeModal = () => {
-    this.props._setState('payCardPopup', false);
+    this.props._setState({ payCardPopup: false });
   };
 
   _payRedirect = () => {
-    const { _setState, history, state: { payCardPopup } } = this.props;
+    const { history, state: { payCardPopup } } = this.props;
 
     history.push(payCardPopup.redirect);
 
-    _setState('payCardPopup', false);
+    this._closeModal();
   };
 
   _onLoadHandler = () => {
     const { payCardPopup } = this.props.state;
 
     if (payCardPopup.iframeURL) {
-      this.setState({ isLoading: false })
+      this.setState({ isLoading: false });
     }
   };
 

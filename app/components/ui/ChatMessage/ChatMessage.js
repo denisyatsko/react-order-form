@@ -1,6 +1,6 @@
 // Core
 import React from 'react';
-import ReactHtmlParser from 'react-html-parser';
+import ReactHtmlParser from 'html-react-parser';
 
 // Components
 import { DialogArrow } from 'components/icons/export';
@@ -19,7 +19,7 @@ export const ChatMessage = (props) => {
       <span className={styles.sender}>{from}</span>
       <div className={styles.messageText}>
         <p>sentAt: {sentAtUtc}</p>
-        {ReactHtmlParser(message)}
+        {typeof message === 'string' && ReactHtmlParser(message)}
         <div className={styles.iconContainer}><DialogArrow/></div>
       </div>
     </div>

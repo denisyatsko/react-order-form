@@ -1,0 +1,66 @@
+@import '../../../../theme/breakpoint.css';
+
+.content {
+  padding: 20px 30px;
+  border-radius: var(--borderRadius);
+  box-shadow: var(--shadow);
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--textColor);
+
+  & * {
+    font-size: inherit;
+    line-height: inherit;
+  }
+}
+
+.code {
+  color: #fff;
+  background-color: var(--accent);
+  padding: 0 5px;
+  margin-left: 10px;
+  display: inline-block;
+}
+
+.title {
+  margin-bottom: 5px;
+  color: var(--title);
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+
+  @media (--desktop) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.maxWidth {
+  @media (--desktop) {
+    max-width: 430px;
+    flex-shrink: 0;
+    width: 100%;
+  }
+}
+
+.cerlce {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 10px solid var(--primary);
+  border-radius: 50%;
+  font-size: 48px;
+  color: #121212;
+}
+
+.rightCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}

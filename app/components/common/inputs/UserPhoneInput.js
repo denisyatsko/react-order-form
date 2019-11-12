@@ -16,7 +16,7 @@ export class UserPhoneInput extends React.Component {
     // Important: Don't skip this step. This pattern is required
     // for Formsy to work.
     setValue(event);
-    _mergeState && _mergeState('order', { [name]: event });
+    _mergeState && _mergeState({ order: {[name]: event}});
   };
 
   render() {

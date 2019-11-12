@@ -5,9 +5,8 @@
  * code.
  */
 
-// import { NativeEventSource, EventSourcePolyfill } from 'event-source-polyfill';
-
-// Needed for redux-saga es6 generator support
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
 import '@babel/polyfill';
 
 // Import all the third party stuff
@@ -15,13 +14,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom';
 
+// Styles
+import './theme/init.css';
 import 'sanitize.css/sanitize.css';
 
 // Import root app
 import App from 'containers/App';
-
-// Theme
-import './theme/init.css';
 
 const MOUNT_NODE = document.getElementById('app');
 

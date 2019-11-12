@@ -1,4 +1,6 @@
-const END_POINT = 'https://api-v2.dexfront.site/api/customer';
+const END_POINT = process.env.NODE_ENV === 'development'
+  ? 'https://api-v2.dexfront.site/api/customer'
+  : 'https://client-space.dexfront.site/api/customer';
 
 export const config = {
   apiURL: {
@@ -34,7 +36,7 @@ export const config = {
   defaultDeadline: 5, // in hours
   resetPasswordText: {
     success: 'We send you notification, please check your email.',
-    error: 'Sorry, but email not found.'
-  }
+    error: 'Sorry, but email not found.',
+  },
 };
 

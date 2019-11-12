@@ -22,7 +22,7 @@ export class CabinetNav extends Component {
   _toggleMenu = () => {
     const { _setState } = this.props;
 
-    _setState('visibleMobileMenu', false);
+    _setState({ visibleMobileMenu: false });
   };
 
   render() {

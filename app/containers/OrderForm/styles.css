@@ -10,68 +10,60 @@
   width: 100%;
 }
 
+.slideContainer {
+  position: relative;
+  & > * {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+}
+
 .content {
   display: flex;
   width: 100%;
   max-width: 820px;
+  flex-direction: column;
 
   &.overflowHidden {
     overflow: hidden;
   }
-
-  & > * {
-    width: 100%;
-
-    @media (--desktop) {
-      //min-width: 800px;
-    }
-  }
 }
-
-
 
 .flexRow {
   display: flex;
   flex-wrap: nowrap;
   @media (--desktop) {
     justify-content: space-around;
-    //justify-content: flex-end;
   }
 }
 
-.stepInStart {
-  transform: translate(-100%, 0);
-  opacity: .01;
-}
-
-.stepInEnd {
-  transform: translate(0,0);
-  transition: opacity 500ms var(--cubic1),
-  transform 500ms var(--cubic1);
-  opacity: 1;
-}
-
-.stepOutStart {
-  transform: translate(0,0);
-  opacity: 1;
-}
-
-.stepOutEnd {
+.appear,
+.enter {
   transform: translate(100%, 0);
-  transition: opacity 200ms var(--cubic2),
-  transform 400ms var(--cubic2);
   opacity: 0;
+  transition: opacity 200ms linear,
+  transform 400ms linear;
 }
 
-.stepAppear {
-  transform: translate(-50%, 0);
-  opacity: 0;
-}
-
-.stepAppearDone {
-  transform: none;
+.appearDone,
+.enterActive {
+  position: static;
   opacity: 1;
-  transition: opacity 500ms var(--cubic1),
-  transform 500ms var(--cubic1);
+  transform: translate(0,0);
+  transition: opacity 200ms linear,
+  transform 400ms linear;
+}
+
+.exitActive {
+  opacity: 0.5;
+  transform: translate(-100%, 0);
+  transition: opacity 200ms linear,
+  transform 400ms linear;
+}
+
+.enterDone {
+  position: static;
 }
 

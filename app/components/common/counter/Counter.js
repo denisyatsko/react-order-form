@@ -10,14 +10,15 @@ export const Counter = (props) => {
   const [countValue, setCount] = useState(count);
 
   const handleClick = (value) => {
-    if (countValue + value >= 0 && countValue + value < 100) setCount(countValue + value);
+    if (count + value >= 0 && count + value < 100)
+      setCount(countValue + value);
   };
 
   useEffect(() => {
     const { id, _mergeState } = props;
 
-    _mergeState('order', {[id]: countValue});
-
+    if (countValue !== count)
+      _mergeState({ order: { [id]: countValue } });
   }, [countValue]);
 
   return (
@@ -26,12 +27,12 @@ export const Counter = (props) => {
       <div className={styles.countWrapper}>
         <button
           type='button'
-          onClick={() => handleClick(- 1)}
+          onClick={() => handleClick(-1)}
         >&#8722;</button>
         <span>{count}</span>
         <button
           type='button'
-          onClick={() => handleClick( 1)}
+          onClick={() => handleClick(1)}
         >&#43;</button>
       </div>
     </div>

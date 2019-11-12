@@ -1,5 +1,5 @@
 @font-face {
 	font-family: 'ChivoRegular';
-    src: url('../fonts/ChivoRegular.woff2') format('woff2');
-    src: url('../fonts/ChivoRegular.woff') format('woff');
+    src: url('../assets/fonts/ChivoRegular.woff2') format('woff2');
+    src: url('../assets/fonts/ChivoRegular.woff') format('woff');
 }

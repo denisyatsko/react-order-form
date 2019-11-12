@@ -5,6 +5,7 @@ import UIfx from 'uifx';
 
 // Components
 import { ChatMessage } from 'components/ui/export';
+import { Preloader } from 'components/common/export';
 import { withProfile } from 'components/HOC/withProfile';
 
 // Instruments
@@ -26,6 +27,7 @@ export class MessagesTab extends Component {
     this.getMessageInterval = null;
     this.messageSound = new UIfx(messageAudio, { volume: 0.4, throttleMs: 100 });
     this.state = {
+      isLoading: false,
       allMessages: [],
       sendingMessage: '',
       writerChatMessages: [],
@@ -71,6 +73,10 @@ export class MessagesTab extends Component {
     const { order, _showCustomPopup } = this.props;
 
     if (Object.keys(order).length !== 0) {
+      this.setState({
+        isLoading: true,
+      });
+
       new OrderAPI().getMessages(new GetMessagesRequest(order)).then(data => {
         const { results } = data;
 
@@ -87,6 +93,7 @@ export class MessagesTab extends Component {
             writerChatMessages,
             supportChatMessages,
             allMessages: results,
+            isLoading: false,
           });
         }
       }).catch(error => {
@@ -118,6 +125,7 @@ export class MessagesTab extends Component {
       sendingMessage,
       writerChatMessages,
       supportChatMessages,
+      isLoading,
     } = this.state;
 
     const handlerMessageToSupport = () => this._setStateMessageTo(this.toSupport);
@@ -151,9 +159,15 @@ export class MessagesTab extends Component {
         <div className={styles.messagesContainer}>
           <div className={styles.messagesViewContainer}>
             <div className={styles.scrollZone}>
-              {messagesJSX.length !== 0
-                ? messagesJSX
-                : <span className={styles.noMessageText}>Not messages yet</span>}
+              {isLoading ? (
+                <div className={styles.preloaderWrapper}>
+                  <Preloader/>
+                </div>
+              ): (
+                messagesJSX.length !== 0
+                  ? messagesJSX
+                  : <span className={styles.noMessageText}>Not messages yet</span>
+              )}
             </div>
           </div>
           <div className={styles.footer}>

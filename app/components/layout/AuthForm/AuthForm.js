@@ -11,12 +11,12 @@ import { Checkbox, FormsyInput, Preloader } from 'components/common/export';
 
 // Instruments
 import AuthAPI from 'api/auth/AuthAPI';
+import { AuthController } from 'core/export';
 import { RegisterRequest } from 'api/auth/requests';
 import {
   routes,
   AuthState,
   LoginState,
-  AuthController,
   orderFormRoutes,
   formsyInputsRules,
 } from 'instruments/export';
@@ -56,21 +56,15 @@ export class AuthForm extends Component {
         case 'OK':
           const { auth_token, customer_name, phone } = data.user;
 
-          _setState('auth', true);
-          _mergeState('user', data.user);
-          _mergeState('order', {
-            customer_name: customer_name,
-            customer_phone: phone,
-          });
+          _setState({ auth: true });
 
-          // _mergeState({
-          //   auth: true,
-          //   user: data.user,
-          //   order: {
-          //     customer_name: customer_name,
-          //     customer_phone: phone,
-          //   }
-          // });
+          _mergeState({
+            user: data.user,
+            order: {
+              customer_name: customer_name,
+              customer_phone: phone,
+            },
+          });
 
           new AuthController().setToken(auth_token, state.rememberMe);
 
@@ -109,7 +103,7 @@ export class AuthForm extends Component {
     const { isLoading, serverError } = this.state;
     const { _setState, state, _setTypeAuth, authState = AuthState } = this.props;
 
-    const handlerOnChangeCheckbox = () => _setState('rememberMe', !state.rememberMe);
+    const handlerOnChangeCheckbox = () => _setState({ rememberMe: !state.rememberMe });
     const setLoginState = event => _setTypeAuth(LoginState, event);
 
     return (

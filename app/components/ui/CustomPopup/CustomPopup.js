@@ -11,7 +11,7 @@ import styles from './styles.css';
 @withProfile
 export class CustomPopup extends Component {
   _closeModal = () => {
-    this.props._setState('customPopup', false);
+    this.props._setState({ customPopup: false });
   };
 
   render() {

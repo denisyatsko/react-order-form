@@ -7,7 +7,7 @@ import { withProfile } from 'components/HOC/withProfile';
 // Styles
 import styles from './styles.css';
 
-//@withProfile
+@withProfile
 export class SidebarStatistics extends Component {
   render() {
     return (
@@ -30,11 +30,15 @@ export class SidebarStatistics extends Component {
           <span className={styles.title}>Pending</span>
           <span>0</span>
         </div>
-        <div>
+        <div className={styles.borderTop}>
           <div className={styles.totalBg}>
             <span className={styles.totalText}>Total:</span>
             <span className={styles.totalValue}>$0</span>
           </div>
+        </div>
+        <div>
+          <button type='button' className={`btn btn--primary ${styles.actionBtn}`}>Withdraw My Cash</button>
+          <span className={styles.message}>Needs to be at least 50$</span>
         </div>
       </div>
     );

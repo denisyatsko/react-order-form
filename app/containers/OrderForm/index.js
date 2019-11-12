@@ -55,13 +55,12 @@ class OrderForm extends Component {
 
     const transitionStepOptions = {
       classNames: {
-        appear: styles.stepAppear,
-        appearDone: styles.stepAppearDone,
-        enter: styles.stepInStart,
-        enterActive: styles.stepInEnd,
-        exit: styles.stepOutStart,
-        exitActive: styles.stepOutEnd,
-        exitDone: styles.stepOutDone,
+        appear: styles.appear,
+        appearDone: styles.appearDone,
+        enter: styles.enter,
+        enterDone: styles.enterDone,
+        enterActive: styles.enterActive,
+        exitActive: styles.exitActive,
       },
       timeout: {
         enter: 500,
@@ -71,28 +70,30 @@ class OrderForm extends Component {
 
     return (
       <div className={styles.container}>
-        <Transition
-          appear
-          in
-          timeout={1000}
-          onEnter={this._animateNavBarEnter}>
-          <OrderFormNav routes={routes}/>
-        </Transition>
-
         <div className={styles.flexRow}>
           <div className={`${styles.content} ${history.location.pathname !== STEP_1 && styles.overflowHidden}`}>
-            {routes.map(({ path, Component }) => (
-              <Route key={path} exact path={path}>
-                {({ match }) => (
-                  <CSSTransition
-                    in={match != null}
-                    {...transitionStepOptions}
-                    unmountOnExit>
-                    <Component/>
-                  </CSSTransition>
-                )}
-              </Route>
-            ))}
+            <Transition
+              appear
+              in
+              timeout={1000}
+              onEnter={this._animateNavBarEnter}>
+              <OrderFormNav routes={routes}/>
+            </Transition>
+            <div className={styles.slideContainer}>
+              {routes.map(({ path, Component }) => (
+                <Route key={path} exact path={path}>
+                  {({ match }) => (
+                    <CSSTransition
+                      in={match != null}
+                      {...transitionStepOptions}
+                      unmountOnExit
+                    >
+                      <Component/>
+                    </CSSTransition>
+                  )}
+                </Route>
+              ))}
+            </div>
             {!isLoggedIn ? <Redirect to={STEP_1}/> : <Redirect to={STEP_2}/>}
           </div>
           <SidebarOrderInfo/>

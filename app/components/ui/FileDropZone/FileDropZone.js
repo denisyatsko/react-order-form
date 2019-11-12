@@ -40,7 +40,7 @@ export class FileDropZone extends Component {
         }
       });
 
-      _mergeState('order', { files: [...dropFiles.filter(file => file.size !== 0), ...filesArr] });
+      _mergeState({ order: { files: [...dropFiles.filter(file => file.size !== 0), ...filesArr] } });
 
       this.setState({
         maxNumberFilesError: false,
@@ -55,7 +55,7 @@ export class FileDropZone extends Component {
     const { maxNumberFilesError } = this.state;
     const { state, _mergeState } = this.props;
 
-    _mergeState('order', { files: state.order.files.filter((file, index) => removingIndex !== index) });
+    _mergeState({ order:{ files: state.order.files.filter((file, index) => removingIndex !== index)} });
 
     if (maxNumberFilesError) this.setState({ maxNumberFilesError: false });
   };

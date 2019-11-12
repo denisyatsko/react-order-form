@@ -19,14 +19,14 @@ export class DefaultOrderValues {
     this.price = '';
     this.files = [];
     this.options = {
-      advanced_writer_required: '',
-      digital_copies_required: '',
-      additional_editing_required: '',
-      plagiarism_report_required: '',
-      initial_draft_required: '',
-      one_page_summary_required: '',
-      extended_revision_period_required: '',
-      vip_support_required: '',
+      advanced_writer_price: '',
+      editing_price: '',
+      extended_revision_period_price: '',
+      initial_draft_price: '',
+      one_page_summary_price: '',
+      plagiarism_report_price: '',
+      source_copy_price: '',
+      vip_support_price: '',
     }
   }
 }

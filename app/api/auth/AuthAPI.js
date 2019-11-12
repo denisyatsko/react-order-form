@@ -1,7 +1,11 @@
 import { config } from 'config';
-import BaseAPI from 'api/BaseAPI';
+import UserAPI from 'api/user/UserAPI';
 
-export default class AuthAPI extends BaseAPI {
+export default class AuthAPI extends UserAPI {
+  constructor() {
+    super();
+  }
+
   forgot(data) {
     return super.postRequest(config.apiURL.forgot, data);
   }
@@ -14,7 +18,7 @@ export default class AuthAPI extends BaseAPI {
     return super.postRequest(config.apiURL.register, data, ['OK', 'DUPLICATE']);
   }
 
-  retrieve(data) {
-    return super.postRequest(config.apiURL.retrieve, data);
+  retrieve() {
+    return super.postRequest(config.apiURL.retrieve);
   }
 }

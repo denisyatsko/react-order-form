@@ -5,12 +5,6 @@ export class RegisterRequest {
   }
 }
 
-export class RetrieveRequest {
-  constructor(customer_token) {
-    this.customer_token = customer_token;
-  }
-}
-
 export class ForgotPasswordRequest {
   constructor(email) {
     this.email = email;

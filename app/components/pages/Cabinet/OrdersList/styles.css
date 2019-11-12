@@ -3,6 +3,8 @@
 .preloaderWrapper {
   display: flex;
   justify-content: center;
+  align-items: center;
+  flex: 1 0 auto;
   & img {
     width: 40px;
     height: 40px;
@@ -39,10 +41,6 @@
     &.on {
       background-color: var(--blue);
       color: #fff;
-    }
-
-    @media (--phone) {
-      padding: 10px 25px;
     }
 
     @media (--desktop) {
@@ -83,6 +81,7 @@
   }
 
   & .showMoreBtn {
+    align-self: center;
     margin: auto auto 0;
   }
 }
@@ -132,4 +131,13 @@
       margin: -7px 5px 0;
     }
   }
+}
+
+.emptyText {
+  color: var(--textColor);
+  display: flex;
+  justify-content: center;
+  flex: 1 0 auto;
+  align-items: center;
+  font-size: 14px;
 }

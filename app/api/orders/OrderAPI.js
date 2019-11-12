@@ -10,8 +10,8 @@ export default class OrderAPI extends BaseAPI {
     return super.postRequest(config.apiURL.uploadFiles, data);
   }
 
-  getOrders(data) {
-    return super.postRequest(config.apiURL.orders, data);
+  getOrders() {
+    return super.postRequest(config.apiURL.orders);
   }
 
   getOrder(data) {

@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import Formsy from 'formsy-react';
 import Popup from 'reactjs-popup';
+import { withRouter } from 'react-router-dom';
 
 // Components
 import { withProfile } from 'components/HOC/withProfile';
@@ -24,10 +25,11 @@ import {
 // Instruments
 import { config } from 'config';
 import {
-  changeOptionsToReadFormat,
-  formsyInputsRules,
   submitOrder,
   uploadFiles,
+  cabinetRoutes,
+  formsyInputsRules,
+  changeOptionsToReadFormat,
 } from 'instruments/export';
 
 // Styles
@@ -37,6 +39,7 @@ import 'react-virtualized/styles.css';
 import 'react-select/dist/react-select.css';
 import 'react-virtualized-select/styles.css';
 
+@withRouter
 @withProfile
 export class Step_3 extends Component {
   constructor(props) {
@@ -59,31 +62,18 @@ export class Step_3 extends Component {
     }, true);
   };
 
-  _submit = () => {
-    const { _payHandler, state } = this.props;
-
-    const files = state.order.files;
+  _submit = (arg) => {
+    const { _payHandler, state, history } = this.props;
 
     this.setState({ isLoading: true });
 
     submitOrder(state.order).then(data => {
-      if (files.length > 0) uploadFiles(files, data.order);
+      if (state.order.files.length > 0) uploadFiles(state.order.files, data.order);
 
-      _payHandler(data.order, false).then(() => this.setState({ isLoading: false }));
+      arg ? _payHandler(data.order) : history.push(cabinetRoutes.ORDERS);
+
+      this.setState({ isLoading: false });
     });
-  };
-
-  _freeInquiryHandler = () => {
-    const { _payHandler } = this.props;
-    const { isValid } = this.refs.form.state;
-
-    if (isValid) {
-      this.setState({ isLoading: true });
-
-      _payHandler(null, true).then(() => this.setState({ isLoading: false }));
-    } else {
-      this._onInvalidSubmit();
-    }
   };
 
   componentDidMount() {
@@ -101,14 +91,27 @@ export class Step_3 extends Component {
     const { options } = state.pricingValues;
     const { options: stateOptions } = state.order;
 
-    const handler_initial_draft = () => _mergeOrderOptions('initial_draft_required', !stateOptions.initial_draft_required);
-    const handler_one_page_summary = () => _mergeOrderOptions('one_page_summary_required', !stateOptions.one_page_summary_required);
-    const handler_extended_revision_period = () => _mergeOrderOptions('extended_revision_period_required', !stateOptions.extended_revision_period_required);
-    const handler_vip_support = () => _mergeOrderOptions('vip_support_required', !stateOptions.vip_support_required);
-    const handler_advanced_writer = () => _mergeOrderOptions('advanced_writer_required', !stateOptions.advanced_writer_required);
-    const handler_additional_editing = () => _mergeOrderOptions('additional_editing_required', !stateOptions.additional_editing_required);
-    const handler_digital_copies = () => _mergeOrderOptions('digital_copies_required', !stateOptions.digital_copies_required);
-    const handler_plagiarism_report = () => _mergeOrderOptions('plagiarism_report_required', !stateOptions.plagiarism_report_required);
+    const handler_initial_draft = () => _mergeOrderOptions('initial_draft_price', !stateOptions.initial_draft_price);
+    const handler_one_page_summary = () => _mergeOrderOptions('one_page_summary_price', !stateOptions.one_page_summary_price);
+    const handler_extended_revision_period = () => _mergeOrderOptions('extended_revision_period_price', !stateOptions.extended_revision_period_price);
+    const handler_vip_support = () => _mergeOrderOptions('vip_support_price', !stateOptions.vip_support_price);
+    const handler_advanced_writer = () => _mergeOrderOptions('advanced_writer_price', !stateOptions.advanced_writer_price);
+    const handler_additional_editing = () => _mergeOrderOptions('editing_price', !stateOptions.editing_price);
+    const handler_digital_copies = () => _mergeOrderOptions('source_copy_price', !stateOptions.source_copy_price);
+    const handler_plagiarism_report = () => _mergeOrderOptions('plagiarism_report_price', !stateOptions.plagiarism_report_price);
+
+    const deadlineOnChangeHandler = (value) => (value.label === '0 days')
+      ? _mergeState({
+        order: {
+          deadline: {
+            label: '0 days',
+            value: this.refs.DeadlineCount.state.count * 3600,
+          },
+        },
+      })
+      : _mergeState({ order: { deadline: value } });
+
+    const freeInquiryHandler = () => this.refs.form.state.isValid ? this._submit() : this._onInvalidSubmit();
 
     return (
       <Formsy
@@ -190,7 +193,7 @@ export class Step_3 extends Component {
                   name='Spacing'
                   values={{ Double: '275 words', Single: '550 words' }}
                   state={state.order.spacing}
-                  _mergeState={(value) => _mergeState('order', { spacing: value })}/>
+                  _mergeState={(value) => _mergeState({ order: { spacing: value } })}/>
               </div>
               <div className={styles.child140}>
                 <Dropdown
@@ -198,19 +201,13 @@ export class Step_3 extends Component {
                   labeltext='Deadline'
                   searchable={false}
                   value={state.order.deadline}
-                  onChange={(value) => (value.label === '0 days')
-                    ? _mergeState('order', {
-                      deadline: {
-                        label: '0 days',
-                        value: this.refs.DeadlineCount.state.count * 3600,
-                      },
-                    })
-                    : _mergeState('order', { deadline: value })}/>
+                  onChange={deadlineOnChangeHandler}
+                />
                 <DeadlineCounter
                   ref='DeadlineCount'
-                  id='deadline'
                   state={state.order}
-                  _mergeState={_mergeState}/>
+                  _mergeState={_mergeState}
+                />
               </div>
             </div>
             <div className={grid.col50}>
@@ -293,13 +290,13 @@ export class Step_3 extends Component {
                   type='text'
                   value={state.order.preferred_writer}
                   placeholder="Writer's ID"
-                  onChange={(event) => _mergeState('order', { preferred_writer: event.target.value.replace(/\D/, '') })}
+                  onChange={(event) => _mergeState({ order: { preferred_writer: event.target.value.replace(/\D/, '') } })}
                   labeltext='Preferred writer'/>
                 <Input
                   name='discount_code'
                   type='text'
-                  placeholder="Discount Code"
-                  onChange={(event) => _mergeState('order', { discount_code: event.target.value })}
+                  placeholder='Discount Code'
+                  onChange={(event) => _mergeState({ order: { discount_code: event.target.value } })}
                   labeltext='Discount Code'/>
               </div>
             </div>
@@ -322,7 +319,7 @@ export class Step_3 extends Component {
                 <button
                   className={`${styles.link}`}
                   type='button'
-                  onClick={() => this._freeInquiryHandler()}
+                  onClick={freeInquiryHandler}
                 >
                   Place free inquiry
                 </button>
