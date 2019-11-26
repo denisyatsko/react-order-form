@@ -1,16 +1,19 @@
 // Core
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
-// Components
-import { withProfile } from 'components/HOC/withProfile';
+// Instruments
+import { orderFormRoutes } from 'instruments/export';
 
 // Styles
 import styles from '../styles.css';
 
-@withProfile
+@withRouter
 export class LoggedUser extends Component {
   render() {
-    const { _setOrderFormStep } = this.props;
+    const { history } = this.props;
+
+    const clickHandler = () => history.push(orderFormRoutes.STEP_2);
 
     return (
       <div className={styles.loggedContent}>
@@ -20,7 +23,8 @@ export class LoggedUser extends Component {
         <button
           type='button'
           className='btn btn--primary'
-          onClick={() => _setOrderFormStep(2)}>
+          onClick={clickHandler}
+        >
           Continue
         </button>
       </div>

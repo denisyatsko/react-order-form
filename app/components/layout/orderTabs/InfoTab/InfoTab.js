@@ -4,7 +4,7 @@ import ReactHtmlParser from 'html-react-parser';
 
 // Components
 import { withProfile } from 'components/HOC/withProfile';
-import { FolderIcon, MessageIcon } from 'components/icons/export';
+import { UserOrderFooter } from 'components/ui/export';
 
 // Styles
 import styles from './styles.css';
@@ -13,7 +13,7 @@ import main from 'components/pages/Cabinet/styles.css';
 @withProfile
 export class InfoTab extends Component {
   render() {
-    const { order, handlerActiveTab2, handlerActiveTab3 } = this.props;
+    const { order } = this.props;
 
     return (
       <div className={styles.orderInfo}>
@@ -102,20 +102,8 @@ export class InfoTab extends Component {
               </div>
             </div>
           </div>
-          <div className={`${styles.bottomContainer} ${main.bottomContainer}`}>
-            <div className={main.leftBlock}>
-              <p className={main.messages} onClick={handlerActiveTab2}>
-                <MessageIcon/>
-                Messages
-                <span className={main.count}>{order.info_new_messages_amount}</span>
-              </p>
-              <p className={main.files} onClick={handlerActiveTab3}>
-                <FolderIcon/>
-                Files
-                <span className={main.count}>{order.info_new_files_amount}</span>
-              </p>
-            </div>
-            <p className={main.price}>$ {order.price}</p>
+          <div className={styles.footer}>
+            <UserOrderFooter order={order}/>
           </div>
         </div>
       </div>

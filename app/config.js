@@ -5,18 +5,27 @@ const END_POINT = process.env.NODE_ENV === 'development'
 export const config = {
   apiURL: {
     login: `${END_POINT}/auth/login/`,
+    update: `${END_POINT}/user/update/`,
     forgot: `${END_POINT}/auth/forgot/`,
     submit: `${END_POINT}/orders/submit/`,
+    refund: `${END_POINT}/orders/refund/`,
     order: `${END_POINT}/orders/getOrder/`,
     retrieve: `${END_POINT}/auth/retrieve/`,
     register: `${END_POINT}/auth/register/`,
     orders: `${END_POINT}/orders/getOrders/`,
+    revision: `${END_POINT}/orders/revision/`,
+    feedback: `${END_POINT}/orders/feedback/`,
+    checkWriter: `${END_POINT}/orders/checkWriter/`,
     getMessages: `${END_POINT}/orders/getMessages/`,
     uploadFiles: `${END_POINT}/orders/uploadFiles/`,
     solidgate: `${END_POINT}/payment/solidgate/pay/`,
+    downloadFile: `${END_POINT}/orders/downloadFile`,
     formValues: `${END_POINT}/main/getOrderFormSetup/`,
     getOrderFiles: `${END_POINT}/orders/getOrderFiles/`,
+    changePassword: `${END_POINT}/user/changePassword/`,
+    markMessagesAsRead: `${END_POINT}/orders/markMessagesAsRead/`,
     sendMessageToWriter: `${END_POINT}/orders/sendMessageToWriter/`,
+    getFileDownloadToken: `${END_POINT}/orders/getFileDownloadToken/`,
     sendMessageToSupport: `${END_POINT}/orders/sendMessageToSupport/`,
   },
   month: ['Jan', 'Feb', 'March', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
@@ -33,10 +42,71 @@ export const config = {
   complicatedDisciplines: [
     2, 5, 7, 8, 10, 14, 15, 16, 29, 32, 35, 42, 43, 44, 46, 50, 61, 62, 65,
   ],
+  maxTextareaContentLength: 500,
+  maxCountValue: 100,
   defaultDeadline: 5, // in hours
   resetPasswordText: {
     success: 'We send you notification, please check your email.',
     error: 'Sorry, but email not found.',
+  },
+  updateInfoText: {
+    user: 'User information has been changed',
+    password: 'Password has been changed',
+  },
+  orderStatus: {
+    unpaid: 'unpaid',
+    in_progress: 'in_progress',
+    revision: 'revision',
+    finished: 'finished',
+  },
+  orderActionText: {
+    accept: 'done!',
+    revision: 'done!',
+    refund: 'done!',
+  },
+  revisionDeadline: [
+    {
+      label: '12 hours',
+      value: '43200'
+    },
+    {
+      label: '24 hours',
+      value: '86400'
+    },
+    {
+      label: '48 hours',
+      value: '172800'
+    },
+    {
+      label: '3 days',
+      value: '259200'
+    },
+    {
+      label: '7 days',
+      value: '604800'
+    }
+  ],
+  sortOrdersValues: [
+    {
+      label: 'Active',
+      value: 1,
+    },
+    {
+      label: 'Finished',
+      value: 2,
+    },
+    {
+      label: 'Require your action',
+      value: 3,
+    }
+  ],
+  orderTabs: {
+    tab1: 'Complete order information',
+    tab2: 'Messages',
+    tab3: 'Files',
+    tab4: 'Accept Order',
+    tab5: 'Revision Order',
+    tab6: 'Refund Order',
   },
 };
 

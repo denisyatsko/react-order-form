@@ -1,8 +1,8 @@
 import { config } from 'config';
-import BaseAPI from 'api/BaseAPI';
+import WithUserAPI from 'api/WithUserAPI/WithUserAPI';
 
-export default class PaymentAPI extends BaseAPI {
+export default class PaymentAPI extends WithUserAPI {
   solidGate(data) {
-    return super.postRequest(config.apiURL.solidgate, data);
+    return super.withUserToken(config.apiURL.solidgate, data);
   }
 }

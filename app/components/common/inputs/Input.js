@@ -5,20 +5,29 @@ import React from 'react';
 import styles from './styles.css';
 
 export const Input = (props) => {
-  const { name, labeltext } = props;
+  const { labeltext, name, error, success, ...inputProps } = props;
+
+  const className = error
+    ? `${styles.error}`
+    : success && `${styles.success}`;
 
   return (
     <div className={styles.item}>
       {(!!labeltext) ? (
         <label
-          className={styles.title}
+          className='itemTitle'
           htmlFor={name}>
           {labeltext}
         </label>
       ) : (
         ''
       )}
-      <input {...props}/>
+      <input
+        id={name}
+        className={className || ''}
+        {...inputProps}
+      />
+      <span className={styles.errorMessage}>{error}</span>
     </div>
   );
 };

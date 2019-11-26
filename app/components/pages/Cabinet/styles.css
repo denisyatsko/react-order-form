@@ -14,6 +14,7 @@
   max-width: 320px;
   display: flex;
   flex-direction: column;
+  position: relative;
   @media (--desktop) {
     max-width: 680px;
   }
@@ -47,6 +48,7 @@
     &:not(:last-child) {
       margin-bottom: 20px;
     }
+
     &:first-child {
       display: none;
       @media (--large) {
@@ -70,21 +72,6 @@
   }
 }
 
-.topContainer,
-.bottomContainer {
-  display: flex;
-  flex-direction: column;
-  max-width: 300px;
-  width: 100%;
-  @media (--desktop) {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    max-width: none;
-    align-self: auto;
-  }
-}
-
 .status {
   border-radius: 4px;
   font-size: 12px;
@@ -105,6 +92,19 @@
 }
 
 .topContainer {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  width: 100%;
+  @media (--desktop) {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    max-width: none;
+    align-self: auto;
+    flex-wrap: wrap;
+  }
+
   & .colorGrey {
     color: var(--title);
   }
@@ -201,16 +201,17 @@
     @media (--desktop) {
       order: 3;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
+      text-align: center;
       flex-wrap: wrap;
       width: 145px;
       & span {
         color: var(--lightBg);
         border: 1px solid var(--lightBg);
         font-size: 12px;
-        line-height: 18px;
+        line-height: 12px;
         border-radius: 4px;
-        padding: 0 5px;
+        padding: 3px 5px;
         margin: 0 5px 2px 0;
 
         &:empty {
@@ -221,65 +222,4 @@
   }
 }
 
-.bottomContainer {
-  padding: 20px;
-  & .price {
-    font-weight: bold;
-    font-size: 16px;
-    color: var(--primary);
-    margin: 15px 0 0 0;
-    text-align: center;
 
-    @media (--desktop) {
-      margin: 0;
-      text-align: left;
-    }
-  }
-
-  & .messages,
-  & .files {
-    color: #fff;
-    background-color: var(--lightBg);
-    font-size: 12px;
-    line-height: 12px;
-    padding: 5px 7px;
-    margin: 0;
-    border: 1px solid var(--lightBg);
-    border-radius: 4px;
-    transition: all 0.1s var(--cubic1);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-
-    &:hover {
-      background-color: #fff;
-      color: var(--lightBg);
-
-      & .count {
-        color: var(--lightBg);
-      }
-    }
-
-    & i {
-      margin-right: 5px;
-    }
-
-    & .count {
-      margin-left: 10px;
-      display: inline-block;
-      font-size: inherit;
-      line-height: inherit;
-      transition: inherit;
-    }
-  }
-
-  & .files {
-    margin-left: 5px;
-  }
-
-  & .leftBlock {
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-  }
-}

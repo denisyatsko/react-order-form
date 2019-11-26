@@ -24,7 +24,6 @@ export const formsyInputsRules = {
     },
   },
   emailForResetPassword: {
-    ref: 'emailForResetPassword',
     name: 'emailForResetPassword',
     type: 'email',
     placeholder: 'E-mail',
@@ -44,17 +43,18 @@ export const formsyInputsRules = {
     },
   },
   UserPhoneInput: {
-    name: 'customer_phone',
+    name: 'phone',
     labeltext: 'Phone number',
     validations: 'minLength:5',
     validationError: 'This field is required',
     required: true,
   },
   currentPassword: {
-    name: 'currentPassword',
+    name: 'current_password',
     labeltext: 'Current password',
     validations: { minLength: 5 },
     validationError: 'This is not a valid password',
+    required: true,
     input: {
       type: 'password',
       placeholder: 'Password',
@@ -62,10 +62,11 @@ export const formsyInputsRules = {
     },
   },
   newPassword: {
-    name: 'newPassword',
+    name: 'new_password',
     labeltext: 'New password',
     validations: { minLength: 5 },
     validationError: 'This is not a valid password',
+    required: true,
     input: {
       type: 'password',
       placeholder: 'Password',
@@ -73,10 +74,11 @@ export const formsyInputsRules = {
     },
   },
   confirmPassword: {
-    name: 'confirmPassword',
+    name: 'new_password_confirmation',
     labeltext: 'Confirm new password',
-    validations: 'equalsField:newPassword',
+    validations: 'equalsField:new_password',
     validationError: 'Incorrect password',
+    required: true,
     input: {
       type: 'password',
       placeholder: 'Password',

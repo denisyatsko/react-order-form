@@ -10,7 +10,7 @@ export const RadioCheckbox = (props) => {
   return (
     <div className={styles.item}>
       <div className={styles.col}>
-        <span className={styles.title}>{name}</span>
+        <span className='itemTitle'>{name}</span>
         <div
           className={`${styles.radioLeft} ${state === 1 ? styles.active : ''}`}
           onClick={() => _mergeState(1)}>
@@ -18,7 +18,7 @@ export const RadioCheckbox = (props) => {
         </div>
       </div>
       <div className={styles.col}>
-        <span className={styles.title}>
+        <span className='itemTitle'>
           {state === 1 ? Object.values(values)[0] : Object.values(values)[1]}
         </span>
         <div

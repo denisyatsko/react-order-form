@@ -26,11 +26,12 @@ export class UserPhoneInput extends React.Component {
 
     return (
       <div className={styles.item}>
-        { labeltext && <label className={styles.title} htmlFor={name}>{labeltext}</label> }
+        { labeltext && <label className='itemTitle' htmlFor={name}>{labeltext}</label> }
         <ReactPhoneInput
           inputExtraProps={{
             autoComplete: 'off',
-            placeholder: 'Enter phone number'
+            placeholder: 'Enter phone number',
+            id: `${name}`
           }}
           excludeCountries={excludeCountries}
           value={getValue() || ''}

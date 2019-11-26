@@ -25,16 +25,17 @@ export const calculatePrice = props => {
     .reduce((p, c) => p + c, 0);
 
   let deadlinePrice = deadlineVal < 86400 ? 86400 : deadlineVal;
-  let PagePrice = deadline_based_page_prices[deadlinePrice][acLevelVal];
+  let pagesPrice = deadline_based_page_prices[deadlinePrice][acLevelVal];
 
-  PagePrice = deadlinePrice === 86400
-    ? (((24 - deadlineVal / 3600) / 24) * PagePrice + PagePrice).toFixed(2)
-    : PagePrice;
+  pagesPrice = deadlinePrice === 86400
+    ? (((24 - deadlineVal / 3600) / 24) * pagesPrice + pagesPrice).toFixed(2)
+    : pagesPrice;
 
-  let priceSlides = PagePrice / 2;
+  let pagesPriceVal = pagesPrice * number_of_pages * spacing;
+  let slidesPriceVal = number_of_slides * pagesPrice / 2;
+  let chartsPriceVal = number_of_charts * pagesPrice / 2;
 
-  let total = (PagePrice * number_of_pages * spacing + number_of_slides * priceSlides +
-    number_of_charts * priceSlides) * percentOptions + plusOptions;
+  let total = (pagesPriceVal + slidesPriceVal + chartsPriceVal) * percentOptions + plusOptions;
 
   return total.toFixed(2);
 };

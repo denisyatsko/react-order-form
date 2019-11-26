@@ -12,7 +12,7 @@ export class DefaultOrderValues {
     this.number_of_charts = 0;
     this.paper_details = '';
     this.customer_name = '';
-    this.customer_phone = '';
+    this.phone = '';
     this.preferred_writer = '';
     this.discount_code = '';
     this.topic = '';

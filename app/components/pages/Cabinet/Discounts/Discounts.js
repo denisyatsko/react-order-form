@@ -15,20 +15,14 @@ import main from '../styles.css';
 
 @withProfile
 export class Discounts extends Component {
-  componentDidMount() {
-    const { state, _setState } = this.props;
-
-    if (!state.userOrders) {
-      new OrderAPI().getOrders().then(data => {
-        _setState({ userOrders: data.results });
-      });
-    }
-  }
+  state = {
+    finishedOrdersAmount: 5
+  };
 
   render() {
     const { state } = this.props;
+    const { finishedOrdersAmount } = this.state;
 
-    let finishedOrdersAmount = 5;
     let discount = state.user.discount;
     let discountGraduateWidth = finishedOrdersAmount * 4;
 

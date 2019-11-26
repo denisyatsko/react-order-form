@@ -1,19 +1,26 @@
 // Core
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 
 // Components
 import { FileDropZone } from 'components/ui/export';
-import { Counter, Dropdown, Input, Textarea } from 'components/common/export';
 import { withProfile } from 'components/HOC/withProfile';
+import { Counter, Dropdown, Input, Textarea } from 'components/common/export';
+
+// Instruments
+import { orderFormRoutes } from 'instruments/export';
 
 // Styles
 import styles from '../styles.css';
 import grid from 'theme/grid.css';
 
+@withRouter
 @withProfile
 export class Step_2 extends Component {
   render() {
-    const { state, _setOrderFormStep, _mergeState } = this.props;
+    const { state, history, _mergeState } = this.props;
+
+    const nextStepHandler = () => history.push(orderFormRoutes.STEP_3);
 
     return (
       <div className={grid.col}>
@@ -52,6 +59,7 @@ export class Step_2 extends Component {
               name='paper_details'
               placeholder='Add details'
               labeltext='Paper details'
+              value={state.order.paper_details}
               onChange={(event) => _mergeState({ order: { paper_details: event.target.value } })}/>
             <div className={styles.child140}>
               <Counter
@@ -72,7 +80,7 @@ export class Step_2 extends Component {
           </div>
         </div>
         <button
-          onClick={() => _setOrderFormStep(3)}
+          onClick={nextStepHandler}
           className={`btn btn--primary ${styles.nextBtn}`}>Continue
         </button>
       </div>

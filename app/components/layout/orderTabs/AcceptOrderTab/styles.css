@@ -1,0 +1,16 @@
+.title {
+  font-size: 18px;
+  line-height: 24px;
+  color: var(--lightBg);
+  font-weight: bold;
+  margin: 0 0 10px 0;
+}
+
+.text {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.scaleContainer {
+  display: flex;
+}

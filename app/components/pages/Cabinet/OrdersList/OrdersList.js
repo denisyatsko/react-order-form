@@ -1,29 +1,35 @@
 // Core
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 // Components
-import { Preloader } from 'components/common/export';
-import { withProfile } from 'components/HOC/withProfile';
-import { EyeIcon, FolderIcon, MessageIcon } from 'components/icons/export';
+import { UserOrder } from 'components/ui/export';
+import { Preloader, Dropdown } from 'components/common/export';
 import { SidebarStatistics, SidebarCalculator } from 'components/layout/export';
 
 // Instruments
+import { config } from 'config';
+import { delay } from 'instruments/export';
 import OrderAPI from 'api/orders/OrderAPI';
-import { delay, cabinetRoutes } from 'instruments/export';
 
 // Styles
 import styles from './styles.css';
-import grid from 'theme/grid.css';
 import main from '../styles.css';
 
-@withProfile
 export class OrdersList extends Component {
-  state = {
-    itemsToShow: 3,
-    isLoading: false,
-    isHideShowMoreBtn: true,
-  };
+  constructor(props) {
+    super(props);
+
+    this.refsCollection = {};
+    this.moreOrders = 3;
+
+    this.state = {
+      sort: 1,
+      itemsToShow: this.moreOrders,
+      isLoading: false,
+      isHideShowMoreBtn: true,
+      orderStatus: config.orderStatus.unpaid,
+    };
+  }
 
   _scrollTo = ref => {
     ref.scrollIntoView({
@@ -33,27 +39,27 @@ export class OrdersList extends Component {
   };
 
   _showMoreHandler = (e) => {
-    const { state } = this.props;
-    const { itemsToShow } = this.state;
+    const { itemsToShow, filteredOrders } = this.state;
 
     e.preventDefault();
 
     this.setState({ isLoading: true });
 
     let callback = () => {
-      let id = state.userOrders[this.state.itemsToShow - 3].id;
-      this._scrollTo(this.refs[id]);
+      let id = filteredOrders[itemsToShow].id;
+      this._scrollTo(this.refsCollection[id]);
     };
 
+    // Display loader 300ms
     delay(300).then(() => {
-      if (state.userOrders.length - itemsToShow > 3) {
+      if (filteredOrders.length - itemsToShow > this.moreOrders) {
         this.setState(prevState => ({
-          itemsToShow: prevState.itemsToShow + 3,
+          itemsToShow: prevState.itemsToShow + this.moreOrders,
           isLoading: false,
         }), callback);
       } else {
         this.setState(() => ({
-          itemsToShow: state.userOrders.length,
+          itemsToShow: filteredOrders.length,
           isHideShowMoreBtn: true,
           isLoading: false,
         }), callback);
@@ -61,139 +67,92 @@ export class OrdersList extends Component {
     });
   };
 
-  componentDidMount() {
-    const { state, _setState } = this.props;
+  _sortOrders = (e = { value: 1 }) => {
+    const { userOrders } = this.state;
 
-    if (!state.userOrders) {
-      new OrderAPI().getOrders().then(data => {
-        _setState({ userOrders: data.results });
+    this.setState({
+      sort: e.value,
+    });
 
+    if (userOrders !== 0) {
+      this.setState({ filteredOrders: undefined });
+
+      let filteredOrders = [...userOrders].filter(order => {
+        switch (e.value) {
+          case 1:
+            return +order.status === (1 || 2 || 3 || 4 || 5 || 6 || 7 || 8 || 11 || 13);
+            break;
+          case 2:
+            return +order.status === (9 || 10 || 15 || 14);
+            break;
+          case 3:
+            return +order.status === (2 || 3 || 7);
+            break;
+        }
+      }).sort((a, b) => {
+        return (+b.info_new_messages_amount + +b.info_new_files_amount) -
+          (+a.info_new_messages_amount + +a.info_new_files_amount);
+      });
+
+      // Display loader 300ms
+      delay(300).then(() => {
         this.setState({
-          isHideShowMoreBtn: data.results.length <= 3,
-          userOrders: data.results,
+          filteredOrders,
+          isHideShowMoreBtn: filteredOrders.length <= this.moreOrders,
         });
       });
     }
+  };
+
+  componentDidMount() {
+    new OrderAPI().getOrders().then(data => {
+      this.setState(() => ({
+        userOrders: data.results,
+      }), () => this._sortOrders());
+    });
   }
 
   render() {
-    const { state } = this.props;
-    const { itemsToShow, isLoading, isHideShowMoreBtn, userOrders } = this.state;
+    const { itemsToShow, isLoading, isHideShowMoreBtn, filteredOrders, sort } = this.state;
 
-    const orders = userOrders || state.userOrders;
-    const handlerShowMore = (e) => this._showMoreHandler(e);
+    const userOrdersJSX = filteredOrders && filteredOrders
+      .slice(0, itemsToShow)
+      .map(order =>
+        <UserOrder
+          key={order.id}
+          order={order}
+          ref={element => this.refsCollection[order.id] = element}
+        />,
+      );
 
     return (
       <div className={main.contentWrapper}>
         <div className={main.mainContent}>
-          <div className={styles.filterWrapper}>
-            <div className={`${styles.item} ${styles.on}`}>
-              <span className={styles.small}>01 Step</span>
-              <span>Unpaid</span>
-            </div>
-            <div className={styles.item}>
-              <span className={styles.small}>02 Step</span>
-              <span>In Progress</span>
-            </div>
-            <div className={styles.item}>
-              <span className={styles.small}>03 Step</span>
-              <span>Revision</span>
-            </div>
-            <div className={styles.item}>
-              <span className={styles.small}>04 Step</span>
-              <span>Finished</span>
-            </div>
-          </div>
+          <Dropdown
+            options={config.sortOrdersValues}
+            value={sort}
+            searchable={false}
+            onChange={(e) => this._sortOrders(e)}
+          />
           <ul className={styles.ordersList}>
-            {!orders ? (
-              <div className={styles.preloaderWrapper}>
-                <Preloader/>
+            {!!!filteredOrders ? (
+              <div className='absoluteCenter'>
+                <Preloader size={40}/>
               </div>
-            ) : ( orders && orders.length !== 0 ? orders
-                .slice(0, itemsToShow)
-                .map(({
-                        id,
-                        deadline,
-                        status_title,
-                        topic,
-                        num_pages,
-                        type_of_paper_title,
-                        price,
-                        info_new_files_amount,
-                        info_new_messages_amount,
-                        subject_or_discipline_title,
-                      }) => {
-                    const orderLink = `${cabinetRoutes.ORDER}/${id}`;
-
-                    return <li key={id} ref={id} className={`${styles.order}`}>
-                      <div className={`${main.topContainer} ${styles.topContainer}`}>
-                        <div className={main.col1}>
-                          <p className={main.colorGrey}>
-                            <span className={main.desktopHidden}>Deadline:</span>
-                            {deadline}
-                          </p>
-                        </div>
-                        <div className={main.col2}>
-                          <p className={`${main.finished} ${main.status}`}>status: {status_title}</p>
-                        </div>
-                        <div className={main.col3}>
-                          <Link to={orderLink} className={grid.col}>
-                            <span className={main.title}>{topic !== '' ? topic : 'Writer\'s choice'}</span>
-                            <p><span className={main.colorGrey}>Order ID:</span> {id}</p>
-                          </Link>
-                        </div>
-                        <div className={main.col4}>
-                          <span>{`${num_pages} ${num_pages > 1 ? 'pages' : 'page'}`}</span>
-                          <span>{subject_or_discipline_title}</span>
-                          <span>{type_of_paper_title}</span>
-                        </div>
-                      </div>
-                      <Link to={orderLink} className={styles.showMoreCol}>
-                        <EyeIcon/>&nbsp;Show more information
-                      </Link>
-                      <div className={main.bottomContainer}>
-                        <div className={main.leftBlock}>
-                          <Link
-                            to={{
-                              pathname: `${orderLink}`,
-                              hash: '#messages',
-                            }}
-                            className={main.messages}
-                          >
-                            <MessageIcon/>
-                            Messages
-                            <span className={main.count}>{info_new_messages_amount}</span>
-                          </Link>
-                          <Link
-                            to={{
-                              pathname: `${orderLink}`,
-                              hash: '#files',
-                            }}
-                            className={main.files}
-                          >
-                            <FolderIcon/>
-                            Files
-                            <span className={main.count}>{info_new_files_amount}</span>
-                          </Link>
-                        </div>
-                        <p className={main.price}>$ {price}</p>
-                      </div>
-                    </li>;
-                  },
-                ) : orders.length === 0 && <span className={styles.emptyText}>not orders</span>
+            ) : (filteredOrders.length !== 0
+                ? userOrdersJSX
+                : filteredOrders.length === 0 && <span className={styles.emptyText}>not orders</span>
             )}
             {isLoading ? (
-              <div className={styles.preloaderWrapper}>
-                <Preloader/>
+              <div style={{ textAlign: 'center' }}>
+                <Preloader size={40}/>
               </div>
             ) : (
               <button
-                onClick={handlerShowMore}
+                onClick={(e) => this._showMoreHandler(e)}
                 style={{ display: isHideShowMoreBtn && 'none' }}
                 className={`btn btn--primary ${styles.showMoreBtn}`}
-              >
-                Show more
-              </button>
+              >Show more</button>
             )}
           </ul>
         </div>

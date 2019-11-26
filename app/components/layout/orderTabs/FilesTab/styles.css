@@ -31,23 +31,21 @@
 }
 
 .fileItem {
+  width: 100%;
   height: 40px;
   border-radius: 8px;
-  border: 1px solid var(--inputBorderColor);
   font-size: 18px;
   display: flex;
   align-items: center;
   margin-top: 5px;
   padding: 0 10px;
+  cursor: pointer;
   color: var(--lightBg);
+  border: 1px solid var(--inputBorderColor);
+  transition: all ease 0.15s;
 
-  &.preloader {
-    justify-content: center;
-
-    & img {
-      width: 30px;
-      height: 30px;
-    }
+  &:hover {
+    border-color: var(--accent);
   }
 
   & .text {
@@ -61,4 +59,6 @@
 .reverseCol {
   display: flex;
   flex-direction: column-reverse;
+  align-items: center;
+  min-height: 50px;
 }

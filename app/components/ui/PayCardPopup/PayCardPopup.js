@@ -18,7 +18,11 @@ export class PayCardPopup extends Component {
   };
 
   _closeModal = () => {
-    this.props._setState({ payCardPopup: false });
+    const { _setState } = this.props;
+
+    _setState({ payCardPopup: false });
+
+    this.setState({ isLoading: true });
   };
 
   _payRedirect = () => {

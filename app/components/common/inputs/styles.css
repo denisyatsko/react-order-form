@@ -24,6 +24,10 @@
     &.error {
       border-color: var(--accent);
     }
+
+    &.success {
+      border-color: var(--primary);
+    }
   }
 
   & input[type="tel"] {

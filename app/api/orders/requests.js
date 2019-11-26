@@ -31,7 +31,7 @@ class SendMessageRequest {
 class OrderSubmitRequest {
   constructor(data) {
     this.customer_name = data.customer_name;
-    this.customer_phone = data.customer_phone;
+    this.customer_phone = data.phone;
     this.city = ''; // this data is not in the order
     this.country = ''; // this data is not in the order
     this.country_code = ''; // this data is not in the order
@@ -77,16 +77,82 @@ class OrderSubmitRequest {
 }
 
 class GetOrderRequest {
-  constructor(id) {
-    this.order_id = id;
+  constructor(data) {
+    this.order_id = data.id;
+  }
+}
+
+class MarkMessagesAsReadRequest {
+  constructor(data) {
+    this.order_id = data.id;
+    this.message_id = data.lastMessageId;
+    //this.sub_order_id = data.sub_order_id; // option
+  }
+}
+
+class FeedbackRequest {
+  constructor(data) {
+    this.feedback = data.feedback;
+    this.support_score = data.rating;
+    this.product_score = data.rating;
+    this.order_id = data.id;
+    //this.sub_order_id = data.sub_order_id; // option
+  }
+}
+
+class RefundRequest {
+  constructor(data) {
+    this.content = data.content;
+    this.grammar = data.grammar;
+    this.sources = data.sources;
+    this.format = data.format;
+    this.instructions_not_followed = data.instructions_not_followed;
+    this.other = data.other;
+    this.order_id = data.id;
+    //this.sub_order_id = data.sub_order_id; // option
+  }
+}
+
+class RevisionRequest {
+  constructor(data) {
+    this.client_time = data.client_time;
+    this.time_for_revision = data.revisionDeadline;
+    this.content = data.content;
+    this.grammar = data.grammar;
+    this.sources = data.sources;
+    this.format = data.format;
+    this.instructions_not_followed = data.instructions_not_followed;
+    this.other = data.other;
+    this.order_id = data.id;
+    //this.sub_order_id = data.sub_order_id; // option
+  }
+}
+
+class GetFileDownloadTokenRequest {
+  constructor(data) {
+    this.file_id = data.file_id;
+    this.order_id = data.id;
+    //this.sub_order_id = data.sub_order_id; // option
+  }
+}
+
+class CheckWriterRequest {
+  constructor(data) {
+    this.writer_id = data.id;
   }
 }
 
 export {
+  RefundRequest,
+  RevisionRequest,
   GetOrderRequest,
+  FeedbackRequest,
+  CheckWriterRequest,
   SendMessageRequest,
   UploadFilesRequest,
   OrderSubmitRequest,
   GetMessagesRequest,
   GetOrderFilesRequest,
+  MarkMessagesAsReadRequest,
+  GetFileDownloadTokenRequest,
 };

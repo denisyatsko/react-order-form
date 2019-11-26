@@ -10,25 +10,12 @@ import 'react-virtualized/styles.css';
 import 'react-virtualized-select/styles.css';
 
 export const Dropdown = (props) => {
-  const {
-    value,
-    options,
-    onChange,
-    labeltext,
-    searchable,
-    placeholder,
-  } = props;
-
+  const { labeltext, ...dropdownProps } = props;
 
   return (
     <div className={styles.item}>
-      <span className={styles.title}>{labeltext}</span>
-      <StyledDropdown
-        options={options}
-        onChange={onChange}
-        value={value}
-        searchable={searchable}
-        placeholder={placeholder}/>
+      <span className='itemTitle'>{labeltext}</span>
+      <StyledDropdown {...dropdownProps}/>
     </div>
   );
 };

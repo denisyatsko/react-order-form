@@ -18,10 +18,10 @@ export const ChatMessage = (props) => {
     >
       <span className={styles.sender}>{from}</span>
       <div className={styles.messageText}>
-        <p>sentAt: {sentAtUtc}</p>
         {typeof message === 'string' && ReactHtmlParser(message)}
-        <div className={styles.iconContainer}><DialogArrow/></div>
       </div>
+      <p className={styles.sentDate}>{sentAtUtc}</p>
+      <div className={styles.iconContainer}><DialogArrow/></div>
     </div>
   )
 };

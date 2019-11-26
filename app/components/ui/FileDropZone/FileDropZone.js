@@ -86,7 +86,7 @@ export class FileDropZone extends Component {
       >
         {({ getRootProps, getInputProps, isDragActive, rejectedFiles, isDragReject }) => (
           <section className={`${styles.container} ${cabinetDropZoneClass ? styles.cabinetDropZoneClass : ''}`}>
-            <span className={styles.title}>Attach files</span>
+            <span className='itemTitle'>Attach files</span>
             <div
               className={`${styles.dropzone} ${
                 isDragActive ? styles.active : ''

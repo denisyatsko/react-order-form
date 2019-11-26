@@ -8,19 +8,36 @@ import { FileDropZone } from 'components/ui/export';
 import { Preloader } from 'components/common/export';
 
 // Instruments
+import { config } from 'config';
 import OrderAPI from 'api/orders/OrderAPI';
 import { uploadFiles } from 'instruments/export';
-import { GetOrderFilesRequest } from 'api/orders/requests';
+import { GetOrderFilesRequest, GetFileDownloadTokenRequest } from 'api/orders/requests';
 
 // Styles
 import styles from './styles.css';
-import grid from 'theme/grid.css';
 
 @withProfile
 export class FilesTab extends Component {
   state = {
-    files: [],
+    files: undefined,
     isUploadingFile: false,
+  };
+
+  _downloadFile = (id) => {
+    const { order } = this.props;
+
+    new OrderAPI().getFileDownloadToken(new GetFileDownloadTokenRequest({
+      ...order,
+      file_id: id,
+    })).then(data => {
+      const link = document.createElement('a');
+
+      link.href = `${config.apiURL.downloadFile}?file_access_token=${data.access_token}`;
+      link.setAttribute('target', '_blank');
+      document.body.appendChild(link);
+      link.click();
+      link.parentNode.removeChild(link);
+    });
   };
 
   _getOrdersFiles = () => {
@@ -29,7 +46,7 @@ export class FilesTab extends Component {
     if (Object.keys(order).length !== 0) {
       new OrderAPI().getOrderFiles(new GetOrderFilesRequest(order)).then(data => {
         this.setState({
-          files: data.files,
+          files: data.results,
           isUploadingFile: false,
         });
       });
@@ -42,18 +59,14 @@ export class FilesTab extends Component {
 
   componentDidUpdate(prevProps) {
     const {
-      _setDefaultOrderValues,
       state: {
         order: {
           files,
         },
       },
-      order
+      order,
+      _setDefaultOrderValues,
     } = this.props;
-
-    if (order !== prevProps.order) {
-      this._getOrdersFiles();
-    }
 
     if (files !== prevProps.state.order.files) {
       if (files.length > 0) {
@@ -69,18 +82,19 @@ export class FilesTab extends Component {
   }
 
   render() {
+    const { order, handlerSetActiveTab } = this.props;
     const { files, isUploadingFile } = this.state;
 
     const supportFiles = null;
 
-    const userFileJSX = files.map((file, index) =>
-      <div key={index} className={styles.fileItem}>
+    const userFileJSX = files && files.map(({ name, id }) =>
+      <li
+        key={id} className={styles.fileItem}
+        onClick={() => this._downloadFile(id)}
+      >
         <FaFile/>
-        <div className={grid.col}>
-          <span className={styles.text}>{file}</span>
-          <span className={styles.text}>size</span>
-        </div>
-      </div>);
+        <span className={styles.text}>{name}</span>
+      </li>);
 
     return (
       <div className={styles.filesContainer}>
@@ -89,16 +103,42 @@ export class FilesTab extends Component {
           {supportFiles
             ? <p>this is support files</p>
             : <p>not files yet</p>}
+          {+order.status === 7 && // delivered status
+          <div>
+            <button
+              type='button'
+              className={`btn btn--primary`}
+              onClick={() => handlerSetActiveTab('tab4')}
+            >Accept order
+            </button>
+            <button
+              type='button'
+              className={`btn btn--primary`}
+              onClick={() => handlerSetActiveTab('tab5')}
+            >Request revision
+            </button>
+            <button
+              type='button'
+              className={`btn btn--primary`}
+              onClick={() => handlerSetActiveTab('tab6')}
+            >Request refund
+            </button>
+          </div>}
         </div>
         <div className={styles.col}>
           <span className={styles.title}>Your files:</span>
           <FileDropZone cabinetDropZoneClass={true}/>
-          <div className={styles.reverseCol}>
-            {userFileJSX}
-            {isUploadingFile && <div className={`${styles.preloader} ${styles.fileItem}`}>
-              <Preloader/>
+          <ul className={styles.reverseCol}>
+            {!!!userFileJSX
+              ? <Preloader size={30}/>
+              : userFileJSX.length !== 0
+                ? userFileJSX
+                : userFileJSX.length === 0 && <p style={{ margin: '0' }}>not files yet</p>}
+            {isUploadingFile &&
+            <div className={styles.fileItem}>
+              <Preloader size={30}/>
             </div>}
-          </div>
+          </ul>
         </div>
       </div>
     );

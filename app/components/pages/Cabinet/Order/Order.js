@@ -8,9 +8,17 @@ import { Tabs } from 'components/common/export';
 import { withProfile } from 'components/HOC/withProfile';
 import { SidebarStatistics, SidebarCalculator } from 'components/layout/export';
 import { FolderIcon, MessageIcon, LeftArrowIcon } from 'components/icons/export';
-import { MessagesTab, FilesTab, InfoTab } from 'components/layout/orderTabs/export';
+import {
+  FilesTab,
+  InfoTab,
+  MessagesTab,
+  AcceptOrderTab,
+  RefundOrderTab,
+  RevisionOrderTab,
+} from 'components/layout/orderTabs/export';
 
 // Instruments
+import { config } from 'config';
 import OrderAPI from 'api/orders/OrderAPI';
 import { cabinetRoutes } from 'instruments/export';
 import { GetOrderRequest } from 'api/orders/requests';
@@ -26,11 +34,6 @@ export class Order extends Component {
   constructor(props) {
     super(props);
     this.tabsRef = createRef();
-    this.tabs = {
-      tab1: 'Complete order information',
-      tab2: 'Messages',
-      tab3: 'Files',
-    };
     this.state = {
       order: {},
     };
@@ -40,36 +43,25 @@ export class Order extends Component {
     this.tabsRef.current.setActiveTab(value);
   };
 
+  _updateNewMessagesAmount = (value) => {
+    this.setState((prevState) => ({
+      order: {
+        ...prevState.order,
+        info_new_messages_amount: value || 0,
+      },
+    }));
+  };
+
   componentDidMount() {
-    const { state, match, history, location } = this.props;
+    const { match, location } = this.props;
 
-    const orders = state.userOrders || [];
-    const idFromUrl = match.params.orderId;
+    new OrderAPI().getOrder(new GetOrderRequest({ id: match.params.orderId })).then(data => {
+      this.setState({ order: data.order });
+    });
 
-    if (orders.length > 0) {
-      const order = orders.find(({ id }) => id === idFromUrl) || null;
-
-      this.setState({ order });
-    } else {
-      new OrderAPI().getOrder(new GetOrderRequest(idFromUrl)).then(data => {
-        this.setState({ order: data.order });
-
-        if (`${cabinetRoutes.ORDER}/${idFromUrl}` !== `${cabinetRoutes.ORDER}/${data.order.id}`) {
-          history.push(`${cabinetRoutes.ORDER}/${data.order.id}`);
-        }
-      });
-    }
-
-    switch (location.hash) {
-      case '#messages':
-        this._setActiveTab(this.tabs.tab2);
-        break;
-      case '#files':
-        this._setActiveTab(this.tabs.tab3);
-        break;
-      default:
-        this._setActiveTab(this.tabs.tab1);
-    }
+    Object.values(config.orderTabs).map(item => {
+      if (item === location.state) return this._setActiveTab(location.state);
+    });
   }
 
   componentWillUnmount() {
@@ -81,8 +73,7 @@ export class Order extends Component {
   render() {
     const { order } = this.state;
 
-    const handlerActiveTab2 = () => this._setActiveTab(this.tabs.tab2);
-    const handlerActiveTab3 = () => this._setActiveTab(this.tabs.tab3);
+    const handlerSetActiveTab = (activeTab) => this._setActiveTab(this.tabs[activeTab]);
 
     return (
       <div className={main.contentWrapper}>
@@ -111,14 +102,23 @@ export class Order extends Component {
               </div>
             </div>
             <Tabs classNames={styles.nav} ref={this.tabsRef}>
-              <div label={this.tabs.tab1} jsx={<FaInfoCircle/>}>
-                <InfoTab order={order} handlerActiveTab2={handlerActiveTab2} handlerActiveTab3={handlerActiveTab3}/>
+              <div label={config.orderTabs.tab1} jsx={<FaInfoCircle/>}>
+                <InfoTab order={order}/>
               </div>
-              <div label={this.tabs.tab2} jsx={<MessageIcon/>}>
-                <MessagesTab order={order}/>
+              <div label={config.orderTabs.tab2} jsx={<MessageIcon/>}>
+                <MessagesTab order={order} _updateNewMessagesAmount={this._updateNewMessagesAmount}/>
               </div>
-              <div label={this.tabs.tab3} jsx={<FolderIcon/>}>
-                <FilesTab order={order}/>
+              <div label={config.orderTabs.tab3} jsx={<FolderIcon/>}>
+                <FilesTab order={order} handlerSetActiveTab={handlerSetActiveTab}/>
+              </div>
+              <div label={config.orderTabs.tab4} styles={{ display: 'none' }}>
+                <AcceptOrderTab orderId={order.id}/>
+              </div>
+              <div label={config.orderTabs.tab5} styles={{ display: 'none' }}>
+                <RevisionOrderTab orderId={order.id}/>
+              </div>
+              <div label={config.orderTabs.tab6} styles={{ display: 'none' }}>
+                <RefundOrderTab orderId={order.id}/>
               </div>
             </Tabs>
           </div>

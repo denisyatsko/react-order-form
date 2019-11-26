@@ -1,7 +1,7 @@
 // Core
 import React, { Component } from 'react';
-import { withRouter, Route, Redirect, Switch } from 'react-router-dom';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import { withRouter, Route, Switch } from 'react-router-dom';
+import { LastLocationProvider } from 'react-router-last-location';
 
 // Components
 import Cabinet from 'containers/Cabinet';
@@ -22,7 +22,6 @@ import { AuthController } from 'core/export';
 import {
   routes,
   calculatePrice,
-  orderFormRoutes,
   redirectPayError,
   DefaultOrderValues,
   isAvailablePayButton,
@@ -43,7 +42,6 @@ export default class App extends Component {
     auth: false,
     rememberMe: true,
     isLoading: true,
-    userOrders: null,
     visibleMobileMenu: false,
     customPopup: {
       isVisible: false,
@@ -60,6 +58,7 @@ export default class App extends Component {
           order: new DefaultOrderValues(data.ui),
           uploadRequirements: data.order.uploadRequirements,
           isLoading: false,
+          app: data.app,
         }, () => {
           this._setPrice();
           this._setCustomerData();
@@ -77,7 +76,7 @@ export default class App extends Component {
           ...prevState.order,
           ...{
             customer_name: data.user.customer_name,
-            customer_phone: data.user.phone,
+            phone: data.user.phone,
           },
         },
       }));
@@ -95,7 +94,7 @@ export default class App extends Component {
       order: {
         ...new DefaultOrderValues(formValues),
         customer_name: user.customer_name || null,
-        customer_phone: user.phone || null,
+        phone: user.phone || null,
       },
     }, () => {
       this._setPrice();
@@ -136,7 +135,10 @@ export default class App extends Component {
     const { subject_or_discipline, deadline, number_of_pages, spacing } = this.state.order;
 
     this.setState(prevState => ({
-      isVisiblePayButton: isAvailablePayButton(+subject_or_discipline.value, deadline.value, number_of_pages * spacing),
+      isVisiblePayButton: isAvailablePayButton(
+        +subject_or_discipline.value,
+        deadline.value,
+        number_of_pages * spacing),
       order: {
         ...prevState.order,
         ...{
@@ -147,23 +149,6 @@ export default class App extends Component {
         },
       },
     }));
-  };
-
-  _setOrderFormStep = value => {
-    const { STEP_1, STEP_2, STEP_3 } = orderFormRoutes;
-    const { history } = this.props;
-
-    switch (value) {
-      case 1:
-        history.push(STEP_1);
-        break;
-      case 2:
-        history.push(STEP_2);
-        break;
-      case 3:
-        history.push(STEP_3);
-        break;
-    }
   };
 
   _showCustomPopup = (content) => {
@@ -238,7 +223,7 @@ export default class App extends Component {
   _logOut = () => {
     const { history } = this.props;
 
-    history.push('/');
+    history.push(routes.LOGIN);
 
     new AuthController().removeToken();
 
@@ -248,15 +233,12 @@ export default class App extends Component {
       auth: false,
       visibleMobileMenu: false,
       user: {},
-      userOrders: null,
     });
   };
 
   render() {
     const { location } = this.props;
-    const { auth, isLoading } = this.state;
-
-    const isLoggedIn = JSON.parse(auth);
+    const { isLoading } = this.state;
 
     return (
       <Catcher>
@@ -267,32 +249,30 @@ export default class App extends Component {
             _message: (value) => this._message(value),
             _setState: (object) => this._setState(object),
             _mergeState: (object) => this._mergeState(object),
-            _setOrderFormStep: value => this._setOrderFormStep(value),
             _setDefaultOrderValues: () => this._setDefaultOrderValues(),
             _showCustomPopup: content => this._showCustomPopup(content),
             _mergeOrderOptions: (name, value) => this._mergeOrderOptions(name, value),
             _payHandler: (data, isFreeInquiry) => this._payHandler(data, isFreeInquiry),
           }}>
           {isLoading ? (
-            <div className='preloaderWrapper'>
+            <div className='absoluteCenter'>
               <Preloader/>
             </div>
           ) : (
             <div className={styles.mainContent}>
               <Header/>
               <div className={grid.container}>
-                <TransitionGroup className={styles.mainSection}>
-                  <CSSTransition key={location} classNames='fade' timeout={300} appear>
-                    <div className={styles.pageWrapper}>
+                <div className={styles.mainSection}>
+                  <div className={styles.pageWrapper}>
+                    <LastLocationProvider>
                       <Switch location={location}>
                         <Route path={routes.ORDER_FORM} component={OrderForm}/>
                         <Route path={routes.CABINET} component={Cabinet}/>
                         <Route path={routes.LOGIN} exact component={Login}/>
-                        {!isLoggedIn ? <Redirect to={routes.LOGIN}/> : null}
                       </Switch>
-                    </div>
-                  </CSSTransition>
-                </TransitionGroup>
+                    </LastLocationProvider>
+                  </div>
+                </div>
               </div>
               <CustomPopup/>
               <PayCardPopup/>

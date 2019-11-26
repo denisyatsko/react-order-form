@@ -3,12 +3,14 @@ import React, { Component } from 'react';
 import Formsy from 'formsy-react';
 import Popup from 'reactjs-popup';
 import { withRouter } from 'react-router-dom';
+import { Transition } from 'react-transition-group';
 
 // Components
 import { withProfile } from 'components/HOC/withProfile';
 import {
   SolidGate,
   DeadlineCounter,
+  PreferredWriterInput,
   OrderFormPayButtonStub,
 } from 'components/ui/export';
 import {
@@ -38,6 +40,7 @@ import grid from 'theme/grid.css';
 import 'react-virtualized/styles.css';
 import 'react-select/dist/react-select.css';
 import 'react-virtualized-select/styles.css';
+import { fromTo } from 'gsap';
 
 @withRouter
 @withProfile
@@ -51,14 +54,21 @@ export class Step_3 extends Component {
     isLoading: false,
   };
 
+  _animateOnEnter = NavBar => {
+    fromTo(
+      NavBar,
+      1,
+      { opacity: 0, y: -20 },
+      { opacity: 1, y: 0 },
+    );
+  };
+
   _onInvalidSubmit = (...args) => {
-    const { form } = this.refs;
+    let model = args.length > 0 ? args[0] : this.formRef.getModel();
 
-    let model = args.length > 0 ? args[0] : form.getModel();
-
-    form.updateInputsWithError({
+    this.formRef.updateInputsWithError({
       customer_name: (!model.customer_name && formsyInputsRules.defaultError) || null,
-      customer_phone: (!model.customer_phone && formsyInputsRules.defaultError) || null,
+      phone: (!model.phone && formsyInputsRules.defaultError) || null,
     }, true);
   };
 
@@ -91,31 +101,24 @@ export class Step_3 extends Component {
     const { options } = state.pricingValues;
     const { options: stateOptions } = state.order;
 
-    const handler_initial_draft = () => _mergeOrderOptions('initial_draft_price', !stateOptions.initial_draft_price);
-    const handler_one_page_summary = () => _mergeOrderOptions('one_page_summary_price', !stateOptions.one_page_summary_price);
-    const handler_extended_revision_period = () => _mergeOrderOptions('extended_revision_period_price', !stateOptions.extended_revision_period_price);
-    const handler_vip_support = () => _mergeOrderOptions('vip_support_price', !stateOptions.vip_support_price);
-    const handler_advanced_writer = () => _mergeOrderOptions('advanced_writer_price', !stateOptions.advanced_writer_price);
-    const handler_additional_editing = () => _mergeOrderOptions('editing_price', !stateOptions.editing_price);
-    const handler_digital_copies = () => _mergeOrderOptions('source_copy_price', !stateOptions.source_copy_price);
-    const handler_plagiarism_report = () => _mergeOrderOptions('plagiarism_report_price', !stateOptions.plagiarism_report_price);
+    const onChangeHandlerCheckbox = (name) => _mergeOrderOptions([name], !stateOptions[name]);
 
     const deadlineOnChangeHandler = (value) => (value.label === '0 days')
       ? _mergeState({
         order: {
           deadline: {
             label: '0 days',
-            value: this.refs.DeadlineCount.state.count * 3600,
+            value: this.DeadlineCount.state.count * 3600,
           },
         },
       })
       : _mergeState({ order: { deadline: value } });
 
-    const freeInquiryHandler = () => this.refs.form.state.isValid ? this._submit() : this._onInvalidSubmit();
+    const freeInquiryHandler = () => this.formRef.state.isValid ? this._submit() : this._onInvalidSubmit();
 
     return (
       <Formsy
-        ref='form'
+        ref={element => this.formRef = element}
         onValidSubmit={this._submit}
         onInvalidSubmit={this._onInvalidSubmit}
         noValidate>
@@ -126,11 +129,13 @@ export class Step_3 extends Component {
                 <Checkbox
                   state={stateOptions.initial_draft_required}
                   text={`Initial Draft (+${(options) && changeOptionsToReadFormat(options.initial_draft_price)}%)`}
-                  onChange={handler_initial_draft}/>
+                  onChange={() => onChangeHandlerCheckbox('initial_draft_price')}
+                />
                 <Popup
-                  trigger={<button className={styles.toolTip}>?</button>}
+                  trigger={<span className={styles.toolTip}>?</span>}
                   position='right center'
-                  on='hover'>
+                  on='hover'
+                >
                   <div className={styles.toolTipContent}>
                     {tootTipText.initial_draft_required}
                   </div>
@@ -140,11 +145,13 @@ export class Step_3 extends Component {
                 <Checkbox
                   state={stateOptions.one_page_summary_required}
                   text={`One-page summary ($${(options) && options.one_page_summary_price})`}
-                  onChange={handler_one_page_summary}/>
+                  onChange={() => onChangeHandlerCheckbox('one_page_summary_price')}
+                />
                 <Popup
-                  trigger={<button className={styles.toolTip}>?</button>}
+                  trigger={<span className={styles.toolTip}>?</span>}
                   position='right center'
-                  on='hover'>
+                  on='hover'
+                >
                   <div className={styles.toolTipContent}>
                     {tootTipText.one_page_summary_required}
                   </div>
@@ -154,11 +161,13 @@ export class Step_3 extends Component {
                 <Checkbox
                   state={stateOptions.extended_revision_period_required}
                   text={`Extended revision period (+${(options) && changeOptionsToReadFormat(options.extended_revision_period_price)}%)`}
-                  onChange={handler_extended_revision_period}/>
+                  onChange={() => onChangeHandlerCheckbox('extended_revision_period_price')}
+                />
                 <Popup
-                  trigger={<button className={styles.toolTip}>?</button>}
+                  trigger={<span className={styles.toolTip}>?</span>}
                   position='right center'
-                  on='hover'>
+                  on='hover'
+                >
                   <div className={styles.toolTipContent}>
                     {tootTipText.extended_revision_period_required}
                   </div>
@@ -168,11 +177,13 @@ export class Step_3 extends Component {
                 <Checkbox
                   state={stateOptions.vip_support_required}
                   text={`VIP support ($${(options) && options.vip_support_price})`}
-                  onChange={handler_vip_support}/>
+                  onChange={() => onChangeHandlerCheckbox('vip_support_price')}
+                />
                 <Popup
-                  trigger={<button className={styles.toolTip}>?</button>}
+                  trigger={<span className={styles.toolTip}>?</span>}
                   position='right center'
-                  on='hover'>
+                  on='hover'
+                >
                   <div className={styles.toolTipContent}>
                     {tootTipText.vip_support_required}
                   </div>
@@ -188,12 +199,14 @@ export class Step_3 extends Component {
                   id='number_of_pages'
                   labeltext='Number of pages'
                   count={state.order.number_of_pages}
-                  _mergeState={_mergeState}/>
+                  _mergeState={_mergeState}
+                />
                 <RadioCheckbox
                   name='Spacing'
                   values={{ Double: '275 words', Single: '550 words' }}
                   state={state.order.spacing}
-                  _mergeState={(value) => _mergeState({ order: { spacing: value } })}/>
+                  _mergeState={(value) => _mergeState({ order: { spacing: value } })}
+                />
               </div>
               <div className={styles.child140}>
                 <Dropdown
@@ -204,7 +217,7 @@ export class Step_3 extends Component {
                   onChange={deadlineOnChangeHandler}
                 />
                 <DeadlineCounter
-                  ref='DeadlineCount'
+                  ref={element => this.DeadlineCount = element}
                   state={state.order}
                   _mergeState={_mergeState}
                 />
@@ -215,11 +228,13 @@ export class Step_3 extends Component {
                 <Checkbox
                   state={stateOptions.advanced_writer_required}
                   text={`Advanced Writer (+${(options) && changeOptionsToReadFormat(options.advanced_writer_price)}%)`}
-                  onChange={handler_advanced_writer}/>
+                  onChange={() => onChangeHandlerCheckbox('advanced_writer_price')}
+                />
                 <Popup
-                  trigger={<button className={styles.toolTip}>?</button>}
-                  position='right center'
-                  on='hover'>
+                  trigger={<span className={styles.toolTip}>?</span>}
+                  position='left center'
+                  on='hover'
+                >
                   <div className={styles.toolTipContent}>
                     {tootTipText.advanced_writer_required}
                   </div>
@@ -229,11 +244,13 @@ export class Step_3 extends Component {
                 <Checkbox
                   state={stateOptions.additional_editing_required}
                   text={`Additional editing (+${(options) && changeOptionsToReadFormat(options.editing_price)}%)`}
-                  onChange={handler_additional_editing}/>
+                  onChange={() => onChangeHandlerCheckbox('editing_price')}
+                />
                 <Popup
-                  trigger={<button className={styles.toolTip}>?</button>}
-                  position='right center'
-                  on='hover'>
+                  trigger={<span className={styles.toolTip}>?</span>}
+                  position='left center'
+                  on='hover'
+                >
                   <div className={styles.toolTipContent}>
                     {tootTipText.additional_editing_required}
                   </div>
@@ -243,11 +260,13 @@ export class Step_3 extends Component {
                 <Checkbox
                   state={stateOptions.digital_copies_required}
                   text={`Digital copies of sources used ($${(options) && options.source_copy_price})`}
-                  onChange={handler_digital_copies}/>
+                  onChange={() => onChangeHandlerCheckbox('source_copy_price')}
+                />
                 <Popup
-                  trigger={<button className={styles.toolTip}>?</button>}
-                  position='right center'
-                  on='hover'>
+                  trigger={<span className={styles.toolTip}>?</span>}
+                  position='left center'
+                  on='hover'
+                >
                   <div className={styles.toolTipContent}>
                     {tootTipText.digital_copies_required}
                   </div>
@@ -257,11 +276,13 @@ export class Step_3 extends Component {
                 <Checkbox
                   state={stateOptions.plagiarism_report_required}
                   text={`Plagiarism report ($${(options) && options.plagiarism_report_price})`}
-                  onChange={handler_plagiarism_report}/>
+                  onChange={() => onChangeHandlerCheckbox('plagiarism_report_price')}
+                />
                 <Popup
-                  trigger={<button className={styles.toolTip}>?</button>}
-                  position='right center'
-                  on='hover'>
+                  trigger={<span className={styles.toolTip}>?</span>}
+                  position='left center'
+                  on='hover'
+                >
                   <div className={styles.toolTipContent}>
                     {tootTipText.plagiarism_report_required}
                   </div>
@@ -270,34 +291,31 @@ export class Step_3 extends Component {
               <UserPhoneInput
                 {...formsyInputsRules.UserPhoneInput}
                 _mergeState={_mergeState}
-                value={(state.order.customer_phone !== '') ? state.order.customer_phone : null}
+                value={(state.order.phone !== '') ? state.order.phone : null}
               />
               <div className={styles.child140}>
                 <Counter
                   id='number_of_slides'
                   labeltext='Number of slides'
                   count={state.order.number_of_slides}
-                  _mergeState={_mergeState}/>
+                  _mergeState={_mergeState}
+                />
                 <Counter
                   id='number_of_charts'
                   labeltext='Number of charts'
                   count={state.order.number_of_charts}
-                  _mergeState={_mergeState}/>
+                  _mergeState={_mergeState}
+                />
               </div>
               <div className={styles.child140}>
-                <Input
-                  name='preferred_writer'
-                  type='text'
-                  value={state.order.preferred_writer}
-                  placeholder="Writer's ID"
-                  onChange={(event) => _mergeState({ order: { preferred_writer: event.target.value.replace(/\D/, '') } })}
-                  labeltext='Preferred writer'/>
+                <PreferredWriterInput/>
                 <Input
                   name='discount_code'
                   type='text'
                   placeholder='Discount Code'
                   onChange={(event) => _mergeState({ order: { discount_code: event.target.value } })}
-                  labeltext='Discount Code'/>
+                  labeltext='Discount Code'
+                />
               </div>
             </div>
           </div>
@@ -308,16 +326,22 @@ export class Step_3 extends Component {
                 {state.isVisiblePayButton ? (
                   <>
                     <p className={styles.greyText}>Please, choose a method of payment</p>
-                    {isLoading ? <Preloader/> : <SolidGate/>}
+                    {isLoading ? <Preloader size={87}/> : <SolidGate/>}
                     <p className={styles.greyText}>By placing an order you agree with our&nbsp;
                       <a href="#" className={styles.link}>policies</a>
                     </p>
                   </>
                 ) : (
-                  <OrderFormPayButtonStub/>
+                  <Transition
+                    appear
+                    in
+                    timeout={600}
+                    onEnter={this._animateOnEnter}>
+                    <OrderFormPayButtonStub/>
+                  </Transition>
                 )}
                 <button
-                  className={`${styles.link}`}
+                  className={styles.link}
                   type='button'
                   onClick={freeInquiryHandler}
                 >

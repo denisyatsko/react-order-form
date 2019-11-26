@@ -14,14 +14,6 @@
     }
   }
 
-  & .title {
-    font-size: 14px;
-    line-height: 14px;
-    color: var(--title);
-    opacity: 0.5;
-    margin: 0 0 5px;
-  }
-
   & .countWrapper {
     display: flex;
     align-items: center;

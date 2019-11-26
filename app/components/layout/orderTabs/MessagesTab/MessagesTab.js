@@ -11,7 +11,11 @@ import { withProfile } from 'components/HOC/withProfile';
 // Instruments
 import OrderAPI from 'api/orders/OrderAPI';
 import messageAudio from 'assets/sounds/message.mp3';
-import { GetMessagesRequest, SendMessageRequest } from 'api/orders/requests';
+import {
+  GetMessagesRequest,
+  SendMessageRequest,
+  MarkMessagesAsReadRequest,
+} from 'api/orders/requests';
 
 // Styles
 import styles from './styles.css';
@@ -33,11 +37,12 @@ export class MessagesTab extends Component {
       writerChatMessages: [],
       supportChatMessages: [],
       sendMessageTo: this.toSupport,
+      lastMessageId: null,
     };
   }
 
   _setStateMessageTo = (value) => {
-    this.setState({ sendMessageTo: value });
+    this.setState(() => ({ sendMessageTo: value }), () => this._setLastMessageId());
   };
 
   _onChangeTypeMessage = (text) => {
@@ -73,9 +78,7 @@ export class MessagesTab extends Component {
     const { order, _showCustomPopup } = this.props;
 
     if (Object.keys(order).length !== 0) {
-      this.setState({
-        isLoading: true,
-      });
+      this.setState({ isLoading: true });
 
       new OrderAPI().getMessages(new GetMessagesRequest(order)).then(data => {
         const { results } = data;
@@ -89,22 +92,63 @@ export class MessagesTab extends Component {
           let writerChatMessages = results
             .filter(item => item.from === this.toWriter || item.to === this.toWriter && item.from === this.customer);
 
-          this.setState({
+          this.setState(() => ({
             writerChatMessages,
             supportChatMessages,
             allMessages: results,
-            isLoading: false,
-          });
+          }), () => this._setLastMessageId());
         }
       }).catch(error => {
         _showCustomPopup(error);
+      }).then(() => {
+        this.setState({ isLoading: false });
       });
     }
   };
 
+  _markMessagesAsRead = () => {
+    const { order } = this.props;
+    const { lastMessageId } = this.state;
+
+    new OrderAPI().markMessagesAsRead(new MarkMessagesAsReadRequest({ id: order.id, lastMessageId }))
+      .then((data) => {
+        this.setState({ info_new_messages_amount: data.order.info_new_messages_amount });
+      });
+  };
+
+  _setLastMessageId = () => {
+    const {
+      sendMessageTo,
+      writerChatMessages,
+      supportChatMessages
+    } = this.state;
+
+    const getLastMessageId = (Messages) => {
+      return Messages.length !== 0
+        ? Messages.filter(item => item.to === this.customer)[0].id
+        : null;
+    };
+
+    this.setState(() => ({
+      lastMessageId: sendMessageTo === this.toSupport
+        ? getLastMessageId(supportChatMessages)
+        : sendMessageTo === this.toWriter && getLastMessageId(writerChatMessages),
+    }), () => {
+      const { order } = this.props;
+      const { lastMessageId } = this.state;
+
+      lastMessageId > order.info_last_read_message_id && this._markMessagesAsRead()
+    });
+  };
+
   componentDidMount() {
+    const { state } = this.props;
+
     this._getMessages();
-    // this.getMessageInterval = setInterval(this._getMessages, 10000);
+
+    this.getMessageInterval = process.env.NODE_ENV === 'production'
+      ? setInterval(this._getMessages, state.app.auto_update_interval * 1000)
+      : null;
   }
 
   componentDidUpdate(prevProps) {
@@ -116,7 +160,12 @@ export class MessagesTab extends Component {
   }
 
   componentWillUnmount() {
-    // clearInterval(this.getMessageInterval);
+    const { _updateNewMessagesAmount } = this.props;
+    const { info_new_messages_amount } = this.state;
+
+    _updateNewMessagesAmount(info_new_messages_amount);
+
+    process.env.NODE_ENV === 'production' && clearInterval(this.getMessageInterval);
   }
 
   render() {
@@ -147,23 +196,21 @@ export class MessagesTab extends Component {
         <div className={styles.messagesNav}>
           <p
             className={`${sendMessageTo === this.toSupport && styles.active}`}
-            onClick={handlerMessageToSupport}>
-            Message Support
-          </p>
+            onClick={handlerMessageToSupport}
+          >Support</p>
           <p
             className={`${sendMessageTo === this.toWriter && styles.active}`}
-            onClick={handlerMessageToWriter}>
-            Message Writer
-          </p>
+            onClick={handlerMessageToWriter}
+          >Writer</p>
         </div>
         <div className={styles.messagesContainer}>
           <div className={styles.messagesViewContainer}>
             <div className={styles.scrollZone}>
               {isLoading ? (
-                <div className={styles.preloaderWrapper}>
-                  <Preloader/>
+                <div className='absoluteCenter'>
+                  <Preloader size={50}/>
                 </div>
-              ): (
+              ) : (
                 messagesJSX.length !== 0
                   ? messagesJSX
                   : <span className={styles.noMessageText}>Not messages yet</span>

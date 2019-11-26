@@ -1,6 +1,9 @@
 // Core
 import React, { useState, useEffect } from 'react';
 
+// Instruments
+import { config } from 'config';
+
 // Styles
 import styles from './styles.css';
 
@@ -10,7 +13,7 @@ export const Counter = (props) => {
   const [countValue, setCount] = useState(count);
 
   const handleClick = (value) => {
-    if (count + value >= 0 && count + value < 100)
+    if (count + value >= 0 && count + value < config.maxCountValue)
       setCount(countValue + value);
   };
 
@@ -23,7 +26,7 @@ export const Counter = (props) => {
 
   return (
     <div className={styles.item}>
-      <span className={styles.title}>{labeltext}</span>
+      <span className='itemTitle'>{labeltext}</span>
       <div className={styles.countWrapper}>
         <button
           type='button'

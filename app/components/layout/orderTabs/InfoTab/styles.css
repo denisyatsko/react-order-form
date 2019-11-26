@@ -161,12 +161,10 @@
   & .flexAuto {
     flex: 1 0 auto;
   }
+}
 
-  & .bottomContainer {
-    padding: 0;
-    align-self: center;
-    @media (--desktop) {
-      padding: 20px 0 0 0;
-    }
+.footer {
+  @media (--desktop) {
+    padding: 20px 0 0 0;
   }
 }

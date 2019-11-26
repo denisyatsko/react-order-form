@@ -19,12 +19,13 @@ export class FormsyInput extends React.Component {
   };
 
   render() {
-    const { name, labeltext, input, getErrorMessage, getValue } = this.props;
+    const { labeltext, input, getErrorMessage, getValue, name } = this.props;
 
     return (
       <div className={styles.item}>
-        { labeltext && <label className={styles.title} htmlFor={name}>{labeltext}</label> }
+        { labeltext && <label className='itemTitle' htmlFor={name}>{labeltext}</label> }
         <input
+          id={name}
           {...input}
           onChange={this._changeValue}
           value={getValue() || ''}

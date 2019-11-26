@@ -1,5 +1,14 @@
 @import './breakpoint.css';
 
+:global(.itemTitle) {
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--title);
+  opacity: 0.5;
+  margin: 0 0 5px;
+  white-space: nowrap;
+}
+
 :global(.section) {
   color: var(--textColor);
   width: 100%;
@@ -8,7 +17,7 @@
   overflow: hidden;
 }
 
-:global(.preloaderWrapper) {
+:global(.absoluteCenter) {
   position: absolute;
   top: 50%;
   left: 50%;

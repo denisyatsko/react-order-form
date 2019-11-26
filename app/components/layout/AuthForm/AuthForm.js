@@ -61,8 +61,8 @@ export class AuthForm extends Component {
           _mergeState({
             user: data.user,
             order: {
-              customer_name: customer_name,
-              customer_phone: phone,
+              customer_name,
+              phone,
             },
           });
 
@@ -88,9 +88,7 @@ export class AuthForm extends Component {
   };
 
   _onInvalidSubmit = (model) => {
-    const { form } = this.refs;
-
-    form.updateInputsWithError(
+    this.form.updateInputsWithError(
       {
         email: (!model.email && formsyInputsRules.defaultError) || null,
         password: (!model.password && formsyInputsRules.defaultError) || null,
@@ -108,7 +106,7 @@ export class AuthForm extends Component {
 
     return (
       <Formsy
-        ref='form'
+        ref={element => this.form = element}
         onValidSubmit={this._submit}
         onInvalidSubmit={this._onInvalidSubmit}
         noValidate
@@ -155,7 +153,7 @@ export class AuthForm extends Component {
                 {authState.btnText}
               </button>
             ) : (
-              <Preloader/>
+              <Preloader size={40}/>
             )}
           </div>
         </div>

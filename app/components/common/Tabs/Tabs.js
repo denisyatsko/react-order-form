@@ -16,11 +16,12 @@ export const Tabs = forwardRef((props, ref) => {
     <div>
       <div className={classNames}>
         {children.map(child => {
-          const { label, jsx } = child.props;
+          const { label, jsx, styles } = child.props;
 
           return (
             <div
               key={label}
+              style={styles}
               active={activeTab === label ? 'active' : null}
               onClick={() => setActiveTab(label)}
             >

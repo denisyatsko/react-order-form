@@ -17,7 +17,7 @@
 
     & > * {
       max-width: 140px;
-      @media (--desktop) {
+      @media (--large) {
         max-width: 170px;
       }
     }
@@ -105,7 +105,10 @@
 .toolTipContent {
   font-size: 13px;
   line-height: 15px;
-  color: var(--textColor);
+  //color: var(--textColor);
+  border-radius: var(--borderRadius);
+  background-color: var(--primary);
+  color: #fff;
 }
 
 .mb {

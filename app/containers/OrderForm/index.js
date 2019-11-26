@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { fromTo } from 'gsap';
 import { Route, Redirect, withRouter } from 'react-router-dom';
 import { Transition, CSSTransition } from 'react-transition-group';
+import { withLastLocation } from 'react-router-last-location';
 
 // Components
 import { orderFormRoutes } from 'instruments/export';
@@ -15,6 +16,7 @@ import styles from './styles.css';
 
 @withProfile
 @withRouter
+@withLastLocation
 class OrderForm extends Component {
   _animateNavBarEnter = NavBar => {
     fromTo(
@@ -31,7 +33,7 @@ class OrderForm extends Component {
   }
 
   render() {
-    const { state, history } = this.props;
+    const { state, history, lastLocation } = this.props;
     const { STEP_1, STEP_2, STEP_3, LOGGED_USER } = orderFormRoutes;
 
     const isLoggedIn = JSON.parse(state.auth);
@@ -53,15 +55,25 @@ class OrderForm extends Component {
       },
     ];
 
+    let prevStep = lastLocation && +lastLocation.pathname.split('-').pop() || 1;
+    let currentStep = +history.location.pathname.split('-').pop() || 1;
+
     const transitionStepOptions = {
-      classNames: {
-        appear: styles.appear,
-        appearDone: styles.appearDone,
-        enter: styles.enter,
-        enterDone: styles.enterDone,
-        enterActive: styles.enterActive,
-        exitActive: styles.exitActive,
-      },
+      classNames: currentStep > prevStep
+        ? {
+          appear: styles.appear,
+          appearDone: styles.appearDone,
+          enter: styles.enter,
+          enterDone: styles.enterDone,
+          enterActive: styles.enterActive,
+          exitActive: styles.exitActive,
+        } : {
+          appear: styles.appear,
+          enter: styles.nextEnter,
+          enterDone: styles.enterDone,
+          enterActive: styles.nextEnterActive,
+          exitActive: styles.nextExitActive,
+        },
       timeout: {
         enter: 500,
         exit: 400,
@@ -75,7 +87,7 @@ class OrderForm extends Component {
             <Transition
               appear
               in
-              timeout={1000}
+              timeout={700}
               onEnter={this._animateNavBarEnter}>
               <OrderFormNav routes={routes}/>
             </Transition>
@@ -94,7 +106,7 @@ class OrderForm extends Component {
                 </Route>
               ))}
             </div>
-            {!isLoggedIn ? <Redirect to={STEP_1}/> : <Redirect to={STEP_2}/>}
+            <Redirect to={STEP_2}/>
           </div>
           <SidebarOrderInfo/>
         </div>

@@ -1,11 +1,7 @@
 import { config } from 'config';
-import UserAPI from 'api/user/UserAPI';
+import WithUserAPI from 'api/WithUserAPI/WithUserAPI';
 
-export default class AuthAPI extends UserAPI {
-  constructor() {
-    super();
-  }
-
+export default class AuthAPI extends WithUserAPI {
   forgot(data) {
     return super.postRequest(config.apiURL.forgot, data);
   }
@@ -19,6 +15,6 @@ export default class AuthAPI extends UserAPI {
   }
 
   retrieve() {
-    return super.postRequest(config.apiURL.retrieve);
+    return super.withUserToken(config.apiURL.retrieve);
   }
 }

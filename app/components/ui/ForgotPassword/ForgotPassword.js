@@ -17,22 +17,19 @@ import styles from './styles.css';
 
 @withProfile
 export class ForgotPassword extends Component {
-  state = {
+  initialState = {
     isVisiblePopup: false,
     isLoading: false,
   };
 
-  _setPopupState = state => {
-    this.setState({ isVisiblePopup: state });
-  };
+  state = { ...this.initialState };
 
   _resetPassword = () => {
-    const { emailForResetPassword } = this.refs;
     const { _showCustomPopup } = this.props;
 
-    let email = emailForResetPassword.getValue();
+    let email = this.emailForResetPassword.getValue();
 
-    if (emailForResetPassword.isValid()) {
+    if (this.emailForResetPassword.isValid()) {
       this.setState({
         isLoading: true,
       });
@@ -42,13 +39,10 @@ export class ForgotPassword extends Component {
       }).catch(() => {
         _showCustomPopup(config.resetPasswordText.error);
       }).then(() => {
-        this.setState({
-          isLoading: false,
-          isVisiblePopup: false,
-        });
+        this.setState({ ...this.initialState });
       });
     } else {
-      emailForResetPassword.setState({
+      this.emailForResetPassword.setState({
         externalError: (!email && [formsyInputsRules.defaultError]) || null,
       });
     }
@@ -57,8 +51,8 @@ export class ForgotPassword extends Component {
   render() {
     const { isVisiblePopup, isLoading } = this.state;
 
-    const openPopup = () => this._setPopupState(true);
-    const closePopup = () => this._setPopupState(false);
+    const openPopup = () => this.setState({ isVisiblePopup: true });
+    const closePopup = () => this.setState({ isVisiblePopup: false });
 
     return (
       <>
@@ -78,7 +72,10 @@ export class ForgotPassword extends Component {
         >
           <div className={styles.popupContent}>
             <p>Request reset password</p>
-            <FormsyInput {...formsyInputsRules.emailForResetPassword}/>
+            <FormsyInput
+              ref={element => this.emailForResetPassword = element}
+              {...formsyInputsRules.emailForResetPassword}
+            />
             {!isLoading ? (
               <button
                 type='button'
